@@ -13,16 +13,16 @@ function SocialMetrics(props) {
   let tweetArray = [];
   let contribArray = [];
   let urlArray = [];
-  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  // const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+  // const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const id = props.id;
   let key = '688o9wuzvzst3uybpg6eh';
   const fetcher = url => fetch(url).then(r => r.json());
   const { data, error } = useSWR(`https://api.lunarcrush.com/v2?data=assets&key=${key}&symbol=${id}&data_points=90&interval=day`, fetcher)
 
   useEffect(() => {
-    console.log('window.innerHeight', window.innerHeight);
-    console.log('window.innerHeight', window.innerWidth);
+    // console.log('window.innerHeight', window.innerHeight);
+    // console.log('window.innerHeight', window.innerWidth);
 }, [])
 
   if(data) {
@@ -98,7 +98,7 @@ function SocialMetrics(props) {
     <h1>Social Share Metrics</h1>
   <div className={classes.social1}>
     <Bar data={data2} 
-         height={windowHeight > 600 ? windowHeight * 0.3 : windowHeight}
+         height={'100%'}
           />
     {/* <ul>
     {socialGlobalArray.map((y) => {
