@@ -1,14 +1,16 @@
 import {useState} from 'react';
-// import { getEventById, getFeaturedEvents, getEventsById } from '../../dummy-data';
+import { getEventById, getFeaturedEvents, getEventsById } from '../../dummy-data';
 
-import { getFeaturedEvents, getSearchEvents } from '../../helpers/api-util';
+import { getSearchEvents } from '../../helpers/api-util';
 import EventList from '../../components/events/event-list';
 
 function AssetsPage(props) {
-    // const featuredEvents = getFeaturedEvents();
+    const featuredEvents = getFeaturedEvents();
     // const featuredEvent = getEventById('BTC');
     // const eventsById = getEventsById('BTC');
-    const [events, setEvents] = useState([])
+    console.log('this is featuredEvents', featuredEvents)
+
+    const [events, setEvents] = useState([...featuredEvents])
 
 
   
@@ -27,20 +29,20 @@ async function searchQuery(e) {
       <button type="submit">Search</button>
     </form>
     </div>
-     {/*<EventList items={events.length > 1 ? events : props.events}/>*/}
+     <EventList items={events.length > 1 ? events : props.events}/>
     </div>
     )
 }
 
-// export async function getStaticProps() {
-//   const featuredEvents = await getFeaturedEvents();
-//   return {
-//       props: {
-//           events: featuredEvents
-//       }
-//
-//   }
-// }
+export async function getStaticProps() {
+  const featuredEvents = await getFeaturedEvents();
+  return {
+      props: {
+          events: featuredEvents
+      }
+
+  }
+}
 
 
 export default AssetsPage;
