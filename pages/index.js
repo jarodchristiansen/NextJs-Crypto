@@ -54,7 +54,7 @@ function HomePage() {
           />
 
             <div className="explainer">
-                <LandingExplainer />
+                {/*<LandingExplainer />*/}
             </div>
 
             <div className="screener">
