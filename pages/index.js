@@ -59,42 +59,58 @@ function HomePage() {
 
             <div className="screener">
 
-                <div>
-                    {!isDesktopOrLaptop ? (
-                        <div style={{marginLeft:"5%"}}>
-                            <TradingViewEmbed
-                                widgetType={widgetType.SCREENER_CRYPTOCURRENCY}
-                                widgetConfig={{
-                                    "width":97 + "%",
-                                    "defaultColumn": "overview",
-                                    "screener_type": "crypto_mkt",
-                                    "displayCurrency": "USD",
-                                    "colorTheme": "dark",
-                                    "locale": "en"
-                                }}/>
-                        </div>
-                    ): (
-                        <div style={{marginLeft:"4%"}}>
-                            <div>
-                                (Horizontal scrolling is enabled for mobile)
-                            </div>
-                            <TradingViewEmbed
-                                widgetType={widgetType.SCREENER_CRYPTOCURRENCY}
-                                widgetConfig={{
-                                    "width":"320",
-                                    "height": "600",
-                                    "defaultColumn": "overview",
-                                    "screener_type": "crypto_mkt",
-                                    "displayCurrency": "USD",
-                                    "colorTheme": "dark",
-                                    "locale": "en"
-                                }}/>
-                            Mobile Flow
-                            <div style={{height: '400px'}}></div>
-                        </div>
 
-                    )}
+
+                <div style={{marginLeft:"5%"}}>
+                    <TradingViewEmbed
+                        widgetType={widgetType.SCREENER_CRYPTOCURRENCY}
+                        widgetConfig={{
+                            "width":97 + "%",
+                            "defaultColumn": "overview",
+                            "screener_type": "crypto_mkt",
+                            "displayCurrency": "USD",
+                            "colorTheme": "dark",
+                            "locale": "en"
+                        }}/>
                 </div>
+
+
+                {/*<div>*/}
+                {/*    {!isDesktopOrLaptop ? (*/}
+                {/*        <div style={{marginLeft:"5%"}}>*/}
+                {/*            <TradingViewEmbed*/}
+                {/*                widgetType={widgetType.SCREENER_CRYPTOCURRENCY}*/}
+                {/*                widgetConfig={{*/}
+                {/*                    "width":97 + "%",*/}
+                {/*                    "defaultColumn": "overview",*/}
+                {/*                    "screener_type": "crypto_mkt",*/}
+                {/*                    "displayCurrency": "USD",*/}
+                {/*                    "colorTheme": "dark",*/}
+                {/*                    "locale": "en"*/}
+                {/*                }}/>*/}
+                {/*        </div>*/}
+                {/*    ) : (*/}
+                {/*        <div style={{marginLeft:"4%"}}>*/}
+                {/*            <div>*/}
+                {/*                (Horizontal scrolling is enabled for mobile)*/}
+                {/*            </div>*/}
+                {/*            <TradingViewEmbed*/}
+                {/*                widgetType={widgetType.SCREENER_CRYPTOCURRENCY}*/}
+                {/*                widgetConfig={{*/}
+                {/*                    "width":"100" + "%",*/}
+                {/*                    "height": "600",*/}
+                {/*                    "defaultColumn": "overview",*/}
+                {/*                    "screener_type": "crypto_mkt",*/}
+                {/*                    "displayCurrency": "USD",*/}
+                {/*                    "colorTheme": "dark",*/}
+                {/*                    "locale": "en"*/}
+                {/*                }}/>*/}
+                {/*            Mobile Flow*/}
+                {/*            <div style={{height: '400px'}}></div>*/}
+                {/*        </div>*/}
+
+                {/*    )}*/}
+                {/*</div>*/}
             </div>
 
         </div>
