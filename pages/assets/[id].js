@@ -5,7 +5,7 @@ import SocialChart from '../../components/details/social-chart-';
 function AssetDetails() {
     const router = useRouter();
 
-    let id = router.query.id
+    let id = router.query.id || 'BTC'
     console.log(router.query)
 
     return (
