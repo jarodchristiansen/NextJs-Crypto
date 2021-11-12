@@ -107,7 +107,7 @@ function FinancialChart(props) {
   if (error) return <div>failed to load</div>
   if (!data) return <div>loading...</div>
   return (
-    <div>
+    <div style={{display: "flex", flexDirection: "column", justifyContent: 'center', textAlign: "center"}}>
     <h1>Financial Metrics</h1>
     <div className={classes.dataHolder}>
       <FinancialData supply={maxSupply} one={oneDay} seven={sevenDay} thirty={thirtyDay}/>

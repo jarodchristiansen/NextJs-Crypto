@@ -2,6 +2,7 @@ import fetch from 'unfetch'
 import classes from './social-metrics.module.css';
 import SocialPost from './social-post';
 import useSWR from 'swr'
+import {ListGroup, ListGroupItem} from "react-bootstrap";
 
 function SocialPosts(props) {
   let responseData;
@@ -42,26 +43,46 @@ function SocialPosts(props) {
   if (error) return <div>failed to load</div>
   if (!data) return <div>loading...</div>
   return (
-    <div>
-  <div className={classes.social1}>
-    <ul className={classes.socialList}>
-    {responseData.map((y) => {
-    //   return <li key={y.time}>
-    //       {y.display_name}
-    //       {y.body}
-    //       </li>
-    return <SocialPost key={y.time} 
-    time={y.time} 
-    displayName={y.display_name} 
-    body={y.body}
-    likes={y.likes}
-    retweets={y.retweets}
-    profileImage={y.profile_image}
-    url={y.url}
-    screenName={y.twitter_screen_name}
-    />
-    })}
-    </ul>
+    <div >
+  <div >
+    <ListGroup>
+        {responseData.map((y) => {
+          //   return <li key={y.time}>
+          //       {y.display_name}
+          //       {y.body}
+          //       </li>
+          return (
+          <ListGroup.Item><SocialPost key={y.time}
+                             time={y.time}
+                             displayName={y.display_name}
+                             body={y.body}
+                             likes={y.likes}
+                             retweets={y.retweets}
+                             profileImage={y.profile_image}
+                             url={y.url}
+                             screenName={y.twitter_screen_name}
+          /></ListGroup.Item>
+          )})}
+    </ListGroup>
+
+    {/*<ul style={{maxHeight: "10%", overflow: "scroll"}}>*/}
+    {/*{responseData.map((y) => {*/}
+    {/*//   return <li key={y.time}>*/}
+    {/*//       {y.display_name}*/}
+    {/*//       {y.body}*/}
+    {/*//       </li>*/}
+    {/*return <SocialPost key={y.time}*/}
+    {/*time={y.time}*/}
+    {/*displayName={y.display_name}*/}
+    {/*body={y.body}*/}
+    {/*likes={y.likes}*/}
+    {/*retweets={y.retweets}*/}
+    {/*profileImage={y.profile_image}*/}
+    {/*url={y.url}*/}
+    {/*screenName={y.twitter_screen_name}*/}
+    {/*/>*/}
+    {/*})}*/}
+    {/*</ul>*/}
   </div>
   </div>
   )

@@ -94,11 +94,12 @@ function SocialMetrics(props) {
   if (error) return <div>failed to load</div>
   if (!data) return <div>loading...</div>
   return (
-    <div>
+    <div style={{display: "flex", flexDirection: "column", justifyContent: 'center', textAlign: "center"}}>
     <h1>Social Share Metrics</h1>
-  <div className={classes.social1}>
+  <div>
     <Bar data={data2} 
-         height={'100%'}
+         // height={windowHeight > 600 ? windowHeight * 0.3 : windowHeight}
+         height={200}
           />
     {/* <ul>
     {socialGlobalArray.map((y) => {

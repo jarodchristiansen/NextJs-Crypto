@@ -7,7 +7,8 @@ function SocialPost(props) {
 
 
     return(
-        <li className={classes.tweetList}>
+
+        <div>
             <a href={url} target="#">
             <div className={classes.tweetNameRow}>
             <img src={profileImage} className={classes.profilePic}/>
@@ -21,7 +22,7 @@ function SocialPost(props) {
             <h6 className={classes.retweets}>{'retweets: ' + retweets}</h6> 
             <h6 className={classes.likes}>{'likes: ' + likes}</h6>
             </div>
-        </li>
+        </div>
     )
 }
 
