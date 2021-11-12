@@ -12,7 +12,7 @@ function AssetDetails() {
         <div>
             {id}
             <div className="socialBar">
-                <SocialChart id={id}/>
+                <SocialChart id={id || 'BTC'}/>
             </div>
             <div className="priceChart">
                 <TradingViewEmbed
@@ -21,7 +21,7 @@ function AssetDetails() {
                         interval: "1D",
                         colorTheme: "dark",
                         width: "95%",
-                        symbol: id + "USD",
+                        symbol: id + "USD" || 'BTCUSD',
                         studies: [
                             "MACD@tv-basicstudies",
                             "StochasticRSI@tv-basicstudies",
