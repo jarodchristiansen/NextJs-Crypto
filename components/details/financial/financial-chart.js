@@ -19,8 +19,8 @@ function FinancialChart(props) {
   let oneDay = '';
   let sevenDay = '';
   let thirtyDay = '';
-  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  // const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+  // const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const id = props.id;
   let key = '688o9wuzvzst3uybpg6eh';
   const fetcher = url => fetch(url).then(r => r.json());
@@ -114,7 +114,7 @@ function FinancialChart(props) {
     </div>
   <div className={'social1'}>
     <Bar data={data2} 
-         height={windowHeight > 600 ? windowHeight * 0.3 : windowHeight}
+         height={'100%'}
           />
     {/* <ul>
     {socialGlobalArray.map((y) => {

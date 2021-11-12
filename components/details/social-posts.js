@@ -5,6 +5,7 @@ import useSWR from 'swr'
 
 function SocialPosts(props) {
   let responseData;
+  const id = props.id;
   let bodyArray = [];
   let displayNames = [];
   let tweetIDs = [];
@@ -16,7 +17,7 @@ function SocialPosts(props) {
   let tweetUrls = [];
   let switchUrl = `data=feeds&key=688o9wuzvzst3uybpg6eh&symbol=${id}&limit=10&sources=twitter`
 
-  const id = props.id;
+
   let key = '688o9wuzvzst3uybpg6eh';
   const fetcher = url => fetch(url).then(r => r.json());
   const { data, error } = useSWR(`https://api.lunarcrush.com/v2?data=feeds&key=688o9wuzvzst3uybpg6eh&symbol=${id}&limit=5&sources=twitter`, fetcher)
