@@ -23,6 +23,9 @@ const options = {
             clientSecret: process.env.TWITTER_SECRET,
         }),
     ],
+    pages: {
+        signIn: '/login',
+    }
 }
 
 export default (req, res) => NextAuth(req, res, options)
