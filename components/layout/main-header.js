@@ -60,9 +60,9 @@ function MainHeader() {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link ><Link href="/assets"><Navbar.Text>Assets</Navbar.Text></Link></Nav.Link>
-                        <Nav.Link href="#pricing">Pricing</Nav.Link>
-                        <Nav.Link onClick={session ? handleSignout : handleSignin}>{session ? "Sign out" : "Sign in"}</Nav.Link>
+                        <Nav.Link eventKey={"1"}><Link href="/assets"><Navbar.Text>Assets</Navbar.Text></Link></Nav.Link>
+                        <Nav.Link eventKey={"2"} href="#pricing">Pricing</Nav.Link>
+                        <Nav.Link eventKey={"3"} onClick={session ? handleSignout : handleSignin}>{session ? "Sign out" : "Sign in"}</Nav.Link>
                         <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
                             <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                             <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
