@@ -1,4 +1,4 @@
-import {getProviders, signIn} from "next-auth/client";
+import {getProviders, signIn, useSession} from "next-auth/client";
 import {Button, Col, Row} from "react-bootstrap";
 import Image from "next/image";
 import React, {useState, useEffect} from 'react';
@@ -11,6 +11,14 @@ import { FaGithub, FaFacebookSquare, FaGoogle, FaTwitter } from 'react-icons/fa'
 export default function LoginPage({ providers }) {
 
     const [isLoading, setIsLoading] = useState(false)
+
+    const [session, loading] = useSession();
+
+
+
+    useEffect(() => {
+        console.log('this is session', session)
+    }, [])
 
 
     const determineColor = (provider) => {
@@ -62,9 +70,11 @@ export default function LoginPage({ providers }) {
                                 {/*</button>*/}
                                 <Button variant={determineColor(provider.name)} onClick={() => {
                                     setIsLoading(true)
-                                    signIn(provider.id).then((res) => {
-                                        console.log('this is the res', res)
+                                    signIn(provider.id, {
+                                        callbackUrl: `${window.location.origin}/`,
                                     })
+                                    console.log('this is session after signIn', session)
+                                    message.success('Successfully Signed in')
                                     setIsLoading(false)
                                 }}
                                     disabled={isLoading}
