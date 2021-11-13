@@ -70,11 +70,11 @@ export default function LoginPage({ providers }) {
                                 {/*</button>*/}
                                 <Button variant={determineColor(provider.name)} onClick={() => {
                                     setIsLoading(true)
+                                    message.success('Successfully Signed in')
                                     signIn(provider.id, {
                                         callbackUrl: `${window.location.origin}/`,
                                     })
-                                    console.log('this is session after signIn', session)
-                                    message.success('Successfully Signed in')
+
                                     setIsLoading(false)
                                 }}
                                     disabled={isLoading}
