@@ -16,6 +16,8 @@ function AssetsPage(props) {
     // const featuredEvent = getEventById('BTC');
     // const eventsById = getEventsById('BTC');
 
+    console.log('this is featuredEvents', featuredEvents)
+
     const [events, setEvents] = useState([...featuredEvents])
     const [query, setQuery] = useState()
 

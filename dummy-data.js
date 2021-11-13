@@ -3,8 +3,8 @@ const DUMMY_EVENTS = [
 ]
   
   export function getFeaturedEvents() {
-    return DUMMY_EVENTS.slice(0,30).sort((a, b) => b.id - a.id).filter((event) => event.symbol.length > 1);
-  }
+    return DUMMY_EVENTS.slice(0,30).sort((a, b) => a.id - b.id).filter((event) => event.symbol.length > 1);
+}
   
   export function getAllEvents() {
     return DUMMY_EVENTS;
