@@ -1,4 +1,4 @@
-import {getAllEvents} from "../dummy-data";
+import {getAllEvents} from "../../../Crypto Watch FullStack/crypto-watch-fullstack/dummy-data";
 
 
 // export async function getAllEvents() {

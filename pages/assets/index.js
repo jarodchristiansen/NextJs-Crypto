@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import { getEventById, getFeaturedEvents, getEventsById } from '../../dummy-data';
+import { getEventById, getFeaturedEvents, getEventsById } from '../../../../Crypto Watch FullStack/crypto-watch-fullstack/dummy-data';
 
 import { getSearchEvents } from '../../helpers/api-util';
 import EventList from '../../components/events/event-list';
