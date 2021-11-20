@@ -6,6 +6,22 @@ import FinancialData from './financial-data';
 
 import useSWR from 'swr'
 import classes from './financial-chart.module.css';
+import CardChart from "../../events/card-chart";
+import {useMediaQuery} from "react-responsive";
+import {
+  ComposedChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  Area,
+  Scatter,
+  ResponsiveContainer
+} from "recharts";
+import {Accordion, Col} from "react-bootstrap";
+
+
 
 
 function FinancialChart(props) {
@@ -26,20 +42,35 @@ function FinancialChart(props) {
   const fetcher = url => fetch(url).then(r => r.json());
   const { data, error } = useSWR(`https://api.lunarcrush.com/v2?data=assets&key=${key}&symbol=${id}&data_points=90&interval=day`, fetcher)
 
+
+
+  //For onChain metrics (BTC/ETh)
+
   useEffect(() => {
-    console.log('window.innerHeight', window.innerHeight);
-    console.log('window.innerHeight', window.innerWidth);
+
 }, [])
+
+  // let data2 = [];
 
   if(data) {
   responseData = data.data[0].timeSeries;
-//   console.log(responseData)
+  console.log('responsedata ----', responseData)
   maxSupply = data.data[0].max_supply;
   oneDay = data.data[0].percent_change_24h;
   sevenDay = data.data[0].percent_change_7d;
   thirtyDay = data.data[0].percent_change_30d;
-  console.log(data.data)
     responseData.map((y) => {
+    //   data2.push({
+    //     date: new Date(y.time * 1000).toLocaleDateString(),
+    //     volatility: y.volatility,
+    //     close: y.close,
+    //     open: y.open,
+    //     high: y.high,
+    //     low: y.low,
+    //     volume: y.volume / 1000000,
+    //   })
+
+
     volatility.push(((y.volatility * 10) * y.close));
     closes.push((y.close));
     timeArray.push(new Date(y.time * 1000).toLocaleDateString());
@@ -48,16 +79,36 @@ function FinancialChart(props) {
     // urlArray.push(y.url_shares)
   })
   }
-  
+
+
+
   const data2 = {
     labels: timeArray,
     datasets: [
+      {
+        type: 'line',
+        label: 'Volatility % Scaled to Price',
+        // backgroundColor: 'rgba(0, 0, 0, 0.56)',
+        backgroundColor: 'white',
+        data: volatility,
+        borderColor: 'white',
+        pointRadius: 1,
+      },
+      {
+        type: 'line',
+        label: 'Percent Change',
+        backgroundColor: 'teal',
+        data: percentChange,
+        borderColor: 'teal',
+        pointRadius: 1,
+      },
       {
         type: 'bar',
         label: `Closing Price`,
         fill: false,
         lineTension: 0.1,
-        backgroundColor: 'rgba(75,192,192,0.4)',
+        // backgroundColor: 'rgba(75,192,192,0.4)',
+        backgroundColor: 'rgba(264,0,0,0.5)',
         borderColor: 'rgba(75,192,192,1)',
         borderCapStyle: 'butt',
         borderDash: [],
@@ -74,22 +125,6 @@ function FinancialChart(props) {
         pointHitRadius: 10,
         data: closes
       },
-      {
-        type: 'line',
-        label: 'Volatility % Scaled to Price',
-        backgroundColor: 'rgba(0, 0, 0, 0.56)',
-        data: volatility,
-        borderColor: 'rgba(0, 0, 0, 0.41)',
-        pointRadius: 1,
-      },
-      {
-        type: 'line',
-        label: 'Percent Change',
-        backgroundColor: 'purple',
-        data: percentChange,
-        borderColor: 'purple',
-        pointRadius: 1,
-      },
     //   {
     //     type: 'line',
     //     label: 'Url Shares',
@@ -100,8 +135,10 @@ function FinancialChart(props) {
     //   }
     ],
   };
-    
 
+  const isDesktopOrLaptop = useMediaQuery({
+    query: `(max-width: 920px)`
+  })
 
   
   if (error) return <div>failed to load</div>
@@ -109,19 +146,65 @@ function FinancialChart(props) {
   return (
     <div style={{display: "flex", flexDirection: "column", justifyContent: 'center', textAlign: "center"}}>
     <h1>Financial Metrics</h1>
-    <div className={classes.dataHolder}>
-      <FinancialData supply={maxSupply} one={oneDay} seven={sevenDay} thirty={thirtyDay}/>
-    </div>
+
   <div className={'social1'}>
-    <Bar data={data2} 
-         height={'100%'}
-          />
+    {data && (
+        <Accordion defaultActiveKey="0" >
+          <Accordion.Item eventKey="0">
+            <Accordion.Header>Price & Volatility</Accordion.Header>
+            <Accordion.Body style={{display: "flex", flexDirection: "row", width: '100%', justifyContent: "center", alignItems: "center", textAlign: "center"}}>
+              <Bar
+                  data={data2}
+                  height={isDesktopOrLaptop ? 400 : 125}
+                  style={{backgroundColor: "black"}}
+              />
+            </Accordion.Body>
+          </Accordion.Item>
+
+        </Accordion>
+    )}
+
+
     {/* <ul>
     {socialGlobalArray.map((y) => {
       return <li key={y}>{y}</li>
     })}
     </ul> */}
   </div>
+
+      <div>
+        <div className={classes.dataHolder}>
+          <FinancialData supply={maxSupply} one={oneDay} seven={sevenDay} thirty={thirtyDay}/>
+        </div>
+
+
+
+
+
+        {data && (
+            <Accordion defaultActiveKey="0" >
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>Fib Retracements</Accordion.Header>
+                <Accordion.Body style={{display: "flex", flexDirection: "row", width: '100%', alignItems: "center", textAlign: "center"}}>
+                  <div className={classes.chart}>
+                    <CardChart price={data} time_scale={90} symbol={id}/>
+                  </div>
+                  <div className={classes.chart}>
+                    <CardChart price={data} time_scale={90} symbol={id}/>
+                  </div>
+                  <div className={classes.chart}>
+                    <CardChart price={data} time_scale={90} symbol={id}/>
+                  </div>
+                  <div className={classes.chart}>
+                    <CardChart price={data} time_scale={90} symbol={id}/>
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
+
+            </Accordion>
+        )}
+
+      </div>
   </div>
   )
 }

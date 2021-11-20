@@ -27,21 +27,12 @@ function SocialChart(props) {
 {/*    </div>*/}
 {/*</div>*/}
         <Container>
-        <div style={{display: "flex", flexDirection: "column", justifyContent: "center", border:"2px solid black", maxWidth: "80%", marginLeft: "10%"}}>
-            <ButtonGroup aria-label="Basic example" size={"sm"} style={{maxWidth: "50%"}}>
-                <Button variant="primary">Social</Button>
-                <Button variant="primary">Financial</Button>
-                <Button variant="primary">OnChain</Button>
-            </ButtonGroup>
-
+        <div>
 
             <SocialMetrics id={id}/>
 
+        </div>
 
-        </div>
-        <div style={{marginRight: "10%"}}>
-            <SocialPosts id={id}/>
-        </div>
 
 
         </Container>

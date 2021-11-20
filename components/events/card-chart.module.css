@@ -1,6 +1,7 @@
 .chart {
     overflow: hidden;
     width: 100%;
+    maxHeight: 30%;
 }
 
 .timeRow {

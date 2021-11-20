@@ -22,10 +22,11 @@ function EventItem(props) {
             <span className={classes.explore}>Explore</span>
         </Button>
     </div>
+
     </div>
-    <div className={classes.chart}>
-        <CardChart price={price} time_scale={90} symbol={symbol}/>
-    </div>
+        <div className={classes.description}>
+            {description}
+        </div>
     </li>
     )
 }

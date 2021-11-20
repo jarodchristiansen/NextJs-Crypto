@@ -18,22 +18,44 @@ function CardChart(props) {
     let chartHolder = [];
     let day;
 
+
+   useEffect(() => {
+
+       console.log("price in useEffect", price, time)
+       processPrice(price, time)
+   }, [])
+
+
 async function scaleTime(timeScale, symbol) {
+
+  console.log("scaleTime firing ----")
+
   setTimeScale(timeScale)
   let response = await getSearchEvents(symbol);
 
+
+
+
   chartHolder = [];
   labelHolder = [];
-  // processPrice(response[0].price, timeScale)
+
+
+
+  processPrice(price, timeScale)
 }
 
 
 function processPrice(price, timeScale) {
     if(price) {
-    price.splice(0).slice(timeScale * -1).map((y) =>  {
-        labelHolder.push(y.datetime)
-        chartHolder.push(y.close)      
-    })
+
+
+
+    // price.splice(0).slice(timeScale * -1).map((y) =>  {
+    //     labelHolder.push(y.date)
+    //     chartHolder.push(y.close)
+    // })
+
+     console.log("this is labelHolder and chartHolder ----", labelHolder, chartHolder)
 
     setChartData(chartHolder)
     setLabels(labelHolder)
@@ -53,13 +75,7 @@ function processPrice(price, timeScale) {
      setChartData()
      setLabels()
  }
-}    
-
-
-useEffect(() => {
-    scaleTime(time_scale, symbol)
-    // processPrice(price, time);
-}, [price])
+}
 
 
 const data2 = {
