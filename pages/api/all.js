@@ -39,6 +39,7 @@ export default async (req, res) => {
             .limit(20)
             .toArray();
         res.json(assets);
+        console.log('assets----', assets)
     } else {
         console.log("no db")
         res.json('')
