@@ -30,6 +30,7 @@ function AssetsPage(props) {
 
         axios.get('/api/all').then(res => {
             console.log('this is res', ...res.data)
+            setStartingAssets(res.data)
             setEvents(res.data)
         })
 
@@ -53,7 +54,12 @@ function AssetsPage(props) {
 async function searchQuery() {
 
     let returnedEvents = await getSearchEvents(query.toUpperCase())
-    setEvents(returnedEvents)
+    if (returnedEvents.length > 0) {
+        setEvents(returnedEvents)
+    } else {
+        setEvents(startingAssets)
+    }
+
 }
 
 
@@ -65,8 +71,8 @@ async function searchQuery() {
 
     return (
     <div>
-        <div style={{margin:"2% 0 0 10%"}}>
-            <Search placeholder="Search for an Asset" onPressEnter={searchQuery} size="large" onSearch={searchQuery} onChange={(e) => setQuery(e.target.value)} loading={false} enterButton="Search" />
+        <div style={{margin:"2% 0 0 10%", width: "100%"}}>
+            <Search placeholder="Search for an Asset" onPressEnter={searchQuery} size="large" style={{width: "100%"}} onSearch={searchQuery} onChange={(e) => setQuery(e.target.value)} loading={false} enterButton="Search" />
         </div>
 
 

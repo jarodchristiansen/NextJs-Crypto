@@ -189,15 +189,15 @@ function FinancialChart(props) {
                   <div className={classes.chart}>
                     <CardChart price={data} time_scale={90} symbol={id}/>
                   </div>
-                  <div className={classes.chart}>
-                    <CardChart price={data} time_scale={90} symbol={id}/>
-                  </div>
-                  <div className={classes.chart}>
-                    <CardChart price={data} time_scale={90} symbol={id}/>
-                  </div>
-                  <div className={classes.chart}>
-                    <CardChart price={data} time_scale={90} symbol={id}/>
-                  </div>
+                  {/*<div className={classes.chart}>*/}
+                  {/*  <CardChart price={data} time_scale={90} symbol={id}/>*/}
+                  {/*</div>*/}
+                  {/*<div className={classes.chart}>*/}
+                  {/*  <CardChart price={data} time_scale={90} symbol={id}/>*/}
+                  {/*</div>*/}
+                  {/*<div className={classes.chart}>*/}
+                  {/*  <CardChart price={data} time_scale={90} symbol={id}/>*/}
+                  {/*</div>*/}
                 </Accordion.Body>
               </Accordion.Item>
 

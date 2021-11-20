@@ -77,7 +77,7 @@ function HomePage({isConnected}) {
                 widgetType={widgetType.SCREENER_CRYPTOCURRENCY}
                 widgetConfig={{
                   "width":97 + "%",
-                    "height": isDesktopOrLaptop ? 650 : 500,
+                    "height": isDesktopOrLaptop ? 650 : 800,
                   "defaultColumn": "overview",
                   "screener_type": "crypto_mkt",
                   "displayCurrency": "USD",
