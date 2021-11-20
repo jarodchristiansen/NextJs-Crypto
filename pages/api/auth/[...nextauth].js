@@ -1,5 +1,8 @@
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
+import clientPromise from "../../../lib/mongodb";
+
 
 
 
@@ -25,7 +28,16 @@ const options = {
     ],
     pages: {
         signIn: '/login',
-    }
+    },
 }
+//
+// export default async function auth(req, res, options) {
+//     return await NextAuth(req, res, options, {
+//         adapter: MongoDBAdapter({
+//             db: (await clientPromise).db("your-database")
+//         }),
+//     })
+// }
+
 
 export default (req, res) => NextAuth(req, res, options)

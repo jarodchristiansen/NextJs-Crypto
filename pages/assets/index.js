@@ -1,10 +1,12 @@
-import {useState} from 'react';
+
+import useSWR from "swr";
+import {useState, useEffect} from 'react';
 import { getEventById, getFeaturedEvents, getEventsById } from '../../dummy-data';
 
 import { getSearchEvents } from '../../helpers/api-util';
 import EventList from '../../components/events/event-list';
 import { Input, Space } from 'antd';
-
+import axios from "axios";
 
 const { Search } = Input;
 
@@ -12,14 +14,40 @@ import {InputGroup, Button, FormControl} from "react-bootstrap";
 
 
 function AssetsPage(props) {
-    const featuredEvents = getFeaturedEvents();
+
+    const [startingAssets, setStartingAssets] = useState([])
+    const [events, setEvents] = useState()
+    const [query, setQuery] = useState()
+
+
+
+    // const fetcher = (url) => fetch(url).then((res) => res.json())
+
+    // const { data, error } = useSWR('/api/all', fetcher)
+
+
+    useEffect(() => {
+
+        axios.get('/api/all').then(res => {
+            console.log('this is res', ...res.data)
+            setEvents(res.data)
+        })
+
+    }, [])
+
+
+    // if (error) return <div>Failed to load</div>
+    // if (!data) return <div>No data</div>
+    // setEvents(data)
+    // let featuredEvent = data
+
+    // const featuredEvents = getFeaturedEvents();
     // const featuredEvent = getEventById('BTC');
     // const eventsById = getEventsById('BTC');
 
-    console.log('this is featuredEvents', featuredEvents)
+    // console.log('this is featuredEvents', featuredEvents)
 
-    const [events, setEvents] = useState([...featuredEvents])
-    const [query, setQuery] = useState()
+
 
   
 async function searchQuery() {
@@ -53,21 +81,24 @@ async function searchQuery() {
         {/*    </div>*/}
         {/*</div>*/}
 
+        {events && (
 
-     <EventList items={events.length > 1 ? events : props.events}/>
+            <EventList items={events.length > 1 ? events : props.events}/>
+        )}
+
     </div>
     )
 }
 
-export async function getStaticProps() {
-  const featuredEvents = await getFeaturedEvents();
-  return {
-      props: {
-          events: featuredEvents
-      }
-
-  }
-}
+// export async function getStaticProps() {
+//   const featuredEvents = await getFeaturedEvents();
+//   return {
+//       props: {
+//           events: featuredEvents
+//       }
+//
+//   }
+// }
 
 
 export default AssetsPage;

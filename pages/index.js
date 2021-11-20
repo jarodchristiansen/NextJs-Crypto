@@ -12,7 +12,7 @@ function HomePage({isConnected}) {
   const [session, loading, status] = useSession();
 
   const isDesktopOrLaptop = useMediaQuery({
-    query: `(max-width: 1224px)`
+    query: `(min-width: 600px)`
   })
 
   console.log('session info', status)
@@ -77,6 +77,7 @@ function HomePage({isConnected}) {
                 widgetType={widgetType.SCREENER_CRYPTOCURRENCY}
                 widgetConfig={{
                   "width":97 + "%",
+                    "height": isDesktopOrLaptop ? 750 : 250,
                   "defaultColumn": "overview",
                   "screener_type": "crypto_mkt",
                   "displayCurrency": "USD",
@@ -130,6 +131,7 @@ function HomePage({isConnected}) {
 export async function getServerSideProps(context) {
   console.log('this is clientPromise', clientPromise)
   const client = await clientPromise
+
 
   // client.db() will be the default database passed in the MONGODB_URI
   // You can change the database by calling the client.db() function and specifying a database like:

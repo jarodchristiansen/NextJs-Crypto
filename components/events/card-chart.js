@@ -24,7 +24,7 @@ async function scaleTime(timeScale, symbol) {
 
   chartHolder = [];
   labelHolder = [];
-  processPrice(response[0].price, timeScale)
+  // processPrice(response[0].price, timeScale)
 }
 
 
