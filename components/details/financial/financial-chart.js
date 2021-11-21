@@ -43,7 +43,7 @@ function FinancialChart(props) {
 
 
 
-  
+
   let labelHolder = [];
   let chartHolder = [];
   let day;
@@ -318,13 +318,13 @@ function FinancialChart(props) {
               {/*    options={{ indexAxis: "x",  }}*/}
               {/*/>*/}
               <div className={classes.timeRow}>
-                <button className={classes.buttons} onClick={() => setTimeScale(7)}>7D</button>
+                {/*<button className={classes.buttons} onClick={() => setTimeScale(7)}>7D</button>*/}
                 <button className={classes.buttons} onClick={() => setTimeScale(14)}>14D</button>
                 <button className={classes.buttons} onClick={() => setTimeScale(30)}>30D</button>
                 <button className={classes.buttons} onClick={() => setTimeScale(90)}>90D</button>
               </div>
 
-              <ResponsiveContainer height={400}>
+              <ResponsiveContainer height={!isDesktopOrLaptop ? 400 : 250}>
 
                 <ComposedChart
                     data={data2}
@@ -340,7 +340,7 @@ function FinancialChart(props) {
                   <XAxis dataKey="date" scale="band" />
 
                   {!isDesktopOrLaptop ? (
-                      <YAxis dataKey="close" domain={[priceMin,  "auto"]} allowDataOverflow={true}/>
+                      <YAxis dataKey="close" domain={["auto",  "auto"]} allowDataOverflow={true}/>
                   ) : (
                       <div>Nope</div>
                   )}
