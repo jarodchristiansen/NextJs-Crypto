@@ -52,7 +52,8 @@ function SocialPosts(props) {
           //       {y.body}
           //       </li>
           return (
-          <ListGroup.Item><SocialPost key={y.time}
+          <ListGroup.Item>
+            <SocialPost key={y.time}
                              time={y.time}
                              displayName={y.display_name}
                              body={y.body}
@@ -61,7 +62,8 @@ function SocialPosts(props) {
                              profileImage={y.profile_image}
                              url={y.url}
                              screenName={y.twitter_screen_name}
-          /></ListGroup.Item>
+          />
+          </ListGroup.Item>
           )})}
     </ListGroup>
 

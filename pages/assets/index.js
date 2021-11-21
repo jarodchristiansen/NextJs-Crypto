@@ -29,7 +29,6 @@ function AssetsPage(props) {
     useEffect(() => {
 
         axios.get('/api/all').then(res => {
-            console.log('this is res', ...res.data)
             setStartingAssets(res.data)
             setEvents(res.data)
         })

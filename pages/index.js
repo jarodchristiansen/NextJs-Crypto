@@ -129,7 +129,6 @@ function HomePage({isConnected}) {
   )
 }
 export async function getServerSideProps(context) {
-  console.log('this is clientPromise', clientPromise)
   const client = await clientPromise
 
   // client.db() will be the default database passed in the MONGODB_URI

@@ -26,7 +26,6 @@ function SocialChart(props) {
 {/*    <div className={classes.chartSegment}>*/}
 {/*    </div>*/}
 {/*</div>*/}
-        <Container>
         <div>
 
             <SocialMetrics id={id}/>
@@ -34,8 +33,6 @@ function SocialChart(props) {
         </div>
 
 
-
-        </Container>
 
 </div>
     )

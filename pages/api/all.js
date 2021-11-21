@@ -10,11 +10,9 @@ export default async (req, res) => {
     const db = client.db();
     let assetCollection = db.collection("Crypto_Assets")
 
-    console.log('this is client', client)
-    console.log('this is assetCollection', assetCollection)
     // console.log('this is db', db)
-    // if (assets) {
-    //     res.json(assets)
+    // if (asset-details) {
+    //     res.json(asset-details)
     // } else {
     //     res.json('')
     // }
@@ -39,7 +37,6 @@ export default async (req, res) => {
             .limit(20)
             .toArray();
         res.json(assets);
-        console.log('assets----', assets)
     } else {
         console.log("no db")
         res.json('')

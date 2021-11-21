@@ -8,16 +8,22 @@ import FinancialData from "../../components/details/financial/financial-data";
 import OnChainMetrics from "../../components/details/financial/onChain/OnChainMetrics";
 import classes from "../../components/details/financial/financial-data.module.css";
 import SocialPosts from "../../components/details/social-posts";
+import {ResponsiveContainer} from "recharts";
 
 
 function AssetDetails() {
     const router = useRouter();
 
 
-    const [tabState, setTabState] = useState('Financial')
+    const [tabState, setTabState] = useState('Social')
 
     let id = router.query.id || 'BTC'
     console.log(router.query)
+
+
+
+
+
 
     return (
         <div style={{width: "80%", marginLeft: "10%"}}>
@@ -91,10 +97,13 @@ function AssetDetails() {
                         <Accordion defaultActiveKey="0" >
                             <Accordion.Item eventKey="0">
                                 <Accordion.Header>Social Share Metrics</Accordion.Header>
-                                <Accordion.Body style={{display: "flex", flexDirection: "row", width: '100%', justifyContent: "center", alignItems: "center", textAlign: "center"}}>
-                                    <div className="socialBar">
-                                        <SocialChart id={id || 'BTC'}/>
-                                    </div>
+                                <Accordion.Body >
+                                    <ResponsiveContainer>
+                                        <div className="socialBar">
+                                            <SocialChart id={id || 'BTC'}/>
+                                        </div>
+                                    </ResponsiveContainer>
+
                                 </Accordion.Body>
                             </Accordion.Item>
 
@@ -103,12 +112,11 @@ function AssetDetails() {
 
                         <Accordion defaultActiveKey="0" >
                         <Accordion.Item eventKey="0">
-                        <Accordion.Header>Social Share Metrics</Accordion.Header>
-                        <Accordion.Body style={{display: "flex", flexDirection: "row", width: '100%', justifyContent: "center", alignItems: "center", textAlign: "center"}}>
-                        <div>
-                        <SocialPosts id={id}/>
-                        </div>
-                        </Accordion.Body>
+                        <Accordion.Header>Top Tweets</Accordion.Header>
+                            <Accordion.Body>
+                                <SocialPosts id={id}/>
+                            </Accordion.Body>
+
                         </Accordion.Item>
 
                         </Accordion>

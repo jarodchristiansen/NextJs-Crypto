@@ -5,6 +5,8 @@ import {Line, Bar} from 'react-chartjs-2';
 import classes from './social-metrics.module.css';
 
 import useSWR from 'swr'
+import {useMediaQuery} from "react-responsive";
+import {ResponsiveContainer} from "recharts";
 
 function SocialMetrics(props) {
   let responseData;
@@ -28,14 +30,19 @@ function SocialMetrics(props) {
   if(data) {
   responseData = data.data[0].timeSeries;
   responseData.map((y) => {
-    socialGlobalArray.push((y.social_volume_global / 10));
+    socialGlobalArray.push((y.social_volume_global / 1000));
     timeArray.push(new Date(y.time * 1000).toLocaleDateString());
     tweetArray.push(y.tweets);
     contribArray.push(y.social_contributors)
     urlArray.push(y.url_shares)
   })
   }
-  
+
+  const isDesktopOrLaptop = useMediaQuery({
+    query: `(max-width: 920px)`
+  })
+
+
   const data2 = {
     labels: timeArray,
     datasets: [
@@ -97,10 +104,11 @@ function SocialMetrics(props) {
     <div style={{display: "flex", flexDirection: "column", justifyContent: 'center', textAlign: "center"}}>
     {/*<h1>Social Share Metrics</h1>*/}
   <div>
-    <Bar data={data2} 
-         // height={windowHeight > 600 ? windowHeight * 0.3 : windowHeight}
-         height={200}
-          />
+      <Bar data={data2}
+          // height={windowHeight > 600 ? windowHeight * 0.3 : windowHeight}
+           height={isDesktopOrLaptop ? 400 : 125}
+      />
+
     {/* <ul>
     {socialGlobalArray.map((y) => {
       return <li key={y}>{y}</li>

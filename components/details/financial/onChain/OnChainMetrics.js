@@ -15,7 +15,7 @@ const OnChainMetrics = (props) => {
 
     const { data, error } = useSWR(`https://api.cryptoquant.com/v1/`, fetcher)
 
-    console.log("this is the data", data)
+    // console.log("this is the data", data)
 
     return (
         <div>

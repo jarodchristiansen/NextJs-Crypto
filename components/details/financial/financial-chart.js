@@ -22,8 +22,6 @@ import {
 import {Accordion, Col} from "react-bootstrap";
 
 
-
-
 function FinancialChart(props) {
   let responseData;
   let volume = [];
@@ -37,24 +35,45 @@ function FinancialChart(props) {
   let thirtyDay = '';
   // const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   // const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [chartData, setChartData] = useState();
+  const [labels, setLabels] = useState();
+  const [time, setTimeScale] = useState(30);
+  let labelHolder = [];
+  let chartHolder = [];
+  let day;
+
+
+  let fib1;
+  let fib2;
+  let fib3;
+  let fib4;
+
   const id = props.id;
   let key = '688o9wuzvzst3uybpg6eh';
   const fetcher = url => fetch(url).then(r => r.json());
-  const { data, error } = useSWR(`https://api.lunarcrush.com/v2?data=assets&key=${key}&symbol=${id}&data_points=90&interval=day`, fetcher)
+  const { data, error } = useSWR(`https://api.lunarcrush.com/v2?data=assets&key=${key}&symbol=${id}&data_points=${time}&interval=day`, fetcher)
 
+
+  // const { uniSwapData, uniSwapError } = useSWR(`/api/asset-details/uniswap`, fetcher, id)
 
 
   //For onChain metrics (BTC/ETh)
 
-  useEffect(() => {
-
-}, [])
+//   useEffect(() => {
+//     fetch('/api/asset-details/uniswap', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(id),
+//     })
+// }, [])
 
   // let data2 = [];
 
   if(data) {
   responseData = data.data[0].timeSeries;
-  console.log('responsedata ----', responseData)
+  // console.log('responsedata ----', responseData)
   maxSupply = data.data[0].max_supply;
   oneDay = data.data[0].percent_change_24h;
   sevenDay = data.data[0].percent_change_7d;
@@ -74,33 +93,121 @@ function FinancialChart(props) {
     volatility.push(((y.volatility * 10) * y.close));
     closes.push((y.close));
     timeArray.push(new Date(y.time * 1000).toLocaleDateString());
-    percentChange.push((y.percent_change_24h * y.close) / 100);
+    percentChange.push((y.percent_change_24h) * 100);
     // contribArray.push(y.social_contributors)
     // urlArray.push(y.url_shares)
   })
+    processPrice(closes, time)
+  }
+
+
+  function processPrice(closes, time) {
+    if (closes) {
+
+
+      closes.map((y) => {
+        chartHolder.push(y)
+      })
+
+      console.log("this is chartHolder", chartHolder)
+      // setChartData(chartHolder)
+      // setLabels(labelHolder)
+      let priceMax = Math.max(...chartHolder);
+      let priceMin = Math.min(...chartHolder);
+      let diff = priceMax - priceMin;
+
+
+
+      let level1 = priceMax - (0.236 * diff)
+      let level2 = priceMax - (0.382 * diff)
+      let level3 = priceMax - (0.500 * diff)
+      let level4 = priceMax - (0.618 * diff)
+
+      console.log('levels and time', level1, level2, level3, level4, time)
+
+
+      fib1 = new Array(time).fill(level1).flat()
+      fib2 = new Array(time).fill(level2).flat()
+      fib3 = new Array(time).fill(level3).flat()
+      fib4 = new Array(time).fill(level4).flat()
+      // setFib1(new Array(90).fill(level1).flat());
+      // setFib2(new Array(90).fill(level2).flat());
+      // setFib3(new Array(90).fill(level3).flat());
+      // setFib4(new Array(90).fill(level4).flat());
+    }
   }
 
 
 
   const data2 = {
     labels: timeArray,
+
     datasets: [
+      // {
+      //   type: 'line',
+      //   label: 'Volatility % Scaled to Price',
+      //   // backgroundColor: 'rgba(0, 0, 0, 0.56)',
+      //   backgroundColor: 'white',
+      //   data: volatility,
+      //   borderColor: 'white',
+      //   // pointRadius: 1,
+      //   // pointRadius: 1,
+      //   pointBackgroundColor: 'white',
+      //   pointBorderWidth: 1,
+      //   pointHoverRadius: 8,
+      //   pointHoverBackgroundColor: 'white',
+      //   pointHoverBorderColor: 'white',
+      //   pointHoverBorderWidth: 2,
+      //   pointRadius: 1,
+      //   pointHitRadius: 10,
+      // },
+      // {
+      //   type: 'line',
+      //   label: 'Percent Change * 1000',
+      //   backgroundColor: 'red',
+      //   data: percentChange,
+      //   borderColor: 'red',
+      //   // pointRadius: 1,
+      //   pointBackgroundColor: 'red',
+      //   pointBorderWidth: 1,
+      //   pointHoverRadius: 8,
+      //   pointHoverBackgroundColor: 'red',
+      //   pointHoverBorderColor: 'red',
+      //   pointHoverBorderWidth: 2,
+      //   pointRadius: 1,
+      //   pointHitRadius: 10,
+      // },
       {
         type: 'line',
-        label: 'Volatility % Scaled to Price',
-        // backgroundColor: 'rgba(0, 0, 0, 0.56)',
-        backgroundColor: 'white',
-        data: volatility,
-        borderColor: 'white',
-        pointRadius: 1,
+        label: 'Take profit 1',
+        backgroundColor: 'rgba(265, 0, 0, 0.56)',
+        data: fib1,
+        borderColor: 'rgba(265, 0, 0, 0.41)',
+        pointRadius: 2,
       },
       {
         type: 'line',
-        label: 'Percent Change',
-        backgroundColor: 'teal',
-        data: percentChange,
-        borderColor: 'teal',
-        pointRadius: 1,
+        label: 'Neutral',
+        backgroundColor: 'rgba(0, 0, 255, 0.54)',
+        borderColor: 'rgba(0, 0, 255, 0.54)',
+        pointRadius: 2,
+        data: fib2
+      },
+      {
+        type: 'line',
+        label: 'Descending 1',
+        backgroundColor: 'rgba(0, 255, 0, 0.54)',
+        borderColor: 'rgba(0, 255, 0, 0.54)',
+        pointRadius: 2,
+        data: fib3
+      },
+      {
+        type: 'line',
+        label: 'Buy Zone',
+        backgroundColor: 'rgba(237, 255, 0, 0.70)',
+        borderColor: 'rgba(237, 255, 0, 0.70)',
+        pointRadius: 2,
+        data: fib4
       },
       {
         type: 'bar',
@@ -108,7 +215,7 @@ function FinancialChart(props) {
         fill: false,
         lineTension: 0.1,
         // backgroundColor: 'rgba(75,192,192,0.4)',
-        backgroundColor: 'rgba(264,0,0,0.5)',
+        backgroundColor: 'rgba(0,264,0,0.5)',
         borderColor: 'rgba(75,192,192,1)',
         borderCapStyle: 'butt',
         borderDash: [],
@@ -134,6 +241,7 @@ function FinancialChart(props) {
     //     pointRadius: 1,
     //   }
     ],
+
   };
 
   const isDesktopOrLaptop = useMediaQuery({
@@ -157,7 +265,20 @@ function FinancialChart(props) {
                   data={data2}
                   height={isDesktopOrLaptop ? 400 : 125}
                   style={{backgroundColor: "black"}}
+                  options={{
+                    title: { display: true, text: 'My Chart' },
+                    zoom: {
+                    enabled: true,
+                    mode: 'x',
+                  },
+                    pan: {
+                    enabled: true,
+                    mode: 'x',
+                  },
+                  }}
               />
+
+
             </Accordion.Body>
           </Accordion.Item>
 
