@@ -21,6 +21,7 @@ import {
     Brush
 } from "recharts";
 import {Accordion, Col} from "react-bootstrap";
+import UniswapVolChart from "./uniswapVolChart";
 
 
 function FinancialChart(props) {
@@ -58,22 +59,37 @@ function FinancialChart(props) {
   let key = '688o9wuzvzst3uybpg6eh';
   const fetcher = url => fetch(url).then(r => r.json());
   const { data, error } = useSWR(`https://api.lunarcrush.com/v2?data=assets&key=${key}&symbol=${id}&data_points=${time}&interval=day`, fetcher)
+  const [uniswapData, setUniswapData] = useState()
+
+  let uniValues;
+  useEffect(() => {
+
+    fetchUniswap()
+
+}, [time])
 
 
-  // const { uniSwapData, uniSwapError } = useSWR(`/api/asset-details/uniswap`, fetcher, id)
+  const fetchUniswap = async () => {
+    console.log("fetchUniswap running")
+    console.log("this is time in fetchUniswap", time)
+    uniValues = await fetch(`/api/asset-details/uniswap?id=${id}&time=${time}`).then(r => r.json())
 
+    // for (let i of uniValues) {
+    //   if (i["t"]) {
+    //       i["t"] = new Date(i["t"]).getTime() / 10000
+    //   } else {
+    //     console.log("no time in this object")
+    //   }
+    // }
 
-  //For onChain metrics (BTC/ETh)
+    console.log("uniValues", uniValues)
 
-//   useEffect(() => {
-//     fetch('/api/asset-details/uniswap', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify(id),
-//     })
-// }, [])
+    if (uniValues.length > 1) {
+      setUniswapData([...uniValues])
+    }
+
+  }
+
 
   let data2 = [];
   let level1;
@@ -119,6 +135,7 @@ function FinancialChart(props) {
     // fib3 = new Array(time).fill(level3).flat()
     // fib4 = new Array(time).fill(level4).flat()
 
+    console.log("this is responseData", responseData)
 
     responseData.map((y) => {
       data2.push({
@@ -385,14 +402,14 @@ function FinancialChart(props) {
 
 
 
-        {data && (
+        {uniswapData && (
             <Accordion defaultActiveKey="0" >
               <Accordion.Item eventKey="0">
-                <Accordion.Header>Fib Retracements</Accordion.Header>
+                <Accordion.Header>Uniswap Volume</Accordion.Header>
                 <Accordion.Body style={{display: "flex", flexDirection: "row", width: '100%', alignItems: "center", textAlign: "center"}}>
                   <div className={classes.chart}>
 
-                    <CardChart price={data} time_scale={90} symbol={id}/>
+                    <UniswapVolChart data={uniswapData}/>
                   </div>
                   {/*<div className={classes.chart}>*/}
                   {/*  <CardChart price={data} time_scale={90} symbol={id}/>*/}
@@ -408,7 +425,6 @@ function FinancialChart(props) {
 
             </Accordion>
         )}
-
       </div>
   </div>
   )

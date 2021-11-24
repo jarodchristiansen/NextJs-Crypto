@@ -11,15 +11,15 @@ import axios from "axios";
 const { Search } = Input;
 
 import {InputGroup, Button, FormControl} from "react-bootstrap";
-
+import {Typeahead} from "react-bootstrap-typeahead";
 
 function AssetsPage(props) {
 
     const [startingAssets, setStartingAssets] = useState([])
     const [events, setEvents] = useState()
     const [query, setQuery] = useState()
-
-
+    const [selected, setSelected] = useState([]);
+    const [listOfTitles, setListOfTitles] = useState()
 
     // const fetcher = (url) => fetch(url).then((res) => res.json())
 
@@ -48,6 +48,15 @@ function AssetsPage(props) {
     // console.log('this is featuredEvents', featuredEvents)
 
 
+async function searchTitles(query) {
+    let returnedEvents = await getSearchEvents(query.toUpperCase())
+    if (returnedEvents.length > 0) {
+        setListOfTitles(returnedEvents)
+    } else {
+        setListOfTitles(['No matching assets found'])
+    }
+}
+
 
   
 async function searchQuery() {
@@ -70,8 +79,50 @@ async function searchQuery() {
 
     return (
     <div>
+
+
+        {/*<div>*/}
+        {/*    {listOfTitles && (*/}
+        {/*        <ul style={{width: '80%', minHeight: "300px"}}>*/}
+        {/*            {listOfTitles.map((asset) => {*/}
+        {/*                {console.log("this is the asset ------", asset)}*/}
+        {/*                <li key={asset.symbol} style={{width: '200px', color: "black"}}><p>{asset.title}</p></li>*/}
+        {/*            })}*/}
+        {/*        </ul>*/}
+        {/*    )*/}
+        {/*    }*/}
+        {/*</div>*/}
+
         <div style={{margin:"2% 0 0 10%", width: "100%"}}>
-            <Search placeholder="Search for an Asset" onPressEnter={searchQuery} size="large" style={{width: "100%"}} onSearch={searchQuery} onChange={(e) => setQuery(e.target.value)} loading={false} enterButton="Search" />
+            <Search
+                placeholder="Search for an Asset"
+                onPressEnter={searchQuery}
+                size="large"
+                style={{width: "100%"}}
+                onSearch={searchQuery}
+                onChange={(e) => {
+                    setQuery(e.target.value)
+
+                }}
+                loading={false}
+                enterButton="Search" />
+
+
+
+
+
+            {/*<Typeahead*/}
+            {/*    id="basic-example"*/}
+            {/*    onChange={(e) => {*/}
+            {/*        setQuery(e.target.value)*/}
+            {/*    }}*/}
+            {/*    labelKey={"symbol"}*/}
+            {/*    options={events}*/}
+            {/*    placeholder="choose an asset"*/}
+            {/*    selected={selected}*/}
+            {/*/>*/}
+
+
         </div>
 
 

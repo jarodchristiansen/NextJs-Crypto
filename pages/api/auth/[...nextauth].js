@@ -29,6 +29,7 @@ const options = {
     pages: {
         signIn: '/login',
     },
+
 }
 //
 // export default async function auth(req, res, options) {
@@ -40,4 +41,8 @@ const options = {
 // }
 
 
-export default (req, res) => NextAuth(req, res, options)
+export default async (req, res) => NextAuth(req, res, options, {
+    adapter: MongoDBAdapter({
+        db: (await clientPromise).db("Crypto_Watch")
+    }),
+})

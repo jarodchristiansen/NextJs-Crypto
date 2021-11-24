@@ -15,13 +15,13 @@ function AssetDetails() {
     const router = useRouter();
 
 
-    const [tabState, setTabState] = useState('Social')
+
 
     let id = router.query.id || 'BTC'
     console.log(router.query)
 
 
-
+    const [tabState, setTabState] = useState(id === "BTC" ? 'onChain' : "Financial")
 
 
 
