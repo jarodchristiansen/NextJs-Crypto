@@ -9,17 +9,19 @@ export default async (req, res) => {
 
 
     const db = client.db('Crypto_Watch');
-    let s2f = await db.collection(`S2F`)
+    let sopr = await db.collection(`BTC_SOPR`)
 
-    if (s2f) {
+
+
+    if (sopr) {
         // if (time) {
         //     let uniswap = await assetCollection.find({}).limit(time).toArray()
         //
         //     res.json(uniswap)
         // }
-        let data = await s2f.find({}).limit(4700).toArray();
+        let data = await sopr.find({}).toArray();
 
-        console.log("this is the stock to flow data", data)
+        console.log("this is the sopr data", data)
         res.json(data)
 
         // res.json({data: assetCollection})

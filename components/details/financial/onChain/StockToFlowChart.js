@@ -34,14 +34,20 @@ const StockToFlowChart = (data) => {
                     <XAxis datakey={"time"}/>
                     {!isDesktopOrLaptop ? (
 
-                        <YAxis dataKey="ratio" domain={["auto",  "auto"]} allowDataOverflow={true}/>
+                        <YAxis
+                               // domain={[0,  1750000]}
+                                ticks={[0.001, 0.01, 0.1, 1, 10, 100, 1000, 10000, 100000, 1000000]}
+                               allowDataOverflow={true}/>
                     ) : (
                         <div>Nope</div>
                     )}
                     <Tooltip />
                     <Legend />
                     {/*<Line type="linear" dataKey="v"  />*/}
-                    <Line type="linear" dataKey="ratio" fill="blue" />
+                    <Line type="linear" dataKey="ratio" fill="red" stroke={"red"} />
+                    <Line type="linear" dataKey="e" fill="blue" stroke={"blue"}/>
+                    <Line type="linear" dataKey="f" fill="green" stroke={"green"}/>
+
                     {/*<Bar dataKey="ratio" fill="blue"/>*/}
 
 

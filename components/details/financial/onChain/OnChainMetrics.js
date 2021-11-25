@@ -4,6 +4,8 @@ import useSWR from "swr";
 import {Accordion} from "react-bootstrap";
 import classes from "../financial-chart.module.css";
 import StockToFlowChart from "./StockToFlowChart";
+import SOPRChart from "./SOPRChart";
+
 
 export default function OnChainMetrics (props) {
 
@@ -15,13 +17,18 @@ export default function OnChainMetrics (props) {
     //
     // const { data, error } = useSWR(`https://api.cryptoquant.com/v1/`, fetcher)
     const [stockToFlow, setStockToFlow] = useState()
+    const [soprData, setSoprData] = useState()
 
 
     useEffect(() => {
-        fetchStockToFlow()
+        // fetchStockToFlow()
+        if (id === "BTC") {
+            fetchSOPR()
+        }
     }, [])
 
     let s2fData;
+
 
     const fetchStockToFlow = async () => {
         console.log("fetchStockToFlow running")
@@ -39,7 +46,7 @@ export default function OnChainMetrics (props) {
             console.log("this is s2fData", s2fData)
             let tempDataHolder = []
             s2fData.map((y) => {
-                tempDataHolder.push({'time': y.t, 'halvingDays': y.o.daysTillHalving, 'ratio': y.o.ratio})
+                tempDataHolder.push({'time': y.t, 'halvingDays': y.o.daysTillHalving, 'ratio': y.o.ratio, 'e': 0.4 * y.o.ratio * 3.3, 'f': 0.28 * y.o.ratio * 3.3})
             })
 
             setStockToFlow(tempDataHolder)
@@ -49,19 +56,49 @@ export default function OnChainMetrics (props) {
 
     }
 
+    const fetchSOPR = async () => {
+        console.log('fetching sopr data ----')
+        let sopr = await fetch(`/api/on-chain/sopr`).then(r => r.json())
+        setSoprData(sopr)
+        console.log("this is soprData", soprData)
+    }
 
     // console.log("this is the data", data)
 
     return (
         <div>
-            {id === "BTC"  && (
+            {/*{id === "BTC"  && (*/}
+            {/*    <Accordion defaultActiveKey="0" >*/}
+            {/*        <Accordion.Item eventKey="0">*/}
+            {/*            <Accordion.Header>BTC Stats</Accordion.Header>*/}
+            {/*            <Accordion.Body style={{display: "flex", flexDirection: "row", width: '100%', alignItems: "center", textAlign: "center"}}>*/}
+            {/*                <div className={classes.chart}>*/}
+
+            {/*                    <StockToFlowChart data={stockToFlow}/>*/}
+            {/*                </div>*/}
+            {/*                /!*<div className={classes.chart}>*!/*/}
+            {/*                /!*  <CardChart price={data} time_scale={90} symbol={id}/>*!/*/}
+            {/*                /!*</div>*!/*/}
+            {/*                /!*<div className={classes.chart}>*!/*/}
+            {/*                /!*  <CardChart price={data} time_scale={90} symbol={id}/>*!/*/}
+            {/*                /!*</div>*!/*/}
+            {/*                /!*<div className={classes.chart}>*!/*/}
+            {/*                /!*  <CardChart price={data} time_scale={90} symbol={id}/>*!/*/}
+            {/*                /!*</div>*!/*/}
+            {/*            </Accordion.Body>*/}
+            {/*        </Accordion.Item>*/}
+
+            {/*    </Accordion>*/}
+            {/*)}*/}
+
+            {id === "BTC" && soprData && (
                 <Accordion defaultActiveKey="0" >
                     <Accordion.Item eventKey="0">
                         <Accordion.Header>BTC Stats</Accordion.Header>
                         <Accordion.Body style={{display: "flex", flexDirection: "row", width: '100%', alignItems: "center", textAlign: "center"}}>
                             <div className={classes.chart}>
 
-                                <StockToFlowChart data={stockToFlow}/>
+                                <SOPRChart data={soprData}/>
                             </div>
                             {/*<div className={classes.chart}>*/}
                             {/*  <CardChart price={data} time_scale={90} symbol={id}/>*/}
@@ -77,6 +114,8 @@ export default function OnChainMetrics (props) {
 
                 </Accordion>
             )}
+
+
 
         </div>
     )
