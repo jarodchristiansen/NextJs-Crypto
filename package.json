@@ -28,5 +28,8 @@
     "recharts": "^2.1.6",
     "swr": "^0.5.6",
     "unfetch": "^4.2.0"
+  },
+  "devDependencies": {
+    "prettier": "2.5.0"
   }
 }

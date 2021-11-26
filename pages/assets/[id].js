@@ -21,7 +21,7 @@ function AssetDetails() {
     console.log(router.query)
 
 
-    const [tabState, setTabState] = useState(id === "BTC" ? 'onChain' : "Financial")
+    const [tabState, setTabState] = useState( "Financial")
 
 
 
@@ -50,16 +50,22 @@ function AssetDetails() {
 
             <Row>
                 <Col >
+
                     {tabState === "Financial" && (
                         <div>
-                            <div>
-                                <FinancialChart  id={id}/>
-                            </div>
 
 
-                            <div>
+                            <Row>
+                                <div>
+                                    <FinancialChart  id={id}/>
+                                </div>
 
-                            </div>
+
+                                <div>
+
+                                </div>
+
+                            </Row>
 
 
                             <div className="priceChart">

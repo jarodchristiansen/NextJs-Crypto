@@ -21,7 +21,7 @@ const SOPRChart = (props) => {
 
             <div>
                 <ResponsiveContainer
-                    height={!isDesktopOrLaptop ? 400 : 250} width={900}
+                    height={!isDesktopOrLaptop ? 400 : 250} width={isDesktopOrLaptop ? 250 : 850}
                 >
 
                     <ComposedChart
@@ -47,7 +47,7 @@ const SOPRChart = (props) => {
                         <Tooltip />
                         <Legend />
                         {/*<Line type="linear" dataKey="v"  />*/}
-                        <Line type="linear" dataKey="v" fill="red" stroke={"red"} />
+                        <Line type="linear" dataKey="v" fill="red" stroke={"red"} dot={false} />
                         {/*<Line type="linear" dataKey="e" fill="blue" stroke={"blue"}/>*/}
                         {/*<Line type="linear" dataKey="f" fill="green" stroke={"green"}/>*/}
 

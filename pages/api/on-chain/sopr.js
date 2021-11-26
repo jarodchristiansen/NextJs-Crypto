@@ -11,7 +11,7 @@ export default async (req, res) => {
     const db = client.db('Crypto_Watch');
     let sopr = await db.collection(`BTC_SOPR`)
 
-
+    let placeholderArray = []
 
     if (sopr) {
         // if (time) {
@@ -21,8 +21,17 @@ export default async (req, res) => {
         // }
         let data = await sopr.find({}).toArray();
 
-        console.log("this is the sopr data", data)
-        res.json(data)
+
+        for (let i=0; i <= data.length; i++) {
+            if (i % 7 === 0) {
+                placeholderArray.push(data[i])
+            }
+        }
+
+
+        console.log("this is the weekly sopr data", placeholderArray)
+
+        res.json(placeholderArray)
 
         // res.json({data: assetCollection})
     } else {
