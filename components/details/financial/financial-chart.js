@@ -536,9 +536,9 @@ function FinancialChart(props) {
                       labelStyle={{
                         fontSize: "1.5rem",
                       }}
-                      contentStyle={{
-                        backgroundColor: "rgba(264, 264, 264, 0.8)",
-                      }}
+                      // contentStyle={{
+                      //   backgroundColor: "rgba(264, 264, 264, 0.8)",
+                      // }}
                       formatter={(value) =>
                         new Intl.NumberFormat("en-US", {
                           style: "currency",
