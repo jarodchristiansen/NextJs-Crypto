@@ -420,12 +420,12 @@ function FinancialChart(props) {
                         <stop
                           offset="50%"
                           stopColor="rgb(0,131,255)"
-                          stopOpacity={1}
+                          stopOpacity={0.8}
                         />
                         <stop
                           offset="100%"
                           stopColor="rgb(130,210,238)"
-                          stopOpacity={1}
+                          stopOpacity={0}
                         />
                       </linearGradient>
                     </defs>
@@ -535,10 +535,11 @@ function FinancialChart(props) {
                       }
                       labelStyle={{
                         fontSize: "1.5rem",
+                        color: "white",
                       }}
-                      // contentStyle={{
-                      //   backgroundColor: "rgba(264, 264, 264, 0.8)",
-                      // }}
+                      contentStyle={{
+                        backgroundColor: "rgba(0, 0, 0, 1)",
+                      }}
                       formatter={(value) =>
                         new Intl.NumberFormat("en-US", {
                           style: "currency",
@@ -546,32 +547,42 @@ function FinancialChart(props) {
                         }).format(value)
                       }
                     />
-                    <Legend verticalAlign="bottom" height={36} />
+                    <Legend
+                      verticalAlign="bottom"
+                      height={36}
+                      iconSize={30}
+                      layout={"horizontal"}
+                      align={"center"}
+                    />
                     <Area
                       type="monotone"
                       name="Take Profit 2"
                       dataKey="fib1"
                       fill="rgba(144, 60, 247, 1)"
-                      stroke="purple"
+                      legendType={"plainline"}
+                      stroke="rgba(144, 60, 247, 1)"
                     />
                     <Area
                       type="monotone"
                       name="Take Profit 1"
                       dataKey="fib2"
                       fill="lime"
-                      stroke="green"
+                      legendType={"plainline"}
+                      stroke="lime"
                     />
                     <Area
                       type="monotone"
                       name="Mid Zone"
                       dataKey="fib3"
-                      fill="gold"
+                      fill="yellow"
+                      legendType={"plainline"}
                       stroke="yellow"
                     />
                     <Area
                       type="monotone"
                       name="Buy Area"
                       dataKey="fib4"
+                      legendType={"plainline"}
                       fill="url(#BuyLevel)"
                       stroke="red"
                     />
@@ -579,9 +590,12 @@ function FinancialChart(props) {
                     {/*<Line type="linear" dataKey="fib1" fill="#ff7300" />*/}
                     <Area
                       type="natural"
+                      name={"Daily Closing Price"}
                       dataKey="close"
                       fill="url(#areaChartGradient)"
+                      legendType={"plainline"}
                       stroke={"rgb(12,0,220)"}
+                      strokeWidth={1.25}
                     />
                   </ComposedChart>
                 </ResponsiveContainer>
