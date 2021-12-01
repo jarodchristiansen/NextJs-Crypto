@@ -19,6 +19,7 @@ import {
   Scatter,
   ResponsiveContainer,
   Brush,
+  Label,
 } from "recharts";
 import { Accordion, Col } from "react-bootstrap";
 import UniswapVolChart from "./uniswapVolChart";
@@ -625,15 +626,7 @@ function FinancialChart(props) {
           <Accordion defaultActiveKey="0">
             <Accordion.Item eventKey="0">
               <Accordion.Header>Uniswap Volume</Accordion.Header>
-              <Accordion.Body
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  width: "100%",
-                  alignItems: "center",
-                  textAlign: "center",
-                }}
-              >
+              <Accordion.Body>
                 <div className={classes.chart}>
                   <UniswapVolChart data={uniswapData} />
                 </div>
