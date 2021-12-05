@@ -106,7 +106,9 @@ function AuthForm() {
           <input type="text" id="username" ref={userNameInputRef} required />
         </div>
         <div className={classes.actions}>
-          <button>{isLogin ? "Login" : "Create Account"}</button>
+          <button onClick={isLogin && submitHandler}>
+            {isLogin ? "Login" : "Create Account"}
+          </button>
           <button
             type="button"
             className={classes.toggle}
