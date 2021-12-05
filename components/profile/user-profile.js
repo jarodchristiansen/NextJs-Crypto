@@ -57,6 +57,23 @@ function UserProfile() {
     <section>
       {loadedSession?.user?.username === username ? (
         <div>
+          {console.log("loadedSession", loadedSession)}
+          <div>
+            <ul>
+              {loadedSession?.user?.favorites.map((item) => {
+                return (
+                  <li key={item.title}>
+                    <div>
+                      {item.title}
+                      {item.symbol}
+                      <img src={`${item.image}`} />
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+
           <h1>Your User Profile</h1>
           <ProfileForm onChangePassword={changePasswordHandler} />
         </div>
