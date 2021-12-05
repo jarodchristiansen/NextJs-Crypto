@@ -7,11 +7,11 @@ import { SSRProvider } from "react-bootstrap";
 function MyApp({ Component, pageProps }) {
   return (
     <Provider session={pageProps.session}>
-      {/*<SSRProvider session={pageProps.session}>*/}
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-      {/*</SSRProvider>*/}
+      <SSRProvider session={pageProps.session}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </SSRProvider>
     </Provider>
   );
 }

@@ -3,10 +3,12 @@ import { MongoClient } from "mongodb";
 import { hashPassword, verifyPassword } from "../../../lib/auth";
 
 async function handler(req, res) {
-  if (req.method !== "PATCH") {
+  if (req.method !== "GET") {
+    console.log("not a get request");
     return;
   }
 
+  console.log("this is the get-user handler");
   const session = await getSession({ req });
 
   if (!session) {
@@ -14,8 +16,11 @@ async function handler(req, res) {
     return;
   }
 
-  const userEmail = session.user.email;
-  const favorite = req.body.data;
+  let userName = req.query.user;
+
+  // const userEmail = session.user.email;
+
+  console.log("this is the userName ---", userName);
 
   let client = await MongoClient.connect(`${process.env.MONGODB_URI}`);
 
@@ -23,7 +28,7 @@ async function handler(req, res) {
 
   const usersCollection = db.collection("users");
 
-  const user = await usersCollection?.findOne({ email: userEmail });
+  const user = await usersCollection?.findOne({ username: userName });
 
   console.log("this is the user", user);
 
@@ -33,14 +38,15 @@ async function handler(req, res) {
     return;
   }
 
-  const currentFavorites = user?.favorites;
+  if (user) {
+    let userCopy = JSON.parse(JSON.stringify(user));
 
-  if (currentFavorites) {
-    res
-      .status(200)
-      .json({ message: "Favorites Data Gathered", data: currentFavorites });
-  } else {
-    res.status(402).json({ message: "No favorites data found" });
+    delete userCopy["password"];
+    delete userCopy["_id"];
+    delete userCopy["email"];
+
+    res.status(200).json(userCopy);
+    return;
   }
   client.close();
 }

@@ -2,6 +2,7 @@ import { userState, useEffect, useState } from "react";
 import ProfileForm from "./profile-form";
 import { getSession } from "next-auth/client";
 import { useRouter } from "next/router";
+import fetch from "unfetch";
 // import classes from "./user-profile.module.css";
 
 function UserProfile() {
@@ -16,6 +17,9 @@ function UserProfile() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [loadedSession, setLoadedSession] = useState();
+  const [loadedUser, setLoadedUser] = useState();
+
+  let fetchedUser;
 
   useEffect(() => {
     getSession().then((session) => {
@@ -35,10 +39,21 @@ function UserProfile() {
         //   username
         // );
       } else {
+        if (username !== null && username !== undefined) {
+          getUser(username);
+        }
         setLoadedSession(session);
       }
     });
   }, [router]);
+
+  const getUser = async () => {
+    fetchedUser = await fetch(`/api/user/get-user?user=${username}`).then((r) =>
+      r.json()
+    );
+    setLoadedUser(fetchedUser);
+    console.log("this is fetchedUser", fetchedUser);
+  };
 
   async function changePasswordHandler(passwordData) {
     const response = await fetch("/api/auth/change-password/", {
@@ -55,24 +70,28 @@ function UserProfile() {
 
   return (
     <section>
+      {loadedUser && loadedUser?.favorites && (
+        <div>
+          <h1>User Favorites</h1>
+          <ul>
+            {loadedUser?.favorites.map((item) => {
+              return (
+                <li key={item.title}>
+                  <div>
+                    {item.title}
+                    {item.symbol}
+                    <img src={`${item.image}`} />
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+
       {loadedSession?.user?.username === username ? (
         <div>
           {console.log("loadedSession", loadedSession)}
-          <div>
-            <ul>
-              {loadedSession?.user?.favorites.map((item) => {
-                return (
-                  <li key={item.title}>
-                    <div>
-                      {item.title}
-                      {item.symbol}
-                      <img src={`${item.image}`} />
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
 
           <h1>Your User Profile</h1>
           <ProfileForm onChangePassword={changePasswordHandler} />
