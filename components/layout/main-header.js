@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 import classes from "./main-header.module.css";
 import { useSession, signIn, signOut } from "next-auth/client";
+import { useRouter } from "next/router";
 
 function MainHeader() {
   const [session, loading] = useSession();
@@ -16,6 +17,8 @@ function MainHeader() {
   };
 
   console.log("session ----", session);
+
+  let username = session?.user?.username;
 
   return (
     // <Navbar bg="light" variant="light">
@@ -78,6 +81,13 @@ function MainHeader() {
               </Nav.Link>
             )}
 
+            {session && (
+              <Nav.Link eventKey={"3"}>
+                <Link href={`/user/${username}`}>
+                  <Navbar.Text>{"Profile"}</Navbar.Text>
+                </Link>
+              </Nav.Link>
+            )}
             <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
