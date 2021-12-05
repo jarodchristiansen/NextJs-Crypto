@@ -32,54 +32,65 @@
 //     }
 // }
 
-
-
-
-import { MongoClient } from 'mongodb';
-
-
+import { MongoClient } from "mongodb";
 
 export default async (req, res) => {
+  let client = await MongoClient.connect(`${process.env.MONGODB_URI}`);
 
+  const db = client.db();
+  let assetCollection = db.collection("Crypto_Assets");
 
-    let client = await MongoClient.connect(`${process.env.MONGODB_URI}`);
+  // console.log('this is db', db)
+  // if (asset-details) {
+  //     res.json(asset-details)
+  // } else {
+  //     res.json('')
+  // }
 
-    const db = client.db();
-    let assetCollection = db.collection("Crypto_Assets")
+  //
+  // try {
+  //     await client.connect();
+  // } catch (error) {
+  //     res.status(500).json({ message: 'Could not connect to database.' });
+  //     return;
+  // }
 
-    // console.log('this is db', db)
-    // if (asset-details) {
-    //     res.json(asset-details)
-    // } else {
-    //     res.json('')
-    // }
+  // console.log("this is client", client)
+  // // const { db } = await connectToDatabase();
+  // const { db } = client.db();
+  //
+  if (db) {
+    const assets = await db
+      .collection("Crypto_Assets")
+      .find({})
+      .sort((a, b) => a.id - b.id)
+      .limit(20)
+      .toArray();
+    console.log(
+      "id",
+      typeof assets[0].id,
+      "title",
+      typeof assets[0].title,
+      "symbol",
+      typeof assets[0].symbol,
+      "description",
+      typeof assets[0].description,
+      "imageUrl",
+      typeof assets[0].imageUrl,
+      "category",
+      typeof assets[0].category,
+      "tags",
+      typeof assets[0].tags,
+      "urls",
+      typeof assets[0].urls,
+      "size",
+      typeof assets[0].size
+    );
 
-
-    //
-    // try {
-    //     await client.connect();
-    // } catch (error) {
-    //     res.status(500).json({ message: 'Could not connect to database.' });
-    //     return;
-    // }
-
-    // console.log("this is client", client)
-    // // const { db } = await connectToDatabase();
-    // const { db } = client.db();
-    //
-    if (db) {
-        const assets = await db.collection("Crypto_Assets")
-            .find({})
-            .sort((a, b) => a.id - b.id)
-            .limit(20)
-            .toArray();
-        console.log("id", typeof assets[0].id, "title", typeof assets[0].title, "symbol", typeof assets[0].symbol, "description",
-            typeof assets[0].description, "imageUrl", typeof assets[0].imageUrl, "category", typeof assets[0].category,
-            "tags", typeof assets[0].tags, "urls", typeof assets[0].urls, "size", typeof assets[0].size,)
-        res.json(assets);
-    } else {
-        console.log("no db")
-        res.json('')
-    }
-
+    client.close();
+    res.json(assets);
+  } else {
+    console.log("no db");
+    res.json("");
+  }
 };

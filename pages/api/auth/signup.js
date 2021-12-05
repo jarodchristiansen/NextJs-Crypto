@@ -5,7 +5,7 @@ async function handler(req, res) {
   if (req.method === "POST") {
     const data = req.body;
 
-    const { email, password } = data;
+    const { email, password, username } = data;
 
     if (
       !email ||
@@ -38,6 +38,7 @@ async function handler(req, res) {
     const result = await db.collection("users").insertOne({
       email: email,
       password: hashedPassword,
+      username: username,
     });
 
     res.status(201).json({ message: "Created user!" });

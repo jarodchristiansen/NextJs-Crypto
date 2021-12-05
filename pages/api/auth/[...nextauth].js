@@ -10,6 +10,20 @@ const options = {
   session: {
     jwt: true,
   },
+  callbacks: {
+    async session(session, token) {
+      session.accessToken = token.accessToken;
+      session.user = token.user;
+      return session;
+    },
+    async jwt(token, user) {
+      if (user) {
+        token.accessToken = user._id;
+        token.user = user;
+      }
+      return token;
+    },
+  },
   providers: [
     // Providers.Email({
     //   server: {
@@ -27,20 +41,16 @@ const options = {
     //   from: process.env.EMAIL_FROM,
     // }),
     Providers.Credentials({
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         let client = await MongoClient.connect(`${process.env.MONGODB_URI}`);
 
-        const db = client.db();
+        const db = client.db("Crypto_Watch");
 
-        const usersCollection = db.collection("Crypto_Watch.users");
-
-        console.log("this is usersCollection", usersCollection);
+        const usersCollection = db.collection("users");
 
         const user = await usersCollection.findOne({
           email: credentials.email,
         });
-
-        console.log("this is credentials.email", credentials.email);
 
         console.log("this is the user", user);
 
@@ -50,14 +60,20 @@ const options = {
 
         const isValid = await verifyPassword(
           credentials.password,
-          users.password
+          user.password
         );
 
         if (!isValid) {
           throw new Error("Could not log you in");
         }
 
-        return { email: user.email };
+        let userCopy = JSON.parse(JSON.stringify(user));
+
+        delete userCopy["password"];
+
+        console.log("user/userCopy ----", user, userCopy);
+
+        return userCopy;
 
         client.close();
       },

@@ -1,11 +1,13 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import classes from "./auth-form.module.css";
 import { signIn } from "next-auth/client";
+import { useRouter } from "next/router";
+import { getSession } from "next-auth/client";
 
-async function createUser(email, password) {
+async function createUser(email, password, username) {
   const response = await fetch("/api/auth/signup", {
     method: "POST",
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ email, password, username }),
     headers: {
       "Content-Type": "application/json",
     },
@@ -22,8 +24,21 @@ async function createUser(email, password) {
 function AuthForm() {
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
+  const userNameInputRef = useRef();
 
   const [isLogin, setIsLogin] = useState(true);
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadedSession, setLoadedSession] = useState();
+
+  useEffect(() => {
+    getSession().then((session) => {
+      setIsLoading(false);
+      if (session) {
+        router.replace("/");
+      }
+    });
+  }, [router]);
 
   function switchAuthModeHandler() {
     setIsLogin((prevState) => !prevState);
@@ -34,6 +49,7 @@ function AuthForm() {
 
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
+    const userName = userNameInputRef.current.value;
 
     //optional: Add validation on input form.
 
@@ -47,9 +63,20 @@ function AuthForm() {
       });
 
       console.log("result ----", result);
+      if (!result.error) {
+        //set some auth state
+        router.replace("/");
+      } else {
+        console.log("this is the result.error", result.error);
+      }
     } else {
+      console.log("this is the username in else statement", userName);
       try {
-        const result = await createUser(enteredEmail, enteredPassword);
+        const result = await createUser(
+          enteredEmail,
+          enteredPassword,
+          userName
+        );
         console.log(result);
       } catch (err) {
         console.log(err);
@@ -73,6 +100,10 @@ function AuthForm() {
             ref={passwordInputRef}
             required
           />
+        </div>
+        <div className={classes.control}>
+          <label htmlFor="password">Your Username</label>
+          <input type="text" id="username" ref={userNameInputRef} required />
         </div>
         <div className={classes.actions}>
           <button>{isLogin ? "Login" : "Create Account"}</button>
