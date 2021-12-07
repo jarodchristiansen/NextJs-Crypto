@@ -3,6 +3,7 @@ import Button from "../ui/button";
 import CardChart from "./card-chart";
 import { useState } from "react";
 import addFavoriteUtil from "../../lib/favorites";
+import StarButton from "../ui/starbutton";
 
 function EventItem(props) {
   const { title, image, id, symbol, description, price } = props;
@@ -29,10 +30,13 @@ function EventItem(props) {
           <h3 className={classes.title}>
             {title} - {symbol}
           </h3>
-          <p onClick={() => addFavorite(title, symbol, image)}>Favorite</p>
           <Button link={exploreLink}>
             <span className={classes.explore}>Explore</span>
           </Button>
+        </div>
+        <div style={{ margin: "3% 0 0 12%" }}>
+          <StarButton symbol={symbol} />
+          <p onClick={() => addFavorite(title, symbol, image)}>Favorite</p>
         </div>
       </div>
       <div className={classes.description}>{description}</div>

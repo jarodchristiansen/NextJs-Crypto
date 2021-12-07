@@ -16,6 +16,7 @@ const { Search } = Input;
 
 import { InputGroup, Button, FormControl } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
+import fetch from "unfetch";
 
 function AssetsPage(props) {
   const [startingAssets, setStartingAssets] = useState([]);
@@ -59,6 +60,15 @@ function AssetsPage(props) {
   // const eventsById = getEventsById('BTC');
 
   // console.log('this is featuredEvents', featuredEvents)
+  let fetchedUser;
+
+  const getUser = async () => {
+    fetchedUser = await fetch(`/api/user/get-user?user=${username}`).then((r) =>
+      r.json()
+    );
+    setLoadedUser(fetchedUser);
+    console.log("this is fetchedUser", fetchedUser);
+  };
 
   async function searchTitles(query) {
     let returnedEvents = await getSearchEvents(query.toUpperCase());
