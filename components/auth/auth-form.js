@@ -3,6 +3,7 @@ import classes from "./auth-form.module.css";
 import { signIn } from "next-auth/client";
 import { useRouter } from "next/router";
 import { getSession } from "next-auth/client";
+import { toast, ToastContainer } from "react-nextjs-toast";
 
 async function createUser(email, password, username) {
   const response = await fetch("/api/auth/signup", {
@@ -65,7 +66,13 @@ function AuthForm() {
       console.log("result ----", result);
       if (!result.error) {
         //set some auth state
-        router.replace("/");
+        setTimeout(() => {
+          router.replace("/");
+        }, 3000);
+        toast.notify(`you have been logged in!`, {
+          duration: 3,
+          type: "success",
+        });
       } else {
         console.log("this is the result.error", result.error);
       }
@@ -78,7 +85,18 @@ function AuthForm() {
           userName
         );
         console.log(result);
+        setTimeout(() => {
+          router.replace("/");
+        }, 3000);
+        toast.notify(`user has been created!`, {
+          duration: 3,
+          type: "success",
+        });
       } catch (err) {
+        toast.notify(`${err}`, {
+          duration: 10,
+          type: "error",
+        });
         console.log(err);
       }
     }
@@ -87,6 +105,7 @@ function AuthForm() {
   console.log("this is isLogin", isLogin);
   return (
     <section className={classes.auth}>
+      <ToastContainer position={"bottom"} />
       <h1>{isLogin ? "Login" : "Sign Up"}</h1>
       <form onSubmit={submitHandler} className={classes.form}>
         <div className={classes.control}>
@@ -109,7 +128,7 @@ function AuthForm() {
           </div>
         )}
         <div className={classes.actions}>
-          <button type={"submit"} onClick={submitHandler}>
+          <button type={"submit"} onClick={(e) => submitHandler(e)}>
             {isLogin ? "Login" : "Create Account"}
           </button>
           <button
