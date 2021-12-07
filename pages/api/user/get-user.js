@@ -11,10 +11,10 @@ async function handler(req, res) {
   console.log("this is the get-user handler");
   const session = await getSession({ req });
 
-  if (!session) {
-    res.status(401).json({ message: "Not authenticated" });
-    return;
-  }
+  // if (!session) {
+  //   res.status(401).json({ message: "Not authenticated" });
+  //   return;
+  // }
 
   let userName = req.query.user;
 
