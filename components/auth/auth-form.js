@@ -66,15 +66,18 @@ function AuthForm() {
       console.log("result ----", result);
       if (!result.error) {
         //set some auth state
-        router.replace("/");
-        // setTimeout(() => {
-        //   router.replace("/");
-        // }, 3000);
-        // toast.notify(`you have been logged in!`, {
-        //   duration: 3,
-        //   type: "success",
-        // });
+        setTimeout(() => {
+          router.replace("/");
+        }, 3000);
+        toast.notify(`you have been logged in!`, {
+          duration: 3,
+          type: "success",
+        });
       } else {
+        toast.notify(`${result.error}`, {
+          duration: 10,
+          type: "error",
+        });
         console.log("this is the result.error", result.error);
       }
     } else {
