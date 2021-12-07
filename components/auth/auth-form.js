@@ -47,9 +47,9 @@ function AuthForm() {
   async function submitHandler(event) {
     event.preventDefault();
 
-    const enteredEmail = emailInputRef.current.value;
-    const enteredPassword = passwordInputRef.current.value;
-    const userName = userNameInputRef.current.value;
+    const enteredEmail = emailInputRef?.current?.value;
+    const enteredPassword = passwordInputRef?.current?.value;
+    const userName = userNameInputRef?.current?.value;
 
     //optional: Add validation on input form.
 
@@ -84,10 +84,11 @@ function AuthForm() {
     }
   }
 
+  console.log("this is isLogin", isLogin);
   return (
     <section className={classes.auth}>
       <h1>{isLogin ? "Login" : "Sign Up"}</h1>
-      <form onSubmit={submitHandler}>
+      <form onSubmit={submitHandler} className={classes.form}>
         <div className={classes.control}>
           <label htmlFor="email">Your Email</label>
           <input type="email" id="email" ref={emailInputRef} required />
@@ -101,12 +102,14 @@ function AuthForm() {
             required
           />
         </div>
-        <div className={classes.control}>
-          <label htmlFor="password">Your Username</label>
-          <input type="text" id="username" ref={userNameInputRef} required />
-        </div>
+        {!isLogin && (
+          <div className={classes.control}>
+            <label htmlFor="username">Your Username</label>
+            <input type="text" id="username" ref={userNameInputRef} required />
+          </div>
+        )}
         <div className={classes.actions}>
-          <button type={"submit"}>
+          <button type={"submit"} onClick={submitHandler}>
             {isLogin ? "Login" : "Create Account"}
           </button>
           <button
