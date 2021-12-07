@@ -43,12 +43,10 @@ function AssetsPage(props) {
   // const { data, error } = useSWR('/api/all', fetcher)
 
   useEffect(() => {
-    if (props.session) {
-      axios.get("/api/all").then((res) => {
-        setStartingAssets(res.data);
-        setEvents(res.data);
-      });
-    }
+    axios.get("/api/all").then((res) => {
+      setStartingAssets(res.data);
+      setEvents(res.data);
+    });
   }, []);
 
   // if (error) return <div>Failed to load</div>
