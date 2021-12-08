@@ -17,6 +17,7 @@ const { Search } = Input;
 import { InputGroup, Button, FormControl } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import fetch from "unfetch";
+import Favorites from "../../components/profile/favorites";
 
 function AssetsPage(props) {
   const [startingAssets, setStartingAssets] = useState([]);
@@ -143,13 +144,14 @@ function AssetsPage(props) {
       {/*    </div>*/}
       {/*</div>*/}
 
+      <Favorites />
+
       {events && (
         <EventList items={events.length > 1 ? events : props.events} />
       )}
     </div>
   );
 }
-
 // export async function getStaticProps() {
 //   const featuredEvents = await getFeaturedEvents();
 //   return {
