@@ -63,13 +63,13 @@ function AssetsPage(props) {
   // console.log('this is featuredEvents', featuredEvents)
   let fetchedUser;
 
-  const getUser = async () => {
-    fetchedUser = await fetch(`/api/user/get-user?user=${username}`).then((r) =>
-      r.json()
-    );
-    setLoadedUser(fetchedUser);
-    console.log("this is fetchedUser", fetchedUser);
-  };
+  // const getUser = async () => {
+  //   fetchedUser = await fetch(`/api/user/get-user?user=${username}`).then((r) =>
+  //     r.json()
+  //   );
+  //   setLoadedUser(fetchedUser);
+  //   console.log("this is fetchedUser", fetchedUser);
+  // };
 
   async function searchTitles(query) {
     let returnedEvents = await getSearchEvents(query.toUpperCase());

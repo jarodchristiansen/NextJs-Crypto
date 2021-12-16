@@ -20,7 +20,7 @@ function Favorites() {
         // code below is to prevent a user accessing other user's sensitive data/processes
         // router.replace("/");
         console.log("else if statement", session);
-        getUser(session.user.username);
+        // getUser(session.user.username);
         setLoadedSession(session);
         // console.log(
         //   "session.username && username mismatch",
@@ -31,17 +31,16 @@ function Favorites() {
     });
   }, [router]);
 
-  const getUser = async (session) => {
-    fetchedUser = await fetch(`/api/user/get-user?user=${session}`).then((r) =>
-      r.json()
-    );
-    setLoadedUser(fetchedUser);
-    console.log("this is fetchedUser", fetchedUser);
-  };
+  // const getUser = async (session) => {
+  //   fetchedUser = await fetch(`/api/user/get-user?user=${session}`).then((r) =>
+  //     r.json()
+  //   );
+  //   setLoadedUser(fetchedUser);
+  //   console.log("this is fetchedUser", fetchedUser);
+  // };
 
   return (
     <div>
-      {loadedUser && (
         <div
           style={{
             display: "flex",
@@ -65,7 +64,6 @@ function Favorites() {
             );
           })}
         </div>
-      )}
     </div>
   );
 }

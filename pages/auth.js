@@ -9,7 +9,7 @@ function AuthPage() {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          width: "90%",
+          width: "100%",
         }}
       >
         <AuthForm />;

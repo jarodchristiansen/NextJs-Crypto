@@ -11,22 +11,24 @@ let store
 // }
 
 const initialState = {
-    user: {}
+    user: {favorites: []}
 }
 
 
-const reducer = (state = initialState, action) => {
+const reducer = (state, action) => {
     switch (action.type) {
         case 'SET_USER':
             console.log("SETUSER FIRING", action)
             return {
                 ...state,
-                user: action.user,
+                user: action?.user,
             }
         case 'ADD_FAVORITE':
+            console.log("ADD_FAVORITE FIRING -----", action.favorite)
             return {
-                ...state,
-                favorites: action.user.favorites
+                user: {
+                    favorites: [...state.user.favorites, action.favorite]
+                }
             }
         // case 'TICK':
         //     return {

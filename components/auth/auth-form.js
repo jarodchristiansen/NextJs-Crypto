@@ -82,12 +82,10 @@ function AuthForm() {
             })
             setTimeout(() => {
               router.replace("/");
-            }, 2000);
+            }, 3000);
           } catch (err) {
               console.log("no user to dispatch")
           }
-
-
           }
         });
 
@@ -163,6 +161,19 @@ function AuthForm() {
           >
             {isLogin ? "Create new account" : "Login with existing account"}
           </button>
+          <div style={{width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", textAlign: "center"}}>
+            <hr/>
+            <div className={classes.orText}>
+              <h6>Or</h6>
+            </div>
+            {/*<div style="position:relative;top:-5px;">DIV CONTENT</div>*/}
+          </div>
+          <div className={classes.buttonHolder}>
+            <div className={classes.square}></div>
+            <div className={classes.square}></div>
+            <div className={classes.square}></div>
+            <div className={classes.square}></div>
+          </div>
         </div>
       </form>
     </section>

@@ -8,7 +8,6 @@ function StarButton(props) {
 
   return (
     <div>
-      {symbol}
       {props && (
         // <FaStar
         //   color={!isFavorited ? "rgba(0,0,0, 0.15)" : "rgba(255, 233, 0, 1)"}

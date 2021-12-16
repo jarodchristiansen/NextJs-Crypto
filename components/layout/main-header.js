@@ -65,21 +65,11 @@ function MainHeader() {
                 </Link>
               </Nav.Link>
             )}
-            <Nav.Link eventKey={"2"} href="#pricing">
-              Pricing
-            </Nav.Link>
+            {/*<Nav.Link eventKey={"2"} href="#pricing">*/}
+            {/*  Pricing*/}
+            {/*</Nav.Link>*/}
             {/*<Nav.Link eventKey={"3"} onClick={session ? handleSignout : handleSignin}>{session ? "Sign out" : "Sign in"}</Nav.Link>*/}
-            {!session ? (
-              <Nav.Link eventKey={"3"}>
-                <Link href="/auth">
-                  <Navbar.Text>{"Sign in"}</Navbar.Text>
-                </Link>
-              </Nav.Link>
-            ) : (
-              <Nav.Link eventKey={"3"} onClick={handleSignout}>
-                {"Sign out"}
-              </Nav.Link>
-            )}
+
 
             {session && (
               <Nav.Link eventKey={"3"}>
@@ -88,17 +78,30 @@ function MainHeader() {
                 </Link>
               </Nav.Link>
             )}
-            <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown>
+
+            {!session ? (
+                <Nav.Link eventKey={"3"}>
+                  <Link href="/auth">
+                    <Navbar.Text>{"Sign in"}</Navbar.Text>
+                  </Link>
+                </Nav.Link>
+            ) : (
+                <Nav.Link eventKey={"3"} onClick={handleSignout}>
+                  {"Sign out"}
+                </Nav.Link>
+            )}
+
+            {/*<NavDropdown title="Dropdown" id="collasible-nav-dropdown">*/}
+            {/*  <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>*/}
+            {/*  <NavDropdown.Item href="#action/3.2">*/}
+            {/*    Another action*/}
+            {/*  </NavDropdown.Item>*/}
+            {/*  <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>*/}
+            {/*  <NavDropdown.Divider />*/}
+            {/*  <NavDropdown.Item href="#action/3.4">*/}
+            {/*    Separated link*/}
+            {/*  </NavDropdown.Item>*/}
+            {/*</NavDropdown>*/}
           </Nav>
           <Nav>
             <div style={{ display: "flex", flexDirection: "row" }}>
