@@ -4,6 +4,7 @@ import { signIn } from "next-auth/client";
 import { useRouter } from "next/router";
 import { getSession } from "next-auth/client";
 import { toast, ToastContainer } from "react-nextjs-toast";
+import {initializeStore} from "../../store";
 
 async function createUser(email, password, username) {
   const response = await fetch("/api/auth/signup", {
@@ -66,9 +67,30 @@ function AuthForm() {
       console.log("result ----", result);
       if (!result.error) {
         //set some auth state
-        setTimeout(() => {
-          router.replace("/");
-        }, 3000);
+
+
+       await getSession().then((session) => {
+          setIsLoading(false);
+          if (session) {
+            const reduxStore = initializeStore()
+            const { dispatch } = reduxStore
+
+          try {
+            dispatch({
+              type: "SET_USER",
+              user: session.user
+            })
+            setTimeout(() => {
+              router.replace("/");
+            }, 2000);
+          } catch (err) {
+              console.log("no user to dispatch")
+          }
+
+
+          }
+        });
+
         toast.notify(`you have been logged in!`, {
           duration: 3,
           type: "success",
@@ -88,7 +110,6 @@ function AuthForm() {
           enteredPassword,
           userName
         );
-        console.log(result);
         setTimeout(() => {
           router.replace("/");
         }, 3000);

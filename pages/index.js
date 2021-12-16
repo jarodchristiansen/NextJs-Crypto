@@ -2,13 +2,13 @@ import Link from 'next/link';
 import {TradingViewEmbed, widgetType} from "react-tradingview-embed";
 import LandingExplainer from '../components/landing/landing-explainer';
 import SignUpOrIn from '../components/landing/sign-up-or-in';
-import { useSession } from 'next-auth/client'
+import { useSession, getSession } from 'next-auth/client'
 import { useMediaQuery } from "react-responsive";
 import clientPromise from '../lib/mongodb'
+import {initializeStore} from "../store";
 
 
-
-function HomePage({isConnected}) {
+function HomePage({isConnected, initialReduxState}) {
   const [session, loading, status] = useSession();
 
   const isDesktopOrLaptop = useMediaQuery({
@@ -16,6 +16,7 @@ function HomePage({isConnected}) {
   })
 
   console.log('session info', status)
+  console.log("initialReduxState", initialReduxState)
 
   return(
       <div>
@@ -128,8 +129,25 @@ function HomePage({isConnected}) {
       </div>
   )
 }
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context, req) {
   const client = await clientPromise
+    const session = await getSession({ req });
+    const reduxStore = initializeStore()
+    const { dispatch } = reduxStore
+
+    //
+    // console.log('this is the client', client)
+    // console.log("this is the session", session)
+    // // dispatch({
+    // //     type: 'TICK',
+    // //     light: false,
+    // //     lastUpdate: Date.now(),
+    // // })
+    //
+    // dispatch({
+    //     type: "RESET"
+    // })
+
 
   // client.db() will be the default database passed in the MONGODB_URI
   // You can change the database by calling the client.db() function and specifying a database like:
@@ -140,7 +158,7 @@ export async function getServerSideProps(context) {
   const isConnected = await client.isConnected()
 
   return {
-    props: { isConnected },
+    props: { isConnected, initialReduxState: reduxStore.getState() },
   }
 }
 
