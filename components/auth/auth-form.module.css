@@ -1,7 +1,7 @@
 .auth {
     margin: 10rem auto;
     width: 100%;
-    max-width: 30rem;
+    max-width: 25rem;
     border-radius: 6px;
     min-width: 20rem;
     /*background-color: #38015c;*/
@@ -73,10 +73,9 @@
 }
 
 .square {
-    min-width: 60px;
-    height: 60px;
+    min-width: 10px;
+    height: 50px;
     background-color: yellow;
-    margin: 0 20px 0 20px;
 }
 .buttonHolder {
     display: flex;
@@ -91,4 +90,15 @@
     width: 50px;
     z-index: 1;
     display: flex;
+}
+.outer{
+    padding-top: 4%;
+    list-style-type: none;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+.box{
+    display: inline-block;
+    padding: 5%;
 }

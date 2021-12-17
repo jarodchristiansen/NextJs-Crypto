@@ -40,6 +40,16 @@ const options = {
     //   },
     //   from: process.env.EMAIL_FROM,
     // }),
+    Providers.GitHub({
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
+
+
+    }),
+    Providers.Google({
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+    }),
     Providers.Credentials({
       async authorize(credentials) {
         let client = await MongoClient.connect(`${process.env.MONGODB_URI}`);
@@ -78,27 +88,19 @@ const options = {
         client.close();
       },
     }),
-    // Providers.GitHub({
-    //   clientId: process.env.GITHUB_ID,
-    //   clientSecret: process.env.GITHUB_SECRET,
-    // }),
-    // Providers.Google({
-    //   clientId: process.env.GOOGLE_ID,
-    //   clientSecret: process.env.GOOGLE_SECRET,
-    // }),
-    // Providers.Facebook({
-    //   clientId: process.env.FACEBOOK_ID,
-    //   clientSecret: process.env.FACEBOOK_SECRET,
-    // }),
-    // Providers.Twitter({
-    //   clientId: process.env.TWITTER_ID,
-    //   clientSecret: process.env.TWITTER_SECRET,
-    // }),
+    Providers.Facebook({
+      clientId: process.env.FACEBOOK_ID,
+      clientSecret: process.env.FACEBOOK_SECRET,
+    }),
+    Providers.Twitter({
+      clientId: process.env.TWITTER_ID,
+      clientSecret: process.env.TWITTER_SECRET,
+    }),
   ],
   // database: process.env.MONGODB_URI,
-  // pages: {
-  //   signIn: "/login",
-  // },
+  pages: {
+    signIn: "/auth",
+  },
 };
 //
 // export default async function auth(req, res, options) {

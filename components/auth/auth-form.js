@@ -1,10 +1,14 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import classes from "./auth-form.module.css";
-import { signIn } from "next-auth/client";
+import {getProviders, signIn, useSession} from "next-auth/client";
 import { useRouter } from "next/router";
 import { getSession } from "next-auth/client";
 import { toast, ToastContainer } from "react-nextjs-toast";
 import {initializeStore} from "../../store";
+import {Button, Row} from "react-bootstrap";
+import {message} from "antd";
+import { FaGithub, FaFacebookSquare, FaGoogle, FaTwitter } from 'react-icons/fa'
+
 
 async function createUser(email, password, username) {
   const response = await fetch("/api/auth/signup", {
@@ -23,7 +27,9 @@ async function createUser(email, password, username) {
   return data;
 }
 
-function AuthForm() {
+function AuthForm(props) {
+
+  const { providers } = props
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
   const userNameInputRef = useRef();
@@ -32,18 +38,46 @@ function AuthForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [loadedSession, setLoadedSession] = useState();
+  const [loadedProviders, setLoadedProviders] = useState()
+
 
   useEffect(() => {
+    console.log("this is the providers in auth-form", providers)
     getSession().then((session) => {
       setIsLoading(false);
       if (session) {
         router.replace("/");
+      } else {
+        loadProviders()
       }
     });
   }, [router]);
 
   function switchAuthModeHandler() {
     setIsLogin((prevState) => !prevState);
+  }
+
+  async function loadProviders() {
+    let providers = await getProviders();
+    delete providers.credentials
+    setLoadedProviders(providers)
+    console.log("this is loadProviders output ---", loadedProviders)
+  }
+
+  const determineColor = (provider) => {
+    console.log('this is the provider', provider)
+    switch (provider) {
+      case 'Facebook':
+        return "outline-primary"
+      case 'Google':
+        return 'outline-danger'
+      case 'Github':
+        return 'outline-dark'
+      case 'Twitter':
+        return 'outline-info'
+      default:
+        return 'outline-dark'
+    }
   }
 
   async function submitHandler(event) {
@@ -166,18 +200,76 @@ function AuthForm() {
             <div className={classes.orText}>
               <h6>Or</h6>
             </div>
-            {/*<div style="position:relative;top:-5px;">DIV CONTENT</div>*/}
           </div>
-          <div className={classes.buttonHolder}>
-            <div className={classes.square}></div>
-            <div className={classes.square}></div>
-            <div className={classes.square}></div>
-            <div className={classes.square}></div>
+
+          <div>
+            Sign in with:
           </div>
+          <div style={{display: "block", maxWidth: "90%"}}>
+            <div className={classes.outer}>
+
+              {loadedProviders && Object.values(loadedProviders).map((provider) => (
+                  <div key={provider.name} className={classes.box}>
+                    {/*<button onClick={() => signIn(provider.id)}>*/}
+                    {/*    Sign in with {provider.name}*/}
+                    {/*</button>*/}
+                    <Button className={classes.iconButtons} onClick={() => {
+                      setIsLoading(true)
+                      message.success('Successfully Signed in')
+                      signIn(provider.id, {
+                        callbackUrl: `${window.location.origin}/`,
+                      })
+                      setIsLoading(false)
+                    }}
+                            disabled={isLoading}
+                    >
+
+                      {provider.name === "GitHub" && (
+                          <FaGithub size={28}/>
+                      )}
+
+                      {provider.name === "Facebook" && (
+                          <FaFacebookSquare size={28}/>
+                      )}
+
+                      {provider.name === "Google" && (
+                          <FaGoogle size={28}/>
+                      )}
+
+
+                      {provider.name === "Twitter" && (
+                          <FaTwitter size={28}/>
+                      )}
+
+
+
+                    </Button>
+                  </div>
+              ))}
+
+
+
+
+              {/*<div className={classes.square}></div>*/}
+              {/*<div className={classes.square}></div>*/}
+              {/*<div className={classes.square}></div>*/}
+              {/*<div className={classes.square}></div>*/}
+            </div>
+          </div>
+
         </div>
       </form>
     </section>
   );
 }
+
+
+// This is the recommended way for Next.js 9.3 or newer
+// export async function getServerSideProps(context) {
+//   const providers = await getProviders()
+//   return {
+//     props: { providers },
+//   }
+// }
 
 export default AuthForm;

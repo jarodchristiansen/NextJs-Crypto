@@ -1,4 +1,5 @@
 import AuthForm from "../components/auth/auth-form";
+import {getProviders} from "next-auth/client";
 
 function AuthPage() {
   return (
@@ -12,10 +13,12 @@ function AuthPage() {
           width: "100%",
         }}
       >
-        <AuthForm />;
+        <AuthForm />
       </div>
     </div>
   );
 }
+
+
 
 export default AuthPage;
