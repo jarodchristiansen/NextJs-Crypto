@@ -39,6 +39,7 @@ function AuthForm(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [loadedSession, setLoadedSession] = useState();
   const [loadedProviders, setLoadedProviders] = useState()
+  const [buttonsDisabled, setButtonsDisabled] = useState(false)
 
 
   useEffect(() => {
@@ -64,25 +65,10 @@ function AuthForm(props) {
     console.log("this is loadProviders output ---", loadedProviders)
   }
 
-  const determineColor = (provider) => {
-    console.log('this is the provider', provider)
-    switch (provider) {
-      case 'Facebook':
-        return "outline-primary"
-      case 'Google':
-        return 'outline-danger'
-      case 'Github':
-        return 'outline-dark'
-      case 'Twitter':
-        return 'outline-info'
-      default:
-        return 'outline-dark'
-    }
-  }
 
   async function submitHandler(event) {
     event.preventDefault();
-
+    setButtonsDisabled(true)
     const enteredEmail = emailInputRef?.current?.value;
     const enteredPassword = passwordInputRef?.current?.value;
     const userName = userNameInputRef?.current?.value;
@@ -185,9 +171,9 @@ function AuthForm(props) {
           </div>
         )}
         <div className={classes.actions}>
-          <button type={"submit"} onClick={(e) => submitHandler(e)}>
+          <Button type={"submit"} disabled={buttonsDisabled} onClick={(e) => submitHandler(e)}>
             {isLogin ? "Login" : "Create Account"}
-          </button>
+          </Button>
           <button
             type="button"
             className={classes.toggle}
@@ -208,20 +194,23 @@ function AuthForm(props) {
           <div style={{display: "block", maxWidth: "90%"}}>
             <div className={classes.outer}>
 
+
               {loadedProviders && Object.values(loadedProviders).map((provider) => (
                   <div key={provider.name} className={classes.box}>
                     {/*<button onClick={() => signIn(provider.id)}>*/}
                     {/*    Sign in with {provider.name}*/}
                     {/*</button>*/}
+
                     <Button className={classes.iconButtons} onClick={() => {
+                      setButtonsDisabled(true)
                       setIsLoading(true)
                       message.success('Successfully Signed in')
                       signIn(provider.id, {
-                        callbackUrl: `${window.location.origin}/`,
+                        callbackUrl: `${window.location.origin}/auth`,
                       })
                       setIsLoading(false)
                     }}
-                            disabled={isLoading}
+                            disabled={buttonsDisabled}
                     >
 
                       {provider.name === "GitHub" && (
