@@ -206,7 +206,7 @@ function AuthForm(props) {
                       setIsLoading(true)
                       message.success('Successfully Signed in')
                       signIn(provider.id, {
-                        callbackUrl: `${window.location.origin}/auth`,
+                        callbackUrl: `${window.location.origin}`,
                       })
                       setIsLoading(false)
                     }}
