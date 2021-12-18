@@ -2,12 +2,18 @@ import { userState, useEffect, useState } from "react";
 import ProfileForm from "./profile-form";
 import { getSession } from "next-auth/client";
 import { useRouter } from "next/router";
+import UsernameChangeModal from "./username-change-modal";
 import fetch from "unfetch";
+import {Button} from "react-bootstrap";
 // import classes from "./user-profile.module.css";
+
+
 
 function UserProfile() {
   // Redirect away if NOT auth
   const router = useRouter();
+  const [show, setShow] = useState(false)
+
 
   let username = router?.query?.username;
 
@@ -40,6 +46,9 @@ function UserProfile() {
         // );
       } else {
         if (username !== null && username !== undefined) {
+          if (username.includes("!@$")) {
+            handleShow()
+          }
           getUser(username);
         }
         setLoadedSession(session);
@@ -68,8 +77,15 @@ function UserProfile() {
     console.log(data);
   }
 
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   return (
     <section>
+      {/*<Button variant="primary" onClick={handleShow}>*/}
+      {/*  Launch demo modal*/}
+      {/*</Button>*/}
+          <UsernameChangeModal show={show} setShow={setShow}/>
       {loadedUser && loadedUser?.favorites && (
         <div>
           <h1>User Favorites</h1>
