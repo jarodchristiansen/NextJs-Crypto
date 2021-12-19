@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { Accordion, Card } from "react-bootstrap";
 import Draggable from "react-draggable";
 import { useAccordionButton } from "react-bootstrap/AccordionButton";
+import FavoritesTable from "./favoritesTable";
 // import { FaPlus, FaMinus } from "react-icons/all";
 // import { CgAdd } from "react-icons/cg";
 
@@ -27,16 +28,28 @@ function CustomToggle({
       {!expandedState ? (
         // <FaPlus onClick={decoratedOnClick}>{children}</FaPlus>
         <div>
-          <span onClick={decoratedOnClick}>Plus</span>
+          {/*<span onClick={decoratedOnClick}>Plus</span>*/}
+          <img
+            className={"clickIcon"}
+            onClick={() => decoratedOnClick()}
+            src={"/local-fa-icons/plus-square.svg"}
+            height={30}
+          />
         </div>
       ) : (
         // <FaMinus onClick={decoratedOnClick}>{children}</FaMinus>
         <div>
-          <span onClick={decoratedOnClick}>Minus</span>
+          <img
+            className={"clickIcon"}
+            onClick={() => decoratedOnClick()}
+            src={"/local-fa-icons/minus-square.svg"}
+            height={30}
+          />
           {isAuthorized && (
             <>
               {!isEditing ? (
                 <img
+                  className={"clickIcon"}
                   onClick={() => setIsEditing(true)}
                   style={{ marginLeft: "90%" }}
                   src={"/local-fa-icons/edit.svg"}
@@ -121,64 +134,71 @@ function Favorites(props) {
   return (
     <div>
       {isAuthorized ? (
-        <Draggable axis={"x"}>
-          <div
-            style={{
-              width: "80%",
-              border: "2px solid black",
-              marginLeft: "10%",
-            }}
-          >
-            <Accordion defaultActiveKey="0">
-              <Card>
-                <Card.Header>
-                  <CustomToggle
-                    eventKey="0"
-                    isEditing={isEditing}
-                    setIsEditing={setIsEditing}
-                    isAuthorized={isAuthorized}
-                  ></CustomToggle>
-                </Card.Header>
-                <Accordion.Collapse eventKey="0">
-                  <div>
-                    {/*{loadedSession?.user?.favorites?.length > 1 &&*/}
-                    {/*  loadedSession?.user?.favorites.map((y) => {*/}
-                    {/*    return (*/}
-                    {/*      <div key={y.title}>*/}
-                    {/*        {y.title}*/}
-                    {/*        {y.symbol}*/}
-                    {/*        <img src={y.image} />*/}
-                    {/*      </div>*/}
-                    {/*    );*/}
-                    {/*  })}*/}
+        // <Draggable axis={"x"} cancel={"clickIcon"}>
+        <div
+          style={{
+            width: "80%",
+            border: "2px solid black",
+            marginLeft: "10%",
+          }}
+        >
+          <Accordion defaultActiveKey="0">
+            <Card>
+              <Card.Header>
+                <CustomToggle
+                  eventKey="0"
+                  isEditing={isEditing}
+                  setIsEditing={setIsEditing}
+                  isAuthorized={isAuthorized}
+                ></CustomToggle>
+              </Card.Header>
+              <Accordion.Collapse eventKey="0">
+                <div>
+                  {/*{loadedSession?.user?.favorites?.length > 1 &&*/}
+                  {/*  loadedSession?.user?.favorites.map((y) => {*/}
+                  {/*    return (*/}
+                  {/*      <div key={y.title}>*/}
+                  {/*        {y.title}*/}
+                  {/*        {y.symbol}*/}
+                  {/*        <img src={y.image} />*/}
+                  {/*      </div>*/}
+                  {/*    );*/}
+                  {/*  })}*/}
 
-                    {/*user profile version*/}
+                  {/*user profile version*/}
+                  {loadedUser?.favorites?.length >= 1 && (
+                    <FavoritesTable
+                      data={loadedUser?.favorites}
+                      isEditing={isEditing}
+                      setIsEditing={setIsEditing}
+                    />
+                  )}
 
-                    {loadedUser?.favorites?.length >= 1 &&
-                      loadedUser?.favorites?.map((y) => {
-                        return (
-                          <div
-                            key={y.title}
-                            style={{ display: "flex", flexDirection: "row" }}
-                          >
-                            {y.title}
-                            {y.symbol}
-                            <img src={y.image} />
-                            {isEditing && (
-                              <div style={{ marginLeft: "70%" }}>
-                                Edit active
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
-                  </div>
-                </Accordion.Collapse>
-              </Card>
-            </Accordion>
-          </div>
-        </Draggable>
+                  {/*{loadedUser?.favorites?.length >= 1 &&*/}
+                  {/*  loadedUser?.favorites?.map((y) => {*/}
+                  {/*    return (*/}
+                  {/*      <div*/}
+                  {/*        key={y.title}*/}
+                  {/*        style={{ display: "flex", flexDirection: "row" }}*/}
+                  {/*      >*/}
+                  {/*        {y.title}*/}
+                  {/*        {y.symbol}*/}
+                  {/*        <img src={y.image} />*/}
+                  {/*        {isEditing && (*/}
+                  {/*          <div style={{ position: "relative" }}>*/}
+                  {/*            Edit active*/}
+                  {/*          </div>*/}
+                  {/*        )}*/}
+                  {/*      </div>*/}
+                  {/*    );*/}
+                  {/*  })}*/}
+                </div>
+              </Accordion.Collapse>
+            </Card>
+          </Accordion>
+        </div>
       ) : (
+        // </Draggable>
         <div
           style={{ width: "80%", border: "2px solid black", marginLeft: "10%" }}
         >
@@ -191,27 +211,34 @@ function Favorites(props) {
               </Card.Header>
               <Accordion.Collapse eventKey="0">
                 <div>
-                  {loadedSession?.user?.favorites?.length > 1 &&
-                    loadedSession?.user?.favorites.map((y) => {
-                      return (
-                        <div key={y.title}>
-                          {y.title}
-                          {y.symbol}
-                          <img src={y.image} />
-                        </div>
-                      );
-                    })}
+                  {/*{loadedSession?.user?.favorites?.length > 1 &&*/}
+                  {/*  loadedSession?.user?.favorites.map((y) => {*/}
+                  {/*    return (*/}
+                  {/*      <div key={y.title}>*/}
+                  {/*        {y.title}*/}
+                  {/*        {y.symbol}*/}
+                  {/*        <img src={y.image} />*/}
+                  {/*      </div>*/}
+                  {/*    );*/}
+                  {/*  })}*/}
 
-                  {loadedUser?.favorites?.length >= 1 &&
-                    loadedUser?.favorites?.map((y) => {
-                      return (
-                        <div key={y.title}>
-                          {y.title}
-                          {y.symbol}
-                          <img src={y.image} />
-                        </div>
-                      );
-                    })}
+                  {loadedUser?.favorites?.length >= 1 && (
+                    <FavoritesTable
+                      data={loadedUser?.favorites}
+                      isEditing={isEditing}
+                      setIsEditing={setIsEditing}
+                    />
+                  )}
+                  {/*{loadedUser?.favorites?.length >= 1 &&*/}
+                  {/*  loadedUser?.favorites?.map((y) => {*/}
+                  {/*    return (*/}
+                  {/*      <div key={y.title}>*/}
+                  {/*        {y.title}*/}
+                  {/*        {y.symbol}*/}
+                  {/*        <img src={y.image} />*/}
+                  {/*      </div>*/}
+                  {/*    );*/}
+                  {/*  })}*/}
                 </div>
               </Accordion.Collapse>
             </Card>
