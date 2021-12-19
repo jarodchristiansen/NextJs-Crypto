@@ -88,8 +88,6 @@ function UserProfile() {
 
       {loadedSession?.user?.username === username && (
         <div>
-          {console.log("loadedSession", loadedSession)}
-
           <h1>Your User Profile</h1>
           <ProfileForm onChangePassword={changePasswordHandler} />
         </div>

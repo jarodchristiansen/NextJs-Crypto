@@ -5,7 +5,9 @@ import { useRouter } from "next/router";
 import { Accordion, Card } from "react-bootstrap";
 import Draggable from "react-draggable";
 import { useAccordionButton } from "react-bootstrap/AccordionButton";
-import { FaPlus, FaMinus } from "react-icons/all";
+// import { FaPlus, FaMinus } from "react-icons/all";
+// import { CgAdd } from "react-icons/cg";
+i;
 
 function CustomToggle({ children, eventKey }) {
   const [expandedState, setExpandedState] = useState(true);
@@ -19,10 +21,15 @@ function CustomToggle({ children, eventKey }) {
     <div>
       {!expandedState ? (
         // <FaPlus onClick={decoratedOnClick}>{children}</FaPlus>
-        <span onClick={decoratedOnClick}>Plus</span>
+        <div>
+          <span onClick={decoratedOnClick}>Plus</span>
+        </div>
       ) : (
         // <FaMinus onClick={decoratedOnClick}>{children}</FaMinus>
-        <span onClick={decoratedOnClick}>Minus</span>
+        <div>
+          <span onClick={decoratedOnClick}>Minus</span>
+          <span style={{ marginLeft: "90%" }}>Pencil</span>
+        </div>
       )}
     </div>
   );
@@ -36,19 +43,31 @@ function Favorites(props) {
   let fetchedUser;
 
   const router = useRouter();
+
   let username = router?.query?.username;
+
+  if (username !== null && username !== undefined) {
+    username = Object.values(username)[0];
+  }
 
   const [isLoading, setIsLoading] = useState(true);
   const [loadedSession, setLoadedSession] = useState();
   // const [loadedUser, setLoadedUser] = useState();
   const [favorites, setFavorites] = useState();
+  const [isAuthorized, setIsAuthorized] = useState();
 
   useEffect(() => {
+    console.log("this is the username in favorites", username);
     getSession().then((session) => {
       setIsLoading(false);
       if (!session) {
         router.replace("/");
       } else if (session !== undefined && session.user.username) {
+        if (session?.user?.username === username) {
+          setIsAuthorized(true);
+        } else if (loadedUser?.username === username) {
+          setIsAuthorized(true);
+        }
         if (path.includes("user")) {
           console.log("favorites in user-profile");
           // getUser(username);
@@ -79,44 +98,89 @@ function Favorites(props) {
   };
 
   return (
-    <Draggable axis={"x"} bounds={"parent"}>
-      <div
-        style={{ width: "80%", border: "2px solid black", marginLeft: "10%" }}
-      >
-        <Accordion defaultActiveKey="0">
-          <Card>
-            <Card.Header>
-              <CustomToggle eventKey="0">Click me!</CustomToggle>
-            </Card.Header>
-            <Accordion.Collapse eventKey="0">
-              <div>
-                {loadedSession?.user?.favorites?.length > 1 &&
-                  loadedSession?.user?.favorites.map((y) => {
-                    return (
-                      <div key={y.title}>
-                        {y.title}
-                        {y.symbol}
-                        <img src={y.image} />
-                      </div>
-                    );
-                  })}
+    <div>
+      {isAuthorized ? (
+        <Draggable axis={"x"}>
+          <div
+            style={{
+              width: "80%",
+              border: "2px solid black",
+              marginLeft: "10%",
+            }}
+          >
+            <Accordion defaultActiveKey="0">
+              <Card>
+                <Card.Header>
+                  <CustomToggle eventKey="0"></CustomToggle>
+                </Card.Header>
+                <Accordion.Collapse eventKey="0">
+                  <div>
+                    {loadedSession?.user?.favorites?.length > 1 &&
+                      loadedSession?.user?.favorites.map((y) => {
+                        return (
+                          <div key={y.title}>
+                            {y.title}
+                            {y.symbol}
+                            <img src={y.image} />
+                          </div>
+                        );
+                      })}
 
-                {loadedUser?.favorites?.length >= 1 &&
-                  loadedUser?.favorites?.map((y) => {
-                    return (
-                      <div key={y.title}>
-                        {y.title}
-                        {y.symbol}
-                        <img src={y.image} />
-                      </div>
-                    );
-                  })}
-              </div>
-            </Accordion.Collapse>
-          </Card>
-        </Accordion>
-      </div>
-    </Draggable>
+                    {loadedUser?.favorites?.length >= 1 &&
+                      loadedUser?.favorites?.map((y) => {
+                        return (
+                          <div key={y.title}>
+                            {y.title}
+                            {y.symbol}
+                            <img src={y.image} />
+                          </div>
+                        );
+                      })}
+                  </div>
+                </Accordion.Collapse>
+              </Card>
+            </Accordion>
+          </div>
+        </Draggable>
+      ) : (
+        <div
+          style={{ width: "80%", border: "2px solid black", marginLeft: "10%" }}
+        >
+          <Accordion defaultActiveKey="0">
+            <Card>
+              <Card.Header>
+                <CustomToggle eventKey="0">Click me!</CustomToggle>
+              </Card.Header>
+              <Accordion.Collapse eventKey="0">
+                <div>
+                  {loadedSession?.user?.favorites?.length > 1 &&
+                    loadedSession?.user?.favorites.map((y) => {
+                      return (
+                        <div key={y.title}>
+                          {y.title}
+                          {y.symbol}
+                          <img src={y.image} />
+                        </div>
+                      );
+                    })}
+
+                  {loadedUser?.favorites?.length >= 1 &&
+                    loadedUser?.favorites?.map((y) => {
+                      return (
+                        <div key={y.title}>
+                          {y.title}
+                          {y.symbol}
+                          <img src={y.image} />
+                        </div>
+                      );
+                    })}
+                </div>
+              </Accordion.Collapse>
+            </Card>
+          </Accordion>
+        </div>
+      )}
+    </div>
   );
 }
 
