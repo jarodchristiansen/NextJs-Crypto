@@ -10,6 +10,8 @@ function Favorites() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadedSession, setLoadedSession] = useState();
   const [loadedUser, setLoadedUser] = useState();
+  const [favorites, setFavorites] = useState();
+
 
   useEffect(() => {
     getSession().then((session) => {
@@ -17,27 +19,23 @@ function Favorites() {
       if (!session) {
         router.replace("/");
       } else if (session !== undefined && session.user.username) {
-        // code below is to prevent a user accessing other user's sensitive data/processes
-        // router.replace("/");
-        console.log("else if statement", session);
-        // getUser(session.user.username);
+        getUser(session.user.username);
         setLoadedSession(session);
-        // console.log(
-        //   "session.username && username mismatch",
-        //   session.user.username,
-        //   username
-        // );
       }
     });
-  }, [router]);
+  }, []);
 
-  // const getUser = async (session) => {
-  //   fetchedUser = await fetch(`/api/user/get-user?user=${session}`).then((r) =>
-  //     r.json()
-  //   );
-  //   setLoadedUser(fetchedUser);
-  //   console.log("this is fetchedUser", fetchedUser);
-  // };
+  const getUser = async (session) => {
+    fetchedUser = await fetch(`/api/user/get-user?user=${session}`).then((r) =>
+      r.json()
+    );
+    setLoadedUser(fetchedUser);
+
+    if (fetchedUser) {
+        setFavorites(fetchedUser?.favorites)
+    }
+    console.log("this is fetchedUser", loadedUser);
+  };
 
   return (
     <div>
@@ -63,6 +61,17 @@ function Favorites() {
               </div>
             );
           })}
+
+            {loadedUser?.favorites?.length >= 1 && loadedUser?.favorites?.map((y) => {
+                return (
+                    <div key={y.title}>
+                        {y.title}
+                        {y.symbol}
+                        <img src={y.image} />
+                    </div>
+                );
+            })}
+
         </div>
     </div>
   );
