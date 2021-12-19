@@ -19,12 +19,15 @@ import fetch from "unfetch";
 
 async function changeUsernameHandler(userNameData) {
     const response = await fetch("/api/auth/change-username/", {
-        method: "PATCh",
+        method: "PATCH",
         body: JSON.stringify(userNameData),
         headers: {
             "Content-Type": "application/json",
         },
-    })
+    });
+
+    const data = await response.json();
+    return data;
 }
 
 
@@ -49,9 +52,9 @@ function UsernameChangeModal(props) {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Save Changes
-                    </Button>
+                    {/*<Button variant="primary" onClick={handleClose}>*/}
+                    {/*    Save Changes*/}
+                    {/*</Button>*/}
                 </Modal.Footer>
             </Modal>
         </>

@@ -1,19 +1,27 @@
 // import classes from "./profile-form.module.css";
 import { useState, useEffect, useRef } from "react";
+import {signOut} from "next-auth/client";
 
 function UsernameForm(props) {
     const newUsernameRef = useRef();
 
-    function submitHandler(event) {
+    async function submitHandler(event) {
         event.preventDefault();
 
         const enteredNewUsername = newUsernameRef.current.value;
 
         //Need to Add validation
 
-        props.onChangePassword({
+        console.log("this is the new enteredNewUsername", enteredNewUsername)
+
+       let results =  await props.onChangeUsername({
             newUsername: enteredNewUsername,
         });
+
+
+        if (results?.message === 'Password updated') {
+            signOut({callbackUrl: 'http://localhost:3000/'})
+        }
     }
 
     return (

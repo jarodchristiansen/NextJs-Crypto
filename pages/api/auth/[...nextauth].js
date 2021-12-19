@@ -61,6 +61,7 @@ const options = {
         if (existingUser) {
           user?.favorites = existingUser?.favorites
 
+
           if (!existingUser?.username) {
             let newId = makeid(12).toString() + "!@$"
             user.username = newId;
@@ -69,6 +70,8 @@ const options = {
                 { email: user?.email },
                 { $set: { username: newId } }
             );
+          } else {
+            user?.username = existingUser?.username
           }
         } else {
           let tempId = makeid(12).toString() + "!@$"
