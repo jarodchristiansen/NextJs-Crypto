@@ -8,7 +8,13 @@ import { useAccordionButton } from "react-bootstrap/AccordionButton";
 // import { FaPlus, FaMinus } from "react-icons/all";
 // import { CgAdd } from "react-icons/cg";
 
-function CustomToggle({ children, eventKey, isEditing, setIsEditing }) {
+function CustomToggle({
+  children,
+  eventKey,
+  isEditing,
+  setIsEditing,
+  isAuthorized,
+}) {
   const [expandedState, setExpandedState] = useState(true);
 
   const decoratedOnClick = useAccordionButton(eventKey, () => {
@@ -27,20 +33,24 @@ function CustomToggle({ children, eventKey, isEditing, setIsEditing }) {
         // <FaMinus onClick={decoratedOnClick}>{children}</FaMinus>
         <div>
           <span onClick={decoratedOnClick}>Minus</span>
-          {!isEditing ? (
-            <img
-              onClick={() => setIsEditing(true)}
-              style={{ marginLeft: "90%" }}
-              src={"/local-fa-icons/edit.svg"}
-              height={30}
-            />
-          ) : (
-            <img
-              onClick={() => setIsEditing(false)}
-              style={{ marginLeft: "90%" }}
-              src={"/local-fa-icons/minus-square.svg"}
-              height={30}
-            />
+          {isAuthorized && (
+            <>
+              {!isEditing ? (
+                <img
+                  onClick={() => setIsEditing(true)}
+                  style={{ marginLeft: "90%" }}
+                  src={"/local-fa-icons/edit.svg"}
+                  height={30}
+                />
+              ) : (
+                <img
+                  onClick={() => setIsEditing(false)}
+                  style={{ marginLeft: "90%" }}
+                  src={"/local-fa-icons/minus-square.svg"}
+                  height={30}
+                />
+              )}
+            </>
           )}
         </div>
       )}
@@ -67,7 +77,7 @@ function Favorites(props) {
   const [loadedSession, setLoadedSession] = useState();
   // const [loadedUser, setLoadedUser] = useState();
   const [favorites, setFavorites] = useState();
-  const [isAuthorized, setIsAuthorized] = useState();
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
   useEffect(() => {
     console.log("this is the username in favorites", username);
@@ -77,8 +87,6 @@ function Favorites(props) {
         router.replace("/");
       } else if (session !== undefined && session.user.username) {
         if (session?.user?.username === username) {
-          setIsAuthorized(true);
-        } else if (loadedUser?.username === username) {
           setIsAuthorized(true);
         }
         if (path.includes("user")) {
@@ -128,6 +136,7 @@ function Favorites(props) {
                     eventKey="0"
                     isEditing={isEditing}
                     setIsEditing={setIsEditing}
+                    isAuthorized={isAuthorized}
                   ></CustomToggle>
                 </Card.Header>
                 <Accordion.Collapse eventKey="0">
@@ -174,7 +183,9 @@ function Favorites(props) {
           <Accordion defaultActiveKey="0">
             <Card>
               <Card.Header>
-                <CustomToggle eventKey="0">Click me!</CustomToggle>
+                <CustomToggle eventKey="0" isAuthorized={isAuthorized}>
+                  Click me!
+                </CustomToggle>
               </Card.Header>
               <Accordion.Collapse eventKey="0">
                 <div>
