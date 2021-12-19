@@ -97,7 +97,7 @@ function Favorites(props) {
           console.log("favorites on assets page");
           setLoadedUser(session.user.username);
           getUser(session.user.username);
-          setLoadedSession(session);
+          // setLoadedSession(session);
         }
       }
     });
@@ -141,16 +141,18 @@ function Favorites(props) {
                 </Card.Header>
                 <Accordion.Collapse eventKey="0">
                   <div>
-                    {loadedSession?.user?.favorites?.length > 1 &&
-                      loadedSession?.user?.favorites.map((y) => {
-                        return (
-                          <div key={y.title}>
-                            {y.title}
-                            {y.symbol}
-                            <img src={y.image} />
-                          </div>
-                        );
-                      })}
+                    {/*{loadedSession?.user?.favorites?.length > 1 &&*/}
+                    {/*  loadedSession?.user?.favorites.map((y) => {*/}
+                    {/*    return (*/}
+                    {/*      <div key={y.title}>*/}
+                    {/*        {y.title}*/}
+                    {/*        {y.symbol}*/}
+                    {/*        <img src={y.image} />*/}
+                    {/*      </div>*/}
+                    {/*    );*/}
+                    {/*  })}*/}
+
+                    {/*user profile version*/}
 
                     {loadedUser?.favorites?.length >= 1 &&
                       loadedUser?.favorites?.map((y) => {
