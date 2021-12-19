@@ -15,7 +15,6 @@ function AssetDetails() {
   const router = useRouter();
 
   let id = router.query.id || "BTC";
-  console.log(router.query);
 
   const [tabState, setTabState] = useState("Financial");
   const [isLoading, setIsLoading] = useState(true);

@@ -8,7 +8,6 @@ async function handler(req, res) {
     return;
   }
 
-  console.log("this is the get-user handler");
   const session = await getSession({ req });
 
   // if (!session) {
@@ -20,8 +19,6 @@ async function handler(req, res) {
 
   // const userEmail = session.user.email;
 
-  console.log("this is the userName ---", userName);
-
   let client = await MongoClient.connect(`${process.env.MONGODB_URI}`);
 
   const db = client.db("Crypto_Watch");
@@ -29,8 +26,6 @@ async function handler(req, res) {
   const usersCollection = db.collection("users");
 
   const user = await usersCollection?.findOne({ username: userName });
-
-  console.log("this is the user", user);
 
   if (!user) {
     res.status(400).json({ message: "User not found." });

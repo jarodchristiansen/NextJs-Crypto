@@ -11,9 +11,7 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        console.log("inside get request method-----", Crypto_Asset);
         const users = await Crypto_Asset.find({});
-        console.log("users objects -----", users);
         res.status(200).json(users);
       } catch (error) {
         res.status(400).json({ success: false });

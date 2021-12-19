@@ -33,8 +33,6 @@ function AssetsPage(props) {
 
   const router = useRouter();
 
-  console.log("this is router.pathname on assets/index", router.pathname);
-
   // useEffect(() => {
   //   getSession().then((session) => {
   //     setIsLoading(false);

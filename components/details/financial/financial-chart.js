@@ -66,7 +66,6 @@ function FinancialChart(props) {
 
   const fetchUniswap = async () => {
     console.log("fetchUniswap running");
-    console.log("this is time in fetchUniswap", time);
     uniValues = await fetch(
       `/api/asset-details/uniswap?id=${id}&time=${time}`
     ).then((r) => r.json());
@@ -78,8 +77,6 @@ function FinancialChart(props) {
     //     console.log("no time in this object")
     //   }
     // }
-
-    console.log("uniValues", uniValues);
 
     if (uniValues.length > 1) {
       setUniswapData([...uniValues]);

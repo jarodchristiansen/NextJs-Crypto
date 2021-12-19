@@ -15,8 +15,6 @@ function UserProfile() {
 
   let username = router?.query?.username;
 
-  console.log("this is router.pathnamer", router.pathname);
-
   if (username !== null && username !== undefined) {
     username = Object.values(username)[0];
   }

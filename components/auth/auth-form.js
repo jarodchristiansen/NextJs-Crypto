@@ -1,14 +1,18 @@
 import React, { useState, useRef, useEffect } from "react";
 import classes from "./auth-form.module.css";
-import {getProviders, signIn, useSession} from "next-auth/client";
+import { getProviders, signIn, useSession } from "next-auth/client";
 import { useRouter } from "next/router";
 import { getSession } from "next-auth/client";
 import { toast, ToastContainer } from "react-nextjs-toast";
-import {initializeStore} from "../../store";
-import {Button, Row} from "react-bootstrap";
-import {message} from "antd";
-import { FaGithub, FaFacebookSquare, FaGoogle, FaTwitter } from 'react-icons/fa'
-
+import { initializeStore } from "../../store";
+import { Button, Row } from "react-bootstrap";
+import { message } from "antd";
+import {
+  FaGithub,
+  FaFacebookSquare,
+  FaGoogle,
+  FaTwitter,
+} from "react-icons/fa";
 
 async function createUser(email, password, username) {
   const response = await fetch("/api/auth/signup", {
@@ -28,8 +32,7 @@ async function createUser(email, password, username) {
 }
 
 function AuthForm(props) {
-
-  const { providers } = props
+  const { providers } = props;
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
   const userNameInputRef = useRef();
@@ -38,18 +41,16 @@ function AuthForm(props) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [loadedSession, setLoadedSession] = useState();
-  const [loadedProviders, setLoadedProviders] = useState()
-  const [buttonsDisabled, setButtonsDisabled] = useState(false)
-
+  const [loadedProviders, setLoadedProviders] = useState();
+  const [buttonsDisabled, setButtonsDisabled] = useState(false);
 
   useEffect(() => {
-    console.log("this is the providers in auth-form", providers)
     getSession().then((session) => {
       setIsLoading(false);
       if (session) {
         router.replace("/");
       } else {
-        loadProviders()
+        loadProviders();
       }
     });
   }, [router]);
@@ -60,15 +61,13 @@ function AuthForm(props) {
 
   async function loadProviders() {
     let providers = await getProviders();
-    delete providers.credentials
-    setLoadedProviders(providers)
-    console.log("this is loadProviders output ---", loadedProviders)
+    delete providers.credentials;
+    setLoadedProviders(providers);
   }
-
 
   async function submitHandler(event) {
     event.preventDefault();
-    setButtonsDisabled(true)
+    setButtonsDisabled(true);
     const enteredEmail = emailInputRef?.current?.value;
     const enteredPassword = passwordInputRef?.current?.value;
     const userName = userNameInputRef?.current?.value;
@@ -77,35 +76,32 @@ function AuthForm(props) {
 
     if (isLogin) {
       //log user in
-      console.log("entered information", enteredEmail, enteredPassword);
       const result = await signIn("credentials", {
         redirect: false,
         email: enteredEmail,
         password: enteredPassword,
       });
 
-      console.log("result ----", result);
       if (!result.error) {
         //set some auth state
 
-
-       await getSession().then((session) => {
+        await getSession().then((session) => {
           setIsLoading(false);
           if (session) {
-            const reduxStore = initializeStore()
-            const { dispatch } = reduxStore
+            const reduxStore = initializeStore();
+            const { dispatch } = reduxStore;
 
-          try {
-            dispatch({
-              type: "SET_USER",
-              user: session.user
-            })
-            setTimeout(() => {
-              router.replace("/");
-            }, 3000);
-          } catch (err) {
-              console.log("no user to dispatch")
-          }
+            try {
+              dispatch({
+                type: "SET_USER",
+                user: session.user,
+              });
+              setTimeout(() => {
+                router.replace("/");
+              }, 3000);
+            } catch (err) {
+              console.log("no user to dispatch");
+            }
           }
         });
 
@@ -121,7 +117,6 @@ function AuthForm(props) {
         console.log("this is the result.error", result.error);
       }
     } else {
-      console.log("this is the username in else statement", userName);
       try {
         const result = await createUser(
           enteredEmail,
@@ -145,60 +140,53 @@ function AuthForm(props) {
     }
   }
 
-
   async function signInOthers(provider) {
-
-    console.log("provider in signInOthers", provider)
-    setButtonsDisabled(true)
-   const result = await signIn(provider.id, {
+    setButtonsDisabled(true);
+    const result = await signIn(provider.id, {
       callbackUrl: `${window.location.origin}`,
-    })
-      // const result = await signIn("credentials", {
-      //   redirect: false,
-      //   email: enteredEmail,
-      //   password: enteredPassword,
-      // });
+    });
+    // const result = await signIn("credentials", {
+    //   redirect: false,
+    //   email: enteredEmail,
+    //   password: enteredPassword,
+    // });
 
-      console.log("result ----", result);
-      if (!result?.error) {
-        //set some auth state
+    if (!result?.error) {
+      //set some auth state
 
+      await getSession().then((session) => {
+        setIsLoading(false);
+        if (session) {
+          const reduxStore = initializeStore();
+          const { dispatch } = reduxStore;
 
-        await getSession().then((session) => {
-          setIsLoading(false);
-          if (session) {
-            const reduxStore = initializeStore()
-            const { dispatch } = reduxStore
-
-            try {
-              dispatch({
-                type: "SET_USER",
-                user: session.user
-              })
-            } catch (err) {
-              toast.notify(`No User to Set`, {
-                duration: 10,
-                type: "error",
-              });
-            }
+          try {
+            dispatch({
+              type: "SET_USER",
+              user: session.user,
+            });
+          } catch (err) {
+            toast.notify(`No User to Set`, {
+              duration: 10,
+              type: "error",
+            });
           }
-        });
+        }
+      });
 
-        toast.notify(`you have been logged in!`, {
-          duration: 3,
-          type: "success",
-        });
-      } else {
-        toast.notify(`${result.error}`, {
-          duration: 10,
-          type: "error",
-        });
-        console.log("this is the result.error", result.error);
-      }
-
+      toast.notify(`you have been logged in!`, {
+        duration: 3,
+        type: "success",
+      });
+    } else {
+      toast.notify(`${result.error}`, {
+        duration: 10,
+        type: "error",
+      });
+      console.log("this is the result.error", result.error);
+    }
   }
 
-  console.log("this is isLogin", isLogin);
   return (
     <section className={classes.auth}>
       <ToastContainer position={"bottom"} />
@@ -224,7 +212,11 @@ function AuthForm(props) {
           </div>
         )}
         <div className={classes.actions}>
-          <Button type={"submit"} disabled={buttonsDisabled} onClick={(e) => submitHandler(e)}>
+          <Button
+            type={"submit"}
+            disabled={buttonsDisabled}
+            onClick={(e) => submitHandler(e)}
+          >
             {isLogin ? "Login" : "Create Account"}
           </Button>
           <button
@@ -234,57 +226,50 @@ function AuthForm(props) {
           >
             {isLogin ? "Create new account" : "Login with existing account"}
           </button>
-          <div style={{width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", textAlign: "center"}}>
-            <hr/>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              textAlign: "center",
+            }}
+          >
+            <hr />
             <div className={classes.orText}>
               <h6>Or</h6>
             </div>
           </div>
 
-          <div>
-            Sign in with:
-          </div>
-          <div style={{display: "block", maxWidth: "90%"}}>
+          <div>Sign in with:</div>
+          <div style={{ display: "block", maxWidth: "90%" }}>
             <div className={classes.outer}>
-
-
-              {loadedProviders && Object.values(loadedProviders).map((provider) => (
+              {loadedProviders &&
+                Object.values(loadedProviders).map((provider) => (
                   <div key={provider.name} className={classes.box}>
                     {/*<button onClick={() => signIn(provider.id)}>*/}
                     {/*    Sign in with {provider.name}*/}
                     {/*</button>*/}
 
-                    <Button className={classes.iconButtons} onClick={() => {
-                                    signInOthers(provider)
-                    }}
-                            disabled={buttonsDisabled}
+                    <Button
+                      className={classes.iconButtons}
+                      onClick={() => {
+                        signInOthers(provider);
+                      }}
+                      disabled={buttonsDisabled}
                     >
-
-                      {provider.name === "GitHub" && (
-                          <FaGithub size={28}/>
-                      )}
+                      {provider.name === "GitHub" && <FaGithub size={28} />}
 
                       {provider.name === "Facebook" && (
-                          <FaFacebookSquare size={28}/>
+                        <FaFacebookSquare size={28} />
                       )}
 
-                      {provider.name === "Google" && (
-                          <FaGoogle size={28}/>
-                      )}
+                      {provider.name === "Google" && <FaGoogle size={28} />}
 
-
-                      {provider.name === "Twitter" && (
-                          <FaTwitter size={28}/>
-                      )}
-
-
-
+                      {provider.name === "Twitter" && <FaTwitter size={28} />}
                     </Button>
                   </div>
-              ))}
-
-
-
+                ))}
 
               {/*<div className={classes.square}></div>*/}
               {/*<div className={classes.square}></div>*/}
@@ -292,13 +277,11 @@ function AuthForm(props) {
               {/*<div className={classes.square}></div>*/}
             </div>
           </div>
-
         </div>
       </form>
     </section>
   );
 }
-
 
 // This is the recommended way for Next.js 9.3 or newer
 // export async function getServerSideProps(context) {

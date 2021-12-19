@@ -66,7 +66,10 @@ function Favorites(props) {
     if (fetchedUser) {
       setFavorites(fetchedUser?.favorites);
     }
-    console.log("this is fetchedUser", loadedUser);
+    console.log(
+      "this is favorites in Favorites Component after get user -----",
+      favorites
+    );
   };
 
   return (
