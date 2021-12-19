@@ -18,6 +18,7 @@ import { InputGroup, Button, FormControl } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import fetch from "unfetch";
 import Favorites from "../../components/profile/favorites";
+import { useRouter } from "next/router";
 
 function AssetsPage(props) {
   const [startingAssets, setStartingAssets] = useState([]);
@@ -28,6 +29,11 @@ function AssetsPage(props) {
 
   const [isLoading, setIsLoading] = useState(true);
   const [loadedSession, setLoadedSession] = useState();
+  const [loadedUser, setLoadedUser] = useState();
+
+  const router = useRouter();
+
+  console.log("this is router.pathname on assets/index", router.pathname);
 
   // useEffect(() => {
   //   getSession().then((session) => {
@@ -97,18 +103,6 @@ function AssetsPage(props) {
 
   return (
     <div>
-      {/*<div>*/}
-      {/*    {listOfTitles && (*/}
-      {/*        <ul style={{width: '80%', minHeight: "300px"}}>*/}
-      {/*            {listOfTitles.map((asset) => {*/}
-      {/*                {console.log("this is the asset ------", asset)}*/}
-      {/*                <li key={asset.symbol} style={{width: '200px', color: "black"}}><p>{asset.title}</p></li>*/}
-      {/*            })}*/}
-      {/*        </ul>*/}
-      {/*    )*/}
-      {/*    }*/}
-      {/*</div>*/}
-
       <div style={{ margin: "2% 0 0 10%", width: "100%" }}>
         <Search
           placeholder="Search for an Asset"
@@ -122,29 +116,13 @@ function AssetsPage(props) {
           loading={false}
           enterButton="Search"
         />
-        {/*{props.session.user.username}*/}
-        {/*<Typeahead*/}
-        {/*    id="basic-example"*/}
-        {/*    onChange={(e) => {*/}
-        {/*        setQuery(e.target.value)*/}
-        {/*    }}*/}
-        {/*    labelKey={"symbol"}*/}
-        {/*    options={events}*/}
-        {/*    placeholder="choose an asset"*/}
-        {/*    selected={selected}*/}
-        {/*/>*/}
       </div>
 
-      {/*<div style={{justifyContent: "center", alignItems: "center", display: "flex", width: "100%"}}>*/}
-      {/*    <div>*/}
-      {/*        <form onSubmit={searchQuery} >*/}
-      {/*            <input id="name" type="text" autoComplete="name" required />*/}
-      {/*            <button type="submit">Search</button>*/}
-      {/*        </form>*/}
-      {/*    </div>*/}
-      {/*</div>*/}
-
-      <Favorites />
+      <Favorites
+        path={router.pathname}
+        loadedUser={loadedUser}
+        setLoadedUser={setLoadedUser}
+      />
 
       {events && (
         <EventList items={events.length > 1 ? events : props.events} />

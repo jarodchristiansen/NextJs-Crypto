@@ -4,18 +4,18 @@ import { getSession } from "next-auth/client";
 import { useRouter } from "next/router";
 import UsernameChangeModal from "./username-change-modal";
 import fetch from "unfetch";
-import {Button} from "react-bootstrap";
+import { Button } from "react-bootstrap";
 // import classes from "./user-profile.module.css";
-
-
+import Favorites from "./favorites";
 
 function UserProfile() {
   // Redirect away if NOT auth
   const router = useRouter();
-  const [show, setShow] = useState(false)
-
+  const [show, setShow] = useState(false);
 
   let username = router?.query?.username;
+
+  console.log("this is router.pathnamer", router.pathname);
 
   if (username !== null && username !== undefined) {
     username = Object.values(username)[0];
@@ -32,22 +32,10 @@ function UserProfile() {
       setIsLoading(false);
       if (!session) {
         router.replace("/");
-      } else if (
-        session !== undefined &&
-        username !== undefined &&
-        session.user.username !== username
-      ) {
-        // code below is to prevent a user accessing other user's sensitive data/processes
-        // router.replace("/");
-        // console.log(
-        //   "session.username && username mismatch",
-        //   session.user.username,
-        //   username
-        // );
       } else {
         if (username !== null && username !== undefined) {
           if (username.includes("!@$")) {
-            handleShow()
+            handleShow();
           }
           getUser(username);
         }
@@ -85,35 +73,28 @@ function UserProfile() {
       {/*<Button variant="primary" onClick={handleShow}>*/}
       {/*  Launch demo modal*/}
       {/*</Button>*/}
-          <UsernameChangeModal show={show} setShow={setShow}/>
+      <UsernameChangeModal show={show} setShow={setShow} />
+
+      {console.log("this is the loadedUser on user-profile", loadedUser)}
       {loadedUser && loadedUser?.favorites && (
         <div>
           <h1>User Favorites</h1>
-          <ul>
-            {loadedUser?.favorites.map((item) => {
-              return (
-                <li key={item.title}>
-                  <div>
-                    {item.title}
-                    {item.symbol}
-                    <img src={`${item.image}`} />
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
+
+          <Favorites
+            path={router.pathname}
+            loadedUser={loadedUser}
+            setLoadedUser={setLoadedUser}
+          />
         </div>
       )}
 
-      {loadedSession?.user?.username === username ? (
+      {loadedSession?.user?.username === username && (
         <div>
           {console.log("loadedSession", loadedSession)}
 
           <h1>Your User Profile</h1>
           <ProfileForm onChangePassword={changePasswordHandler} />
         </div>
-      ) : (
-        <div>Incorrect user data</div>
       )}
     </section>
   );

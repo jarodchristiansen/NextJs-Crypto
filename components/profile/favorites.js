@@ -22,13 +22,19 @@ function CustomToggle({ children, eventKey }) {
   );
 }
 
-function Favorites() {
+function Favorites(props) {
+  const { path, loadedUser, setLoadedUser } = props;
+
+  console.log("this is the path in Favorites ------", path);
+
   let fetchedUser;
 
   const router = useRouter();
+  let username = router?.query?.username;
+
   const [isLoading, setIsLoading] = useState(true);
   const [loadedSession, setLoadedSession] = useState();
-  const [loadedUser, setLoadedUser] = useState();
+  // const [loadedUser, setLoadedUser] = useState();
   const [favorites, setFavorites] = useState();
 
   useEffect(() => {
@@ -37,8 +43,16 @@ function Favorites() {
       if (!session) {
         router.replace("/");
       } else if (session !== undefined && session.user.username) {
-        getUser(session.user.username);
-        setLoadedSession(session);
+        if (path.includes("user")) {
+          console.log("favorites in user-profile");
+          getUser(username);
+          setLoadedSession(session);
+        } else if (path.includes("assets")) {
+          console.log("favorites on assets page");
+          setLoadedUser(session.user.username);
+          getUser(session.user.username);
+          setLoadedSession(session);
+        }
       }
     });
   }, []);
