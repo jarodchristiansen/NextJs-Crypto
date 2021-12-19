@@ -7,9 +7,8 @@ import Draggable from "react-draggable";
 import { useAccordionButton } from "react-bootstrap/AccordionButton";
 // import { FaPlus, FaMinus } from "react-icons/all";
 // import { CgAdd } from "react-icons/cg";
-i;
 
-function CustomToggle({ children, eventKey }) {
+function CustomToggle({ children, eventKey, isEditing, setIsEditing }) {
   const [expandedState, setExpandedState] = useState(true);
 
   const decoratedOnClick = useAccordionButton(eventKey, () => {
@@ -28,7 +27,21 @@ function CustomToggle({ children, eventKey }) {
         // <FaMinus onClick={decoratedOnClick}>{children}</FaMinus>
         <div>
           <span onClick={decoratedOnClick}>Minus</span>
-          <span style={{ marginLeft: "90%" }}>Pencil</span>
+          {!isEditing ? (
+            <img
+              onClick={() => setIsEditing(true)}
+              style={{ marginLeft: "90%" }}
+              src={"/local-fa-icons/edit.svg"}
+              height={30}
+            />
+          ) : (
+            <img
+              onClick={() => setIsEditing(false)}
+              style={{ marginLeft: "90%" }}
+              src={"/local-fa-icons/minus-square.svg"}
+              height={30}
+            />
+          )}
         </div>
       )}
     </div>
@@ -37,7 +50,7 @@ function CustomToggle({ children, eventKey }) {
 
 function Favorites(props) {
   const { path, loadedUser, setLoadedUser } = props;
-
+  const [isEditing, setIsEditing] = useState(false);
   console.log("this is the path in Favorites ------", path);
 
   let fetchedUser;
@@ -111,7 +124,11 @@ function Favorites(props) {
             <Accordion defaultActiveKey="0">
               <Card>
                 <Card.Header>
-                  <CustomToggle eventKey="0"></CustomToggle>
+                  <CustomToggle
+                    eventKey="0"
+                    isEditing={isEditing}
+                    setIsEditing={setIsEditing}
+                  ></CustomToggle>
                 </Card.Header>
                 <Accordion.Collapse eventKey="0">
                   <div>
@@ -129,10 +146,18 @@ function Favorites(props) {
                     {loadedUser?.favorites?.length >= 1 &&
                       loadedUser?.favorites?.map((y) => {
                         return (
-                          <div key={y.title}>
+                          <div
+                            key={y.title}
+                            style={{ display: "flex", flexDirection: "row" }}
+                          >
                             {y.title}
                             {y.symbol}
                             <img src={y.image} />
+                            {isEditing && (
+                              <div style={{ marginLeft: "70%" }}>
+                                Edit active
+                              </div>
+                            )}
                           </div>
                         );
                       })}
