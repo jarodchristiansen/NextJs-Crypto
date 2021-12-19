@@ -144,7 +144,7 @@ function AssetsPage(props) {
       {/*    </div>*/}
       {/*</div>*/}
 
-      {/*<Favorites />*/}
+      <Favorites />
 
       {events && (
         <EventList items={events.length > 1 ? events : props.events} />

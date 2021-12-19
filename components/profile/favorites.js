@@ -54,7 +54,7 @@ function Favorites() {
           }}
         >
           Favorites Panel
-          {loadedSession?.user?.favorites.map((y) => {
+          {loadedSession?.user?.favorites?.length > 1 && loadedSession?.user?.favorites.map((y) => {
             return (
               <div key={y.title}>
                 {y.title}
