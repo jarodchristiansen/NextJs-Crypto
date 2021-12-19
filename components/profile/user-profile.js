@@ -83,6 +83,8 @@ function UserProfile() {
         <div>
           <h1>User Favorites</h1>
 
+          <AblyChatComponent />
+
           <Favorites
             path={router.pathname}
             loadedUser={loadedUser}
@@ -94,8 +96,6 @@ function UserProfile() {
       {loadedSession?.user?.username === username && (
         <div>
           <h1>Your User Profile</h1>
-
-          <AblyChatComponent />
 
           <ProfileForm onChangePassword={changePasswordHandler} />
         </div>

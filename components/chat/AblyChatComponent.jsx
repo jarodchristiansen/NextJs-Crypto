@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useChannel } from "./AblyReactEffect";
 import styles from "./AblyChatComponent.module.css";
+import { Row } from "react-bootstrap";
 
 const AblyChatComponent = () => {
   let inputBox = null;
@@ -49,7 +50,9 @@ const AblyChatComponent = () => {
     const author = message.connectionId === ably.connection.id ? "me" : "other";
     return (
       <span key={index} className={styles.message} data-author={author}>
-        {message.data}
+        <Row>
+          {message.data} - {author}
+        </Row>
       </span>
     );
   });
