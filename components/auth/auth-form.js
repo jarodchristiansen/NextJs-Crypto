@@ -145,6 +145,59 @@ function AuthForm(props) {
     }
   }
 
+
+  async function signInOthers(provider) {
+
+    console.log("provider in signInOthers", provider)
+    setButtonsDisabled(true)
+   const result = await signIn(provider.id, {
+      callbackUrl: `${window.location.origin}`,
+    })
+      // const result = await signIn("credentials", {
+      //   redirect: false,
+      //   email: enteredEmail,
+      //   password: enteredPassword,
+      // });
+
+      console.log("result ----", result);
+      if (!result?.error) {
+        //set some auth state
+
+
+        await getSession().then((session) => {
+          setIsLoading(false);
+          if (session) {
+            const reduxStore = initializeStore()
+            const { dispatch } = reduxStore
+
+            try {
+              dispatch({
+                type: "SET_USER",
+                user: session.user
+              })
+            } catch (err) {
+              toast.notify(`No User to Set`, {
+                duration: 10,
+                type: "error",
+              });
+            }
+          }
+        });
+
+        toast.notify(`you have been logged in!`, {
+          duration: 3,
+          type: "success",
+        });
+      } else {
+        toast.notify(`${result.error}`, {
+          duration: 10,
+          type: "error",
+        });
+        console.log("this is the result.error", result.error);
+      }
+
+  }
+
   console.log("this is isLogin", isLogin);
   return (
     <section className={classes.auth}>
@@ -202,13 +255,7 @@ function AuthForm(props) {
                     {/*</button>*/}
 
                     <Button className={classes.iconButtons} onClick={() => {
-                      setButtonsDisabled(true)
-                      setIsLoading(true)
-                      message.success('Successfully Signed in')
-                      signIn(provider.id, {
-                        callbackUrl: `${window.location.origin}`,
-                      })
-                      setIsLoading(false)
+                                    signInOthers(provider)
                     }}
                             disabled={buttonsDisabled}
                     >

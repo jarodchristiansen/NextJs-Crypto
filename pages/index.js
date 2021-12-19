@@ -11,6 +11,8 @@ import {initializeStore} from "../store";
 function HomePage({isConnected, initialReduxState}) {
   const [session, loading, status] = useSession();
 
+
+
   const isDesktopOrLaptop = useMediaQuery({
     query: `(max-width: 620px)`
   })
