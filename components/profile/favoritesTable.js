@@ -6,7 +6,7 @@ function FavoritesTable(props) {
 
   return (
     <div style={{ maxWidth: "100%", overflow: "auto" }}>
-      <Table striped bordered hover>
+      <Table striped bordered hover responsive>
         <thead>
           <tr>
             <th>Your Rank</th>
