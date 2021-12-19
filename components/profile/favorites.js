@@ -5,20 +5,26 @@ import { useRouter } from "next/router";
 import { Accordion, Card } from "react-bootstrap";
 import Draggable from "react-draggable";
 import { useAccordionButton } from "react-bootstrap/AccordionButton";
+import { FaPlus, FaMinus } from "react-icons/all";
 
 function CustomToggle({ children, eventKey }) {
-  const decoratedOnClick = useAccordionButton(eventKey, () =>
-    console.log("totally custom!")
-  );
+  const [expandedState, setExpandedState] = useState(true);
+
+  const decoratedOnClick = useAccordionButton(eventKey, () => {
+    setExpandedState(!expandedState);
+    console.log("expandedState", expandedState);
+  });
 
   return (
-    <button
-      type="button"
-      style={{ backgroundColor: "pink" }}
-      onClick={decoratedOnClick}
-    >
-      {children}
-    </button>
+    <div>
+      {!expandedState ? (
+        // <FaPlus onClick={decoratedOnClick}>{children}</FaPlus>
+        <span onClick={decoratedOnClick}>Plus</span>
+      ) : (
+        // <FaMinus onClick={decoratedOnClick}>{children}</FaMinus>
+        <span onClick={decoratedOnClick}>Minus</span>
+      )}
+    </div>
   );
 }
 
@@ -45,8 +51,8 @@ function Favorites(props) {
       } else if (session !== undefined && session.user.username) {
         if (path.includes("user")) {
           console.log("favorites in user-profile");
-          getUser(username);
-          setLoadedSession(session);
+          // getUser(username);
+          // setLoadedSession(session);
         } else if (path.includes("assets")) {
           console.log("favorites on assets page");
           setLoadedUser(session.user.username);
@@ -73,7 +79,7 @@ function Favorites(props) {
   };
 
   return (
-    <Draggable>
+    <Draggable axis={"x"} bounds={"parent"}>
       <div
         style={{ width: "80%", border: "2px solid black", marginLeft: "10%" }}
       >
