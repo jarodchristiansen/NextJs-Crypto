@@ -6,6 +6,7 @@ import { useSession, getSession } from "next-auth/client";
 import { useMediaQuery } from "react-responsive";
 import clientPromise from "../lib/mongodb";
 import { initializeStore } from "../store";
+import dynamic from "next/dynamic";
 
 function HomePage({ isConnected, initialReduxState }) {
   const [session, loading, status] = useSession();

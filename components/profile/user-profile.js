@@ -7,6 +7,11 @@ import fetch from "unfetch";
 import { Button } from "react-bootstrap";
 // import classes from "./user-profile.module.css";
 import Favorites from "./favorites";
+import dynamic from "next/dynamic";
+
+const AblyChatComponent = dynamic(() => import("../chat/AblyChatComponent"), {
+  ssr: false,
+});
 
 function UserProfile() {
   // Redirect away if NOT auth
@@ -89,6 +94,9 @@ function UserProfile() {
       {loadedSession?.user?.username === username && (
         <div>
           <h1>Your User Profile</h1>
+
+          <AblyChatComponent />
+
           <ProfileForm onChangePassword={changePasswordHandler} />
         </div>
       )}
