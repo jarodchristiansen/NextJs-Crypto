@@ -2,7 +2,25 @@ import { useEffect, useState } from "react";
 import { getSession } from "next-auth/client";
 import fetch from "unfetch";
 import { useRouter } from "next/router";
-import { Accordion } from "react-bootstrap";
+import { Accordion, Card } from "react-bootstrap";
+import Draggable from "react-draggable";
+import { useAccordionButton } from "react-bootstrap/AccordionButton";
+
+function CustomToggle({ children, eventKey }) {
+  const decoratedOnClick = useAccordionButton(eventKey, () =>
+    console.log("totally custom!")
+  );
+
+  return (
+    <button
+      type="button"
+      style={{ backgroundColor: "pink" }}
+      onClick={decoratedOnClick}
+    >
+      {children}
+    </button>
+  );
+}
 
 function Favorites() {
   let fetchedUser;
@@ -38,45 +56,44 @@ function Favorites() {
   };
 
   return (
-    <div style={{ width: "80%", border: "2px solid black", marginLeft: "10%" }}>
-      <Accordion defaultActiveKey="0" flush={true}>
-        <Accordion.Item eventKey="0">
-          <Accordion.Header className={"accordion-flush"}>
-            Favorites
-          </Accordion.Header>
-          <Accordion.Body
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              textAlign: "center",
-            }}
-          >
-            {loadedSession?.user?.favorites?.length > 1 &&
-              loadedSession?.user?.favorites.map((y) => {
-                return (
-                  <div key={y.title}>
-                    {y.title}
-                    {y.symbol}
-                    <img src={y.image} />
-                  </div>
-                );
-              })}
+    <Draggable>
+      <div
+        style={{ width: "80%", border: "2px solid black", marginLeft: "10%" }}
+      >
+        <Accordion defaultActiveKey="0">
+          <Card>
+            <Card.Header>
+              <CustomToggle eventKey="0">Click me!</CustomToggle>
+            </Card.Header>
+            <Accordion.Collapse eventKey="0">
+              <div>
+                {loadedSession?.user?.favorites?.length > 1 &&
+                  loadedSession?.user?.favorites.map((y) => {
+                    return (
+                      <div key={y.title}>
+                        {y.title}
+                        {y.symbol}
+                        <img src={y.image} />
+                      </div>
+                    );
+                  })}
 
-            {loadedUser?.favorites?.length >= 1 &&
-              loadedUser?.favorites?.map((y) => {
-                return (
-                  <div key={y.title}>
-                    {y.title}
-                    {y.symbol}
-                    <img src={y.image} />
-                  </div>
-                );
-              })}
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
-    </div>
+                {loadedUser?.favorites?.length >= 1 &&
+                  loadedUser?.favorites?.map((y) => {
+                    return (
+                      <div key={y.title}>
+                        {y.title}
+                        {y.symbol}
+                        <img src={y.image} />
+                      </div>
+                    );
+                  })}
+              </div>
+            </Accordion.Collapse>
+          </Card>
+        </Accordion>
+      </div>
+    </Draggable>
   );
 }
 
