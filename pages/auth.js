@@ -14,7 +14,7 @@ function AuthPage() {
       {/*    height: "90%",*/}
       {/*  }}*/}
       {/*></iframe>*/}
-      <LoadingSpinner />
+      {/*<LoadingSpinner />*/}
       <div
         style={{
           display: "flex",
