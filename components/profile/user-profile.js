@@ -8,6 +8,7 @@ import { Button } from "react-bootstrap";
 // import classes from "./user-profile.module.css";
 import Favorites from "./favorites";
 import dynamic from "next/dynamic";
+import LoadingSpinner from "../ui/loading-spinner";
 
 const AblyChatComponent = dynamic(() => import("../chat/AblyChatComponent"), {
   ssr: false,
@@ -78,17 +79,23 @@ function UserProfile() {
       {/*</Button>*/}
       <UsernameChangeModal show={show} setShow={setShow} />
 
-      {console.log("this is the loadedUser on user-profile", loadedUser)}
-      {loadedUser && loadedUser?.favorites && (
-        <div>
-          <h1>User Favorites</h1>
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          {console.log("this is the loadedUser on user-profile", loadedUser)}
+          {loadedUser && loadedUser?.favorites && (
+            <div>
+              <h1>User Favorites</h1>
 
-          <Favorites
-            path={router.pathname}
-            loadedUser={loadedUser}
-            setLoadedUser={setLoadedUser}
-          />
-        </div>
+              <Favorites
+                path={router.pathname}
+                loadedUser={loadedUser}
+                setLoadedUser={setLoadedUser}
+              />
+            </div>
+          )}
+        </>
       )}
 
       {loadedSession?.user?.username === username && (
