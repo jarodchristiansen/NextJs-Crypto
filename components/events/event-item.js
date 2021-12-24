@@ -4,7 +4,7 @@ import CardChart from "./card-chart";
 import { useState } from "react";
 import addFavoriteUtil from "../../lib/favorites";
 import StarButton from "../ui/starbutton";
-import {useStore} from "../../store";
+import { useStore } from "../../store";
 
 function EventItem(props) {
   const { title, image, id, symbol, description, price } = props;
@@ -12,12 +12,10 @@ function EventItem(props) {
   // const humanReadableDate = new Date(date).toLocaleDateString('en-US', {day: 'numeric', month:'long', year:'numeric'})
 
   // const fomrattedAddress = location.replace(', ', '\n')
-
-  const {dispatch} = useStore()
+  const { dispatch } = useStore();
 
   function addFavorite(title, symbol, image) {
-    console.log("this is addFavorite firing ---", title, symbol, image)
-
+    console.log("this is addFavorite firing ---", title, symbol, image);
 
     let favoriteObject = {
       title,
@@ -27,11 +25,10 @@ function EventItem(props) {
 
     dispatch({
       type: "ADD_FAVORITE",
-      favorite: favoriteObject
-    })
+      favorite: favoriteObject,
+    });
 
-    //
-    // addFavoriteUtil(favoriteObject);
+    addFavoriteUtil(favoriteObject);
   }
 
   const exploreLink = `/assets/${symbol}`;
@@ -48,7 +45,7 @@ function EventItem(props) {
           </Button>
         </div>
         <div style={{ margin: "3% 0 0 12%" }}>
-          <StarButton symbol={symbol}/>
+          {/*<StarButton symbol={symbol}/>*/}
           <p onClick={() => addFavorite(title, symbol, image)}>Test Add</p>
         </div>
       </div>

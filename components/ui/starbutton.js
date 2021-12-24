@@ -15,6 +15,12 @@ function StarButton(props) {
         //   onClick={() => setIsFavorited(!isFavorited)}
         //   style={{ cursor: "pointer", stroke: "black", strokeWidth: "30" }}
         // />
+        //   <img
+        //       className={"clickIcon"}
+        //       onClick={() => decoratedOnClick()}
+        //       src={"/local-fa-icons/plus-square.svg"}
+        //       height={30}
+        //   />
         <button>Favorite</button>
       )}
     </div>

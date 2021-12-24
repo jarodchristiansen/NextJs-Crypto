@@ -19,6 +19,8 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import fetch from "unfetch";
 import Favorites from "../../components/profile/favorites";
 import { useRouter } from "next/router";
+import { useStore } from "../../store";
+import { useSelector } from "react-redux";
 
 function AssetsPage(props) {
   const [startingAssets, setStartingAssets] = useState([]);
@@ -30,8 +32,10 @@ function AssetsPage(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [loadedSession, setLoadedSession] = useState();
   const [loadedUser, setLoadedUser] = useState();
+  const [favorites, setFavorites] = useState();
 
   const router = useRouter();
+  const { dispatch, getState } = useStore();
 
   // useEffect(() => {
   //   getSession().then((session) => {
@@ -48,11 +52,39 @@ function AssetsPage(props) {
 
   // const { data, error } = useSWR('/api/all', fetcher)
 
+  // function dynamicSort(property) {
+  //   var sortOrder = 1;
+  //   if (property[0] === "-") {
+  //     sortOrder = -1;
+  //     property = property.substr(1);
+  //   }
+  //   return function (a, b) {
+  //     /* next line works with strings and numbers,
+  //      * and you may want to customize it to your needs
+  //      */
+  //     var result =
+  //       a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+  //     return result * sortOrder;
+  //   };
+  // }
+
   useEffect(() => {
     axios.get("/api/all").then((res) => {
+      // console.log(
+      //   "this is the sorted res.data",
+      //   res.data.sort(dynamicSort("id"))
+      // );
       setStartingAssets(res.data);
       setEvents(res.data);
     });
+    const results = getState();
+    if (results?.user?.favorites) {
+      setFavorites(results?.user?.favorites);
+      console.log("favorites in useEffect", favorites);
+    } else {
+      setFavorites();
+    }
+    console.log("this is getState()", results);
   }, []);
 
   // if (error) return <div>Failed to load</div>
@@ -120,6 +152,7 @@ function AssetsPage(props) {
         path={router.pathname}
         loadedUser={loadedUser}
         setLoadedUser={setLoadedUser}
+        favorites={favorites}
       />
 
       {events && (

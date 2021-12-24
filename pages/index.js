@@ -5,17 +5,36 @@ import SignUpOrIn from "../components/landing/sign-up-or-in";
 import { useSession, getSession } from "next-auth/client";
 import { useMediaQuery } from "react-responsive";
 import clientPromise from "../lib/mongodb";
-import { initializeStore } from "../store";
+import { initializeStore, useStore } from "../store";
 import dynamic from "next/dynamic";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 function HomePage({ isConnected, initialReduxState }) {
   const [session, loading, status] = useSession();
 
+  const { dispatch } = useStore();
+
+  useEffect(() => {
+    if (session?.user && !loading) {
+      try {
+        dispatch({
+          type: "SET_USER",
+          user: session?.user,
+        });
+      } catch (err) {
+        console.log("Error dispatching user to redux", err);
+      }
+    } else if (loading) {
+      console.log("loading statement in useEffect");
+    } else {
+      console.log("other conditional in useEffect");
+    }
+  }, [loading]);
+
   const isDesktopOrLaptop = useMediaQuery({
     query: `(max-width: 620px)`,
   });
-
-  console.log("initialReduxState", initialReduxState);
 
   return (
     <div>
@@ -127,7 +146,6 @@ export async function getServerSideProps(context, req) {
   const session = await getSession({ req });
   const reduxStore = initializeStore();
   const { dispatch } = reduxStore;
-
   //
   // console.log('this is the client', client)
   // console.log("this is the session", session)
@@ -150,7 +168,7 @@ export async function getServerSideProps(context, req) {
   const isConnected = await client.isConnected();
 
   return {
-    props: { isConnected, initialReduxState: reduxStore.getState() },
+    props: { isConnected },
   };
 }
 

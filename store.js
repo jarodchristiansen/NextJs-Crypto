@@ -1,8 +1,8 @@
-import { useMemo } from 'react'
-import { createStore, applyMiddleware } from 'redux'
-import { composeWithDevTools } from 'redux-devtools-extension'
+import { useMemo } from "react";
+import { createStore, applyMiddleware } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
 
-let store
+let store;
 
 // const initialState = {
 //     lastUpdate: 0,
@@ -10,53 +10,53 @@ let store
 //     count: 0,
 // }
 
-const initialState = {
-    user: {favorites: []}
-}
-
+const initialState = {};
 
 const reducer = (state, action) => {
-    switch (action.type) {
-        case 'SET_USER':
-            console.log("SETUSER FIRING", action)
-            return {
-                ...state,
-                user: action?.user,
-            }
-        case 'ADD_FAVORITE':
-            console.log("ADD_FAVORITE FIRING -----", action.favorite)
-            return {
-                user: {
-                    favorites: [...state.user.favorites, action.favorite]
-                }
-            }
-        // case 'TICK':
-        //     return {
-        //         ...state,
-        //         lastUpdate: action.lastUpdate,
-        //         light: !!action.light,
-        //     }
-        // case 'INCREMENT':
-        //     return {
-        //         ...state,
-        //         count: state.count + 1,
-        //     }
-        // case 'DECREMENT':
-        //     return {
-        //         ...state,
-        //         count: state.count - 1,
-        //     }
-        // case 'RESET':
-        //     return {
-        //         ...state,
-        //         count: initialState.count,
-        //     }
-        default:
-            return state
-    }
-
-
-}
+  switch (action.type) {
+    case "SET_USER":
+      console.log("SETUSER FIRING", action);
+      return {
+        ...state,
+        user: action?.user,
+      };
+    case "GET_USER":
+      console.log("GET_USER FIRING", action);
+      return {
+        ...state,
+      };
+    case "ADD_FAVORITE":
+      console.log("ADD_FAVORITE FIRING -----", action.favorite);
+      return {
+        user: {
+          favorites: [...state.user.favorites, action.favorite],
+        },
+      };
+    // case 'TICK':
+    //     return {
+    //         ...state,
+    //         lastUpdate: action.lastUpdate,
+    //         light: !!action.light,
+    //     }
+    // case 'INCREMENT':
+    //     return {
+    //         ...state,
+    //         count: state.count + 1,
+    //     }
+    // case 'DECREMENT':
+    //     return {
+    //         ...state,
+    //         count: state.count - 1,
+    //     }
+    // case 'RESET':
+    //     return {
+    //         ...state,
+    //         count: initialState.count,
+    //     }
+    default:
+      return state;
+  }
+};
 
 //
 // const reducer = (state = initialState, action) => {
@@ -88,36 +88,36 @@ const reducer = (state, action) => {
 // }
 
 function initStore(preloadedState = initialState) {
-    return createStore(
-        reducer,
-        preloadedState,
-        composeWithDevTools(applyMiddleware())
-    )
+  return createStore(
+    reducer,
+    preloadedState,
+    composeWithDevTools(applyMiddleware())
+  );
 }
 
 export const initializeStore = (preloadedState) => {
-    let _store = store ?? initStore(preloadedState)
+  let _store = store ?? initStore(preloadedState);
 
-    // After navigating to a page with an initial Redux state, merge that state
-    // with the current state in the store, and create a new store
-    if (preloadedState && store) {
-        _store = initStore({
-            ...store.getState(),
-            ...preloadedState,
-        })
-        // Reset the current store
-        store = undefined
-    }
+  // After navigating to a page with an initial Redux state, merge that state
+  // with the current state in the store, and create a new store
+  if (preloadedState && store) {
+    _store = initStore({
+      ...store.getState(),
+      ...preloadedState,
+    });
+    // Reset the current store
+    store = undefined;
+  }
 
-    // For SSG and SSR always create a new store
-    if (typeof window === 'undefined') return _store
-    // Create the store once in the client
-    if (!store) store = _store
+  // For SSG and SSR always create a new store
+  if (typeof window === "undefined") return _store;
+  // Create the store once in the client
+  if (!store) store = _store;
 
-    return _store
-}
+  return _store;
+};
 
 export function useStore(initialState) {
-    const store = useMemo(() => initializeStore(initialState), [initialState])
-    return store
+  const store = useMemo(() => initializeStore(initialState), [initialState]);
+  return store;
 }

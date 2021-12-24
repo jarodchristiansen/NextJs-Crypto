@@ -54,7 +54,9 @@ function MainHeader() {
 
     <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
       <Container>
-        <Navbar.Brand href="/">CryptoWatch</Navbar.Brand>
+        <Navbar.Brand>
+          <Link href={"/"}>CryptoWatch</Link>
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
@@ -70,7 +72,6 @@ function MainHeader() {
             {/*</Nav.Link>*/}
             {/*<Nav.Link eventKey={"3"} onClick={session ? handleSignout : handleSignin}>{session ? "Sign out" : "Sign in"}</Nav.Link>*/}
 
-
             {session && (
               <Nav.Link eventKey={"3"}>
                 <Link href={`/user/${username}`}>
@@ -80,15 +81,15 @@ function MainHeader() {
             )}
 
             {!session ? (
-                <Nav.Link eventKey={"3"}>
-                  <Link href="/auth">
-                    <Navbar.Text>{"Sign in"}</Navbar.Text>
-                  </Link>
-                </Nav.Link>
+              <Nav.Link eventKey={"3"}>
+                <Link href="/auth">
+                  <Navbar.Text>{"Sign in"}</Navbar.Text>
+                </Link>
+              </Nav.Link>
             ) : (
-                <Nav.Link eventKey={"3"} onClick={handleSignout}>
-                  {"Sign out"}
-                </Nav.Link>
+              <Nav.Link eventKey={"3"} onClick={handleSignout}>
+                {"Sign out"}
+              </Nav.Link>
             )}
 
             {/*<NavDropdown title="Dropdown" id="collasible-nav-dropdown">*/}

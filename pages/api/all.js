@@ -63,29 +63,29 @@ export default async (req, res) => {
     const assets = await db
       .collection("Crypto_Assets")
       .find({})
-      .sort((a, b) => a.id - b.id)
+      .sort({ id: 1 })
       .limit(20)
       .toArray();
-    console.log(
-      "id",
-      typeof assets[0].id,
-      "title",
-      typeof assets[0].title,
-      "symbol",
-      typeof assets[0].symbol,
-      "description",
-      typeof assets[0].description,
-      "imageUrl",
-      typeof assets[0].imageUrl,
-      "category",
-      typeof assets[0].category,
-      "tags",
-      typeof assets[0].tags,
-      "urls",
-      typeof assets[0].urls,
-      "size",
-      typeof assets[0].size
-    );
+    // console.log(
+    //   "id",
+    //   typeof assets[0].id,
+    //   "title",
+    //   typeof assets[0].title,
+    //   "symbol",
+    //   typeof assets[0].symbol,
+    //   "description",
+    //   typeof assets[0].description,
+    //   "imageUrl",
+    //   typeof assets[0].imageUrl,
+    //   "category",
+    //   typeof assets[0].category,
+    //   "tags",
+    //   typeof assets[0].tags,
+    //   "urls",
+    //   typeof assets[0].urls,
+    //   "size",
+    //   typeof assets[0].size
+    // );
 
     client.close();
     res.json(assets);
