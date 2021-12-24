@@ -45,6 +45,7 @@ function AuthForm(props) {
   const [loadedProviders, setLoadedProviders] = useState();
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
   const [hasError, setHasError] = useState();
+  const [showPassword, setShowPassword] = useState();
 
   useEffect(() => {
     getSession().then((session) => {
@@ -246,17 +247,19 @@ function AuthForm(props) {
         <div className={classes.control}>
           <label htmlFor="password">Your Password</label>
           <input
-            type="password"
+            type={!showPassword ? "password" : "text"}
+            onFocus={() => setShowPassword(true)}
+            onBlur={() => setShowPassword(false)}
             id="password"
             ref={passwordInputRef}
             onChange={(e) => !isLogin && validate(e.target.value)}
             required
-          />
+          ></input>
           {hasError?.Password && <div>{hasError?.Password}</div>}
         </div>
         {!isLogin && (
           <div className={classes.control}>
-            <label htmlFor="username">Your Username</label>
+            <label htmlFor="username">Your Username (Optional)</label>
             <input type="text" id="username" ref={userNameInputRef} required />
           </div>
         )}
