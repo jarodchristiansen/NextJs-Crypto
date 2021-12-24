@@ -226,7 +226,7 @@ function AuthForm(props) {
       setHasError();
     } else {
       setHasError({
-        Password: (
+        PasswordSignUp: (
           <div>
             Password is weak minLength: 8, minLowercase: 1, minUppercase: 1,
             minNumbers: 1, minSymbols: 1,
@@ -263,7 +263,9 @@ function AuthForm(props) {
             onChange={(e) => !isLogin && setPassword(e.target.value)}
             required
           ></input>
-          {hasError?.Password && <div>{hasError?.Password}</div>}
+          {hasError?.PasswordSignUp && !isLogin && (
+            <div>{hasError?.PasswordSignUp}</div>
+          )}
           {!isLogin && <PasswordStrengthBar password={password} />}
         </div>
         {!isLogin && (
