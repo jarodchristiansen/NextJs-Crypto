@@ -34,6 +34,7 @@
     "react-icons": "^4.3.1",
     "react-lottie": "^1.2.3",
     "react-nextjs-toast": "^1.2.5",
+    "react-password-strength-bar": "^0.4.0",
     "react-redux": "^7.2.6",
     "react-responsive": "^9.0.0-beta.4",
     "react-tradingview-embed": "^1.0.2",

@@ -14,6 +14,7 @@ import {
   FaGoogle,
   FaTwitter,
 } from "react-icons/fa";
+import PasswordStrengthBar from "react-password-strength-bar";
 
 async function createUser(email, password, username) {
   const response = await fetch("/api/auth/signup", {
@@ -46,6 +47,7 @@ function AuthForm(props) {
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
   const [hasError, setHasError] = useState();
   const [showPassword, setShowPassword] = useState();
+  const [password, setPassword] = useState();
 
   useEffect(() => {
     getSession().then((session) => {
@@ -75,8 +77,10 @@ function AuthForm(props) {
     const enteredPassword = passwordInputRef?.current?.value;
     const userName = userNameInputRef?.current?.value;
 
+    await validate();
     //optional: Add validation on input form.
     if (!hasError) {
+      console.log("hasError within !hasError", hasError);
       if (isLogin) {
         //log user in
         const result = await signIn("credentials", {
@@ -138,9 +142,13 @@ function AuthForm(props) {
             duration: 10,
             type: "error",
           });
+          setButtonsDisabled(false);
           console.log(err);
         }
       }
+    } else {
+      setButtonsDisabled(false);
+      console.log("hasError case", hasError);
     }
   }
 
@@ -205,9 +213,9 @@ function AuthForm(props) {
     }
   }
 
-  const validate = (value) => {
+  const validate = () => {
     if (
-      validator.isStrongPassword(value, {
+      validator.isStrongPassword(password, {
         minLength: 8,
         minLowercase: 1,
         minUppercase: 1,
@@ -252,10 +260,11 @@ function AuthForm(props) {
             onBlur={() => setShowPassword(false)}
             id="password"
             ref={passwordInputRef}
-            onChange={(e) => !isLogin && validate(e.target.value)}
+            onChange={(e) => !isLogin && setPassword(e.target.value)}
             required
           ></input>
           {hasError?.Password && <div>{hasError?.Password}</div>}
+          {!isLogin && <PasswordStrengthBar password={password} />}
         </div>
         {!isLogin && (
           <div className={classes.control}>
