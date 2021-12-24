@@ -5,14 +5,18 @@ import { useState } from "react";
 import addFavoriteUtil from "../../lib/favorites";
 import StarButton from "../ui/starbutton";
 import { useStore } from "../../store";
+import { useEffect } from "react";
+import { useSession } from "next-auth/client";
 
 function EventItem(props) {
-  const { title, image, id, symbol, description, price } = props;
+  const { title, image, id, symbol, description, price, favorited } = props;
   // console.log(price)
   // const humanReadableDate = new Date(date).toLocaleDateString('en-US', {day: 'numeric', month:'long', year:'numeric'})
 
   // const fomrattedAddress = location.replace(', ', '\n')
-  const { dispatch } = useStore();
+  const { dispatch, getState } = useStore();
+  const [favorites, setFavorites] = useState();
+  const [session, loading, status] = useSession();
 
   function addFavorite(title, symbol, image) {
     console.log("this is addFavorite firing ---", title, symbol, image);
@@ -45,8 +49,11 @@ function EventItem(props) {
           </Button>
         </div>
         <div style={{ margin: "3% 0 0 12%" }}>
-          {/*<StarButton symbol={symbol}/>*/}
-          <p onClick={() => addFavorite(title, symbol, image)}>Test Add</p>
+          {favorited ? (
+            <p>Remove</p>
+          ) : (
+            <p onClick={() => addFavorite(title, symbol, image)}>Add</p>
+          )}
         </div>
       </div>
       <div className={classes.description}>{description}</div>

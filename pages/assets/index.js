@@ -36,7 +36,6 @@ function AssetsPage(props) {
 
   const router = useRouter();
   const { dispatch, getState } = useStore();
-
   // useEffect(() => {
   //   getSession().then((session) => {
   //     setIsLoading(false);
@@ -68,23 +67,30 @@ function AssetsPage(props) {
   //   };
   // }
 
-  useEffect(() => {
-    axios.get("/api/all").then((res) => {
-      // console.log(
-      //   "this is the sorted res.data",
-      //   res.data.sort(dynamicSort("id"))
-      // );
-      setStartingAssets(res.data);
-      setEvents(res.data);
-    });
+  async function loadFavorited(data) {
     const results = getState();
     if (results?.user?.favorites) {
-      setFavorites(results?.user?.favorites);
-      console.log("favorites in useEffect", favorites);
+      console.log("this is the results.favorites", results?.user?.favorites);
+      for (let i of data) {
+        if (results?.user?.favorites.filter((e) => e.symbol === i.symbol)) {
+          /* vendors contains the element we're looking for */
+          i["favorited"] = true;
+          console.log("this is i", i);
+        }
+      }
     } else {
-      setFavorites();
+      console.log("loadFavorited not finding results");
     }
-    console.log("this is getState()", results);
+    console.log("this is the data in loadFavorited", data);
+  }
+
+  useEffect(() => {
+    axios.get("/api/all").then((res) => {
+      loadFavorited(res?.data);
+      // console.log("this is results on the assets page", results);
+      console.log("this is the res.data from assets", res.data);
+      setEvents(res.data);
+    });
   }, []);
 
   // if (error) return <div>Failed to load</div>
@@ -152,7 +158,6 @@ function AssetsPage(props) {
         path={router.pathname}
         loadedUser={loadedUser}
         setLoadedUser={setLoadedUser}
-        favorites={favorites}
       />
 
       {events && (
