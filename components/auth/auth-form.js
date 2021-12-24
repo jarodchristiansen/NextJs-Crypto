@@ -6,6 +6,7 @@ import { getSession } from "next-auth/client";
 import { toast, ToastContainer } from "react-nextjs-toast";
 import { initializeStore } from "../../store";
 import { Button, Row } from "react-bootstrap";
+import validator from "validator/es";
 import { message } from "antd";
 import {
   FaGithub,
@@ -43,6 +44,7 @@ function AuthForm(props) {
   const [loadedSession, setLoadedSession] = useState();
   const [loadedProviders, setLoadedProviders] = useState();
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
+  const [hasError, setHasError] = useState();
 
   useEffect(() => {
     getSession().then((session) => {
@@ -73,69 +75,70 @@ function AuthForm(props) {
     const userName = userNameInputRef?.current?.value;
 
     //optional: Add validation on input form.
+    if (!hasError) {
+      if (isLogin) {
+        //log user in
+        const result = await signIn("credentials", {
+          redirect: false,
+          email: enteredEmail,
+          password: enteredPassword,
+        });
 
-    if (isLogin) {
-      //log user in
-      const result = await signIn("credentials", {
-        redirect: false,
-        email: enteredEmail,
-        password: enteredPassword,
-      });
+        if (!result.error) {
+          //set some auth state
 
-      if (!result.error) {
-        //set some auth state
+          await getSession().then((session) => {
+            setIsLoading(false);
+            if (session) {
+              const reduxStore = initializeStore();
+              const { dispatch } = reduxStore;
 
-        await getSession().then((session) => {
-          setIsLoading(false);
-          if (session) {
-            const reduxStore = initializeStore();
-            const { dispatch } = reduxStore;
-
-            try {
-              dispatch({
-                type: "SET_USER",
-                user: session.user,
-              });
-              setTimeout(() => {
-                router.replace("/");
-              }, 3000);
-            } catch (err) {
-              console.log("no user to dispatch");
+              try {
+                dispatch({
+                  type: "SET_USER",
+                  user: session.user,
+                });
+                setTimeout(() => {
+                  router.replace("/");
+                }, 3000);
+              } catch (err) {
+                console.log("no user to dispatch");
+              }
             }
-          }
-        });
+          });
 
-        toast.notify(`you have been logged in!`, {
-          duration: 3,
-          type: "success",
-        });
+          toast.notify(`you have been logged in!`, {
+            duration: 3,
+            type: "success",
+          });
+        } else {
+          toast.notify(`${result.error}`, {
+            duration: 10,
+            type: "error",
+          });
+          console.log("this is the result.error", result.error);
+        }
       } else {
-        toast.notify(`${result.error}`, {
-          duration: 10,
-          type: "error",
-        });
-        console.log("this is the result.error", result.error);
-      }
-    } else {
-      try {
-        const result = await createUser(
-          enteredEmail,
-          enteredPassword,
-          userName
-        );
-        setTimeout(() => {
-          router.replace("/");
-        }, 3000);
-        toast.notify(`user has been created!`, {
-          duration: 3,
-          type: "success",
-        });
-      } catch (err) {
-        toast.notify(`${err}`, {
-          duration: 10,
-          type: "error",
-        });
-        console.log(err);
+        try {
+          const result = await createUser(
+            enteredEmail,
+            enteredPassword,
+            userName
+          );
+          setTimeout(() => {
+            router.replace("/");
+          }, 3000);
+          toast.notify(`user has been created!`, {
+            duration: 3,
+            type: "success",
+          });
+        } catch (err) {
+          toast.notify(`${err}`, {
+            duration: 10,
+            type: "error",
+          });
+          console.log(err);
+        }
       }
     }
   }
@@ -187,6 +190,43 @@ function AuthForm(props) {
     }
   }
 
+  async function handleValidateEmail(e) {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(e)) {
+      setHasError();
+      setButtonsDisabled(false);
+      return true;
+    } else {
+      setHasError({
+        Email: "Email structure is invalid",
+      });
+      setButtonsDisabled(true);
+      return false;
+    }
+  }
+
+  const validate = (value) => {
+    if (
+      validator.isStrongPassword(value, {
+        minLength: 8,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })
+    ) {
+      setHasError();
+    } else {
+      setHasError({
+        Password: (
+          <div>
+            Password is weak minLength: 8, minLowercase: 1, minUppercase: 1,
+            minNumbers: 1, minSymbols: 1,
+          </div>
+        ),
+      });
+    }
+  };
+
   return (
     <section className={classes.auth}>
       <ToastContainer position={"bottom"} />
@@ -194,7 +234,14 @@ function AuthForm(props) {
       <form onSubmit={submitHandler} className={classes.form}>
         <div className={classes.control}>
           <label htmlFor="email">Your Email</label>
-          <input type="email" id="email" ref={emailInputRef} required />
+          <input
+            type="email"
+            id="email"
+            ref={emailInputRef}
+            onChange={(e) => handleValidateEmail(e.target.value)}
+            required
+          />
+          {hasError?.Email && <p>{hasError?.Email}</p>}
         </div>
         <div className={classes.control}>
           <label htmlFor="password">Your Password</label>
@@ -202,8 +249,10 @@ function AuthForm(props) {
             type="password"
             id="password"
             ref={passwordInputRef}
+            onChange={(e) => !isLogin && validate(e.target.value)}
             required
           />
+          {hasError?.Password && <div>{hasError?.Password}</div>}
         </div>
         {!isLogin && (
           <div className={classes.control}>

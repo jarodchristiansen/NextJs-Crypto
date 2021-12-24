@@ -41,7 +41,8 @@
     "redux": "^4.1.2",
     "redux-devtools-extension": "^2.13.9",
     "swr": "^0.5.6",
-    "unfetch": "^4.2.0"
+    "unfetch": "^4.2.0",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "prettier": "2.5.0"
