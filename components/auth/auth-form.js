@@ -263,7 +263,7 @@ function AuthForm(props) {
             onChange={(e) => !isLogin && setPassword(e.target.value)}
             required
           ></input>
-          {hasError?.PasswordSignUp && !isLogin && (
+          {hasError?.PasswordSignUp && !isLogin && password?.length > 1 && (
             <div>{hasError?.PasswordSignUp}</div>
           )}
           {!isLogin && <PasswordStrengthBar password={password} />}
