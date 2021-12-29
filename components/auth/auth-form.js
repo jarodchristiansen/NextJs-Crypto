@@ -6,7 +6,7 @@ import { getSession } from "next-auth/client";
 import { toast, ToastContainer } from "react-nextjs-toast";
 import { initializeStore } from "../../store";
 import { Button, Row } from "react-bootstrap";
-import validator from "validator/es";
+import dynamic from "next/dynamic";
 import { message } from "antd";
 import {
   FaGithub,
@@ -15,6 +15,10 @@ import {
   FaTwitter,
 } from "react-icons/fa";
 import PasswordStrengthBar from "react-password-strength-bar";
+
+
+
+const validator = dynamic(() => (import validator from "validator/es"))
 
 async function createUser(email, password, username) {
   const response = await fetch("/api/auth/signup", {

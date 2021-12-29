@@ -33,6 +33,7 @@ function AssetsPage(props) {
   const [loadedSession, setLoadedSession] = useState();
   const [loadedUser, setLoadedUser] = useState();
   const [favorites, setFavorites] = useState();
+  const [updateFavorites, setUpdateFavorites] = useState();
 
   const router = useRouter();
   const { dispatch, getState } = useStore();
@@ -154,11 +155,19 @@ function AssetsPage(props) {
         />
       </div>
 
-      <Favorites
-        path={router.pathname}
-        loadedUser={loadedUser}
-        setLoadedUser={setLoadedUser}
-      />
+      {updateFavorites ? (
+        <Favorites
+          path={router.pathname}
+          loadedUser={loadedUser}
+          setLoadedUser={setLoadedUser}
+        />
+      ) : (
+        <Favorites
+          path={router.pathname}
+          loadedUser={loadedUser}
+          setLoadedUser={setLoadedUser}
+        />
+      )}
 
       {events && (
         <EventList items={events.length > 1 ? events : props.events} />

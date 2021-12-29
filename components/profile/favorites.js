@@ -8,6 +8,7 @@ import { useAccordionButton } from "react-bootstrap/AccordionButton";
 import FavoritesTable from "./favoritesTable";
 // import { FaPlus, FaMinus } from "react-icons/all";
 // import { CgAdd } from "react-icons/cg";
+import { useStore } from "../../store";
 
 function CustomToggle({
   children,
@@ -72,6 +73,8 @@ function CustomToggle({
 }
 
 function Favorites(props) {
+  const { dispatch, getState } = useStore();
+
   const { path, loadedUser, setLoadedUser } = props;
   const [isEditing, setIsEditing] = useState(false);
   console.log("this is the path in Favorites ------", path);
@@ -92,6 +95,8 @@ function Favorites(props) {
   const [favorites, setFavorites] = useState();
   const [isAuthorized, setIsAuthorized] = useState(false);
 
+  let state = getState();
+
   useEffect(() => {
     console.log("this is the username in favorites", username);
     getSession().then((session) => {
@@ -108,13 +113,27 @@ function Favorites(props) {
           // setLoadedSession(session);
         } else if (path.includes("assets")) {
           console.log("favorites on assets page");
+          console.log("this is the getState in favorites", getState());
           setLoadedUser(session.user.username);
-          getUser(session.user.username);
+
+          if (state?.user?.favorites) {
+            loadFavoritesFromRedux(session.user.username, state);
+          } else {
+            getUser(session.user.username);
+          }
           // setLoadedSession(session);
         }
       }
     });
   }, []);
+
+  const loadFavoritesFromRedux = async (session, state) => {
+    fetchedUser = await fetch(`/api/user/get-user?user=${session}`).then((r) =>
+      r.json()
+    );
+    setLoadedUser(fetchedUser);
+    setFavorites(state?.user?.favorites);
+  };
 
   const getUser = async (session) => {
     fetchedUser = await fetch(`/api/user/get-user?user=${session}`).then((r) =>

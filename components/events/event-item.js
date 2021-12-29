@@ -9,7 +9,17 @@ import { useEffect } from "react";
 import { useSession } from "next-auth/client";
 
 function EventItem(props) {
-  const { title, image, id, symbol, description, price, favorited } = props;
+  const {
+    title,
+    image,
+    id,
+    symbol,
+    description,
+    price,
+    favorited,
+    updateFavorites,
+    setUpdateFavorites,
+  } = props;
   // console.log(price)
   // const humanReadableDate = new Date(date).toLocaleDateString('en-US', {day: 'numeric', month:'long', year:'numeric'})
 
@@ -31,7 +41,7 @@ function EventItem(props) {
       type: "ADD_FAVORITE",
       favorite: favoriteObject,
     });
-
+    setUpdateFavorites(!updateFavorites);
     addFavoriteUtil(favoriteObject);
   }
 
@@ -49,11 +59,7 @@ function EventItem(props) {
           </Button>
         </div>
         <div style={{ margin: "3% 0 0 12%" }}>
-          {favorited ? (
-            <p>Remove</p>
-          ) : (
-            <p onClick={() => addFavorite(title, symbol, image)}>Add</p>
-          )}
+          <p onClick={() => addFavorite(title, symbol, image)}>Add</p>
         </div>
       </div>
       <div className={classes.description}>{description}</div>
