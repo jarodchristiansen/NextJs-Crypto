@@ -16,10 +16,6 @@ import {
 } from "react-icons/fa";
 import PasswordStrengthBar from "react-password-strength-bar";
 
-
-
-const validator = dynamic(() => (import validator from "validator/es"))
-
 async function createUser(email, password, username) {
   const response = await fetch("/api/auth/signup", {
     method: "POST",
@@ -81,7 +77,10 @@ function AuthForm(props) {
     const enteredPassword = passwordInputRef?.current?.value;
     const userName = userNameInputRef?.current?.value;
 
-    await validate();
+    if (event.length > 2) {
+      await validate();
+    }
+
     //optional: Add validation on input form.
     if (!hasError) {
       console.log("hasError within !hasError", hasError);
