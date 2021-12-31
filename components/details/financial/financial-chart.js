@@ -53,19 +53,36 @@ function FinancialChart(props) {
   const id = props.id;
   let key = "688o9wuzvzst3uybpg6eh";
   const fetcher = (url) => fetch(url).then((r) => r.json());
-  const { data, error } = useSWR(
-    `https://api.lunarcrush.com/v2?data=assets&key=${key}&symbol=${id}&data_points=${time}&interval=day`,
-    fetcher
-  );
+  // const { data, error } = useSWR(
+  //   `https://api.lunarcrush.com/v2?data=assets&key=${key}&symbol=${id}&data_points=${time}&interval=day`,
+  //   fetcher
+  // );
+
   const [uniswapData, setUniswapData] = useState();
+  const [data, setData] = useState();
+  const [error, setError] = useState();
 
   let uniValues;
   useEffect(() => {
+    fetchPriceData();
     fetchUniswap();
   }, [time]);
 
+  const fetchPriceData = async () => {
+    let priceData = await fetch(
+      `/api/asset-details/lunardata?key=${key}&symbol=${id}&time=${time}`
+    ).then((r) => r.json());
+    if (priceData?.data) {
+      let test = priceData?.data?.data[0]?.timeSeries.slice(time * -1);
+      console.log("this is the testTime", priceData?.data);
+      setData(priceData?.data);
+    } else {
+      console.log("unable to load data from endpoint");
+      setError("unable to load data from endpoint");
+    }
+  };
+
   const fetchUniswap = async () => {
-    console.log("fetchUniswap running");
     uniValues = await fetch(
       `/api/asset-details/uniswap?id=${id}&time=${time}`
     ).then((r) => r.json());
@@ -93,7 +110,7 @@ function FinancialChart(props) {
   let diff;
 
   if (data) {
-    responseData = data.data[0].timeSeries;
+    responseData = data.data[0].timeSeries.slice(time * -1);
     // console.log('responsedata ----', responseData)
     maxSupply = data.data[0].max_supply;
     oneDay = data.data[0].percent_change_24h;
@@ -120,8 +137,6 @@ function FinancialChart(props) {
     // fib2 = new Array(time).fill(level2).flat()
     // fib3 = new Array(time).fill(level3).flat()
     // fib4 = new Array(time).fill(level4).flat()
-
-    console.log("this is responseData", responseData);
 
     responseData.map((y) => {
       data2.push({
@@ -282,7 +297,7 @@ function FinancialChart(props) {
   //
   // };
 
-  console.log("levels and time", level1, level2, level3, level4, time);
+  // console.log("levels and time", level1, level2, level3, level4, time);
 
   const isDesktopOrLaptop = useMediaQuery({
     query: `(max-width: 920px)`,
