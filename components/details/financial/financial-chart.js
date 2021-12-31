@@ -73,6 +73,8 @@ function FinancialChart(props) {
       `/api/asset-details/lunardata?key=${key}&symbol=${id}&time=${time}`
     ).then((r) => r.json());
     if (priceData?.data) {
+      let test = priceData?.data?.data[0]?.timeSeries.slice(time * -1);
+      console.log("this is the testTime", priceData?.data);
       setData(priceData?.data);
     } else {
       console.log("unable to load data from endpoint");
@@ -108,7 +110,7 @@ function FinancialChart(props) {
   let diff;
 
   if (data) {
-    responseData = data.data[0].timeSeries;
+    responseData = data.data[0].timeSeries.slice(time * -1);
     // console.log('responsedata ----', responseData)
     maxSupply = data.data[0].max_supply;
     oneDay = data.data[0].percent_change_24h;
