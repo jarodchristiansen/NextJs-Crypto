@@ -27,6 +27,23 @@ function EventItem(props) {
   const { dispatch, getState } = useStore();
   const [favorites, setFavorites] = useState();
   const [session, loading, status] = useSession();
+  const [favorite, setFavorite] = useState();
+
+  const state = getState();
+
+  useEffect(() => {
+    checkFavorites();
+  }, []);
+
+  async function checkFavorites() {
+    if (state?.user?.favorites) {
+      for (let i of state?.user?.favorites) {
+        if (i?.symbol === symbol) {
+          setFavorite(true);
+        }
+      }
+    }
+  }
 
   async function addFavorite(title, symbol, image) {
     console.log("this is addFavorite firing ---", title, symbol, image);
@@ -59,7 +76,11 @@ function EventItem(props) {
           </Button>
         </div>
         <div style={{ margin: "3% 0 0 12%" }}>
-          <p onClick={() => addFavorite(title, symbol, image)}>Add</p>
+          {!favorite ? (
+            <p onClick={() => addFavorite(title, symbol, image)}>Add</p>
+          ) : (
+            <p>Remove</p>
+          )}
         </div>
       </div>
       <div className={classes.description}>{description}</div>
