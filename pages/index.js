@@ -15,23 +15,6 @@ function HomePage({ isConnected, initialReduxState }) {
 
   const { dispatch } = useStore();
 
-  useEffect(() => {
-    if (session?.user && !loading) {
-      try {
-        dispatch({
-          type: "SET_USER",
-          user: session?.user,
-        });
-      } catch (err) {
-        console.log("Error dispatching user to redux", err);
-      }
-    } else if (loading) {
-      console.log("loading statement in useEffect");
-    } else {
-      console.log("other conditional in useEffect");
-    }
-  }, [loading]);
-
   const isDesktopOrLaptop = useMediaQuery({
     query: `(max-width: 620px)`,
   });
