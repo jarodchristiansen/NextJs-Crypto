@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { Accordion, Card } from "react-bootstrap";
 import Draggable from "react-draggable";
 import { useAccordionButton } from "react-bootstrap/AccordionButton";
-import FavoritesTable from "./favoritesTable";
+import FavoritesTable from "../profile/favoritesTable";
 // import { FaPlus, FaMinus } from "react-icons/all";
 // import { CgAdd } from "react-icons/cg";
 import { useStore } from "../../store";
@@ -72,7 +72,7 @@ function CustomToggle({
   );
 }
 
-function Favorites(props) {
+function AssetFavorites(props) {
   const { dispatch, getState } = useStore();
 
   const { path, loadedUser, setLoadedUser } = props;
@@ -107,97 +107,73 @@ function Favorites(props) {
         if (session?.user?.username === username) {
           setIsAuthorized(true);
         }
+        if (path.includes("assets")) {
+          console.log("favorites on assets page");
+          console.log("this is the getState in favorites", getState());
+          setLoadedUser(session.user.username);
+
+          if (state?.user?.favorites) {
+            loadFavoritesFromRedux(session.user.username, state);
+          } else {
+            getUser(session.user.username);
+          }
+          // setLoadedSession(session);
+        }
       }
     });
   }, []);
 
-  // const loadFavoritesFromRedux = async (session, state) => {
-  //   fetchedUser = await fetch(`/api/user/get-user?user=${session}`).then((r) =>
-  //     r.json()
-  //   );
-  //   setLoadedUser(fetchedUser);
-  //   setFavorites(state?.user?.favorites);
-  // };
-  //
-  // const getUser = async (session) => {
-  //   fetchedUser = await fetch(`/api/user/get-user?user=${session}`).then((r) =>
-  //     r.json()
-  //   );
-  //   setLoadedUser(fetchedUser);
-  //
-  //   if (fetchedUser) {
-  //     setFavorites(fetchedUser?.favorites);
-  //   }
-  //   console.log(
-  //     "this is favorites in Favorites Component after get user -----",
-  //     favorites
-  //   );
-  // };
+  const loadFavoritesFromRedux = async (session, state) => {
+    fetchedUser = await fetch(`/api/user/get-user?user=${session}`).then((r) =>
+      r.json()
+    );
+    setLoadedUser(fetchedUser);
+    setFavorites(state?.user?.favorites);
+  };
+
+  const getUser = async (session) => {
+    fetchedUser = await fetch(`/api/user/get-user?user=${session}`).then((r) =>
+      r.json()
+    );
+    setLoadedUser(fetchedUser);
+
+    if (fetchedUser) {
+      setFavorites(fetchedUser?.favorites);
+    }
+    console.log(
+      "this is favorites in Favorites Component after get user -----",
+      favorites
+    );
+  };
 
   return (
     <div>
-      {isAuthorized ? (
-        <div
-          style={{
-            width: "80%",
-            border: "2px solid black",
-            marginLeft: "10%",
-          }}
-        >
-          <Accordion defaultActiveKey="0">
-            <Card>
-              <Card.Header>
-                <CustomToggle
-                  eventKey="0"
-                  isEditing={isEditing}
-                  setIsEditing={setIsEditing}
-                  isAuthorized={isAuthorized}
-                ></CustomToggle>
-              </Card.Header>
-              <Accordion.Collapse eventKey="0">
-                <div>
-                  {/*user profile version*/}
-                  {loadedUser?.favorites?.length >= 1 && (
-                    <FavoritesTable
-                      data={loadedUser?.favorites}
-                      isEditing={isEditing}
-                      setIsEditing={setIsEditing}
-                    />
-                  )}
-                </div>
-              </Accordion.Collapse>
-            </Card>
-          </Accordion>
-        </div>
-      ) : (
-        // </Draggable>
-        <div
-          style={{ width: "80%", border: "2px solid black", marginLeft: "10%" }}
-        >
-          <Accordion defaultActiveKey="0">
-            <Card>
-              <Card.Header>
-                <CustomToggle eventKey="0" isAuthorized={isAuthorized}>
-                  Click me!
-                </CustomToggle>
-              </Card.Header>
-              <Accordion.Collapse eventKey="0">
-                <div>
-                  {loadedUser?.favorites?.length >= 1 && (
-                    <FavoritesTable
-                      data={loadedUser?.favorites}
-                      isEditing={isEditing}
-                      setIsEditing={setIsEditing}
-                    />
-                  )}
-                </div>
-              </Accordion.Collapse>
-            </Card>
-          </Accordion>
-        </div>
-      )}
+      <div
+        style={{ width: "80%", border: "2px solid black", marginLeft: "10%" }}
+      >
+        <Accordion defaultActiveKey="0">
+          <Card>
+            <Card.Header>
+              <CustomToggle eventKey="0" isAuthorized={isAuthorized}>
+                Click me!
+              </CustomToggle>
+            </Card.Header>
+            <Accordion.Collapse eventKey="0">
+              <div>
+                {loadedUser?.favorites?.length >= 1 && (
+                  <FavoritesTable
+                    data={loadedUser?.favorites}
+                    isEditing={isEditing}
+                    setIsEditing={setIsEditing}
+                  />
+                )}
+              </div>
+            </Accordion.Collapse>
+          </Card>
+        </Accordion>
+      </div>
     </div>
   );
 }
 
-export default Favorites;
+export default AssetFavorites;

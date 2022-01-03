@@ -21,6 +21,7 @@ import Favorites from "../../components/profile/favorites";
 import { useRouter } from "next/router";
 import { useStore } from "../../store";
 import { useSelector } from "react-redux";
+import AssetFavorites from "../../components/events/assets-favorites";
 
 function AssetsPage(props) {
   const [startingAssets, setStartingAssets] = useState([]);
@@ -156,13 +157,23 @@ function AssetsPage(props) {
       </div>
 
       {updateFavorites ? (
-        <Favorites
+        // <Favorites
+        //   path={router.pathname}
+        //   loadedUser={loadedUser}
+        //   setLoadedUser={setLoadedUser}
+        // />
+        <AssetFavorites
           path={router.pathname}
           loadedUser={loadedUser}
           setLoadedUser={setLoadedUser}
         />
       ) : (
-        <Favorites
+        // <Favorites
+        //   path={router.pathname}
+        //   loadedUser={loadedUser}
+        //   setLoadedUser={setLoadedUser}
+        //   />
+        <AssetFavorites
           path={router.pathname}
           loadedUser={loadedUser}
           setLoadedUser={setLoadedUser}
