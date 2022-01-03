@@ -77,7 +77,6 @@ function Favorites(props) {
 
   const { path, loadedUser, setLoadedUser } = props;
   const [isEditing, setIsEditing] = useState(false);
-  console.log("this is the path in Favorites ------", path);
 
   let fetchedUser;
 

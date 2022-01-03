@@ -16,8 +16,6 @@ function MainHeader() {
     signOut();
   };
 
-  console.log("session ----", session);
-
   let username = session?.user?.username;
 
   return (

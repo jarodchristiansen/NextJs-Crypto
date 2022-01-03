@@ -16,6 +16,8 @@ function EventList(props) {
             image={event.imageUrl}
             price={event.price}
             favorited={event?.favorited}
+            updateFavorites={updateFavorites}
+            setUpdateFavorites={setUpdateFavorites}
           />
         ))
       ) : (

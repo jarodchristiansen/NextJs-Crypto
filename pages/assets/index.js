@@ -77,7 +77,6 @@ function AssetsPage(props) {
         if (results?.user?.favorites.filter((e) => e.symbol === i.symbol)) {
           /* vendors contains the element we're looking for */
           i["favorited"] = true;
-          console.log("this is i", i);
         }
       }
     } else {
@@ -177,11 +176,16 @@ function AssetsPage(props) {
           path={router.pathname}
           loadedUser={loadedUser}
           setLoadedUser={setLoadedUser}
+          updateFavorites={updateFavorites}
         />
       )}
 
       {events && (
-        <EventList items={events.length > 1 ? events : props.events} />
+        <EventList
+          items={events.length > 1 ? events : props.events}
+          setUpdateFavorites={setUpdateFavorites}
+          updateFavorites={updateFavorites}
+        />
       )}
     </div>
   );

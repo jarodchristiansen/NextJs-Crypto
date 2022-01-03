@@ -28,7 +28,7 @@ function EventItem(props) {
   const [favorites, setFavorites] = useState();
   const [session, loading, status] = useSession();
 
-  function addFavorite(title, symbol, image) {
+  async function addFavorite(title, symbol, image) {
     console.log("this is addFavorite firing ---", title, symbol, image);
 
     let favoriteObject = {
@@ -41,8 +41,8 @@ function EventItem(props) {
       type: "ADD_FAVORITE",
       favorite: favoriteObject,
     });
+    await addFavoriteUtil(favoriteObject);
     setUpdateFavorites(!updateFavorites);
-    addFavoriteUtil(favoriteObject);
   }
 
   const exploreLink = `/assets/${symbol}`;
