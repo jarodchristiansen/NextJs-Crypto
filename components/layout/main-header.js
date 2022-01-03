@@ -3,9 +3,13 @@ import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 import classes from "./main-header.module.css";
 import { useSession, signIn, signOut } from "next-auth/client";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useStore } from "../../store";
 
 function MainHeader() {
-  const [session, loading] = useSession();
+  const [session, loading, status] = useSession();
+
+  const { dispatch } = useStore();
 
   const handleSignin = (e) => {
     e.preventDefault();
@@ -15,6 +19,23 @@ function MainHeader() {
     e.preventDefault();
     signOut();
   };
+
+  useEffect(() => {
+    if (session?.user && !loading) {
+      try {
+        dispatch({
+          type: "SET_USER",
+          user: session?.user,
+        });
+      } catch (err) {
+        console.log("Error dispatching user to redux", err);
+      }
+    } else if (loading) {
+      console.log("loading statement in useEffect");
+    } else {
+      console.log("other conditional in useEffect");
+    }
+  }, [loading]);
 
   let username = session?.user?.username;
 
