@@ -7,6 +7,7 @@ import StarButton from "../ui/starbutton";
 import { useStore } from "../../store";
 import { useEffect } from "react";
 import { useSession } from "next-auth/client";
+import { Star, StarFill } from "react-bootstrap-icons";
 
 function EventItem(props) {
   const {
@@ -33,7 +34,7 @@ function EventItem(props) {
 
   useEffect(() => {
     checkFavorites();
-  }, []);
+  }, [state]);
 
   async function checkFavorites() {
     if (state?.user?.favorites) {
@@ -77,9 +78,13 @@ function EventItem(props) {
         </div>
         <div style={{ margin: "3% 0 0 12%" }}>
           {!favorite ? (
-            <p onClick={() => addFavorite(title, symbol, image)}>Add</p>
+            <StarFill
+              color={"gray"}
+              size={32}
+              onClick={() => addFavorite(title, symbol, image)}
+            />
           ) : (
-            <p>Remove</p>
+            <StarFill color={"gold"} size={32} />
           )}
         </div>
       </div>
