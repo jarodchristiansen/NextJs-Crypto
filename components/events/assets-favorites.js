@@ -75,7 +75,7 @@ function CustomToggle({
 function AssetFavorites(props) {
   const { dispatch, getState } = useStore();
 
-  const { path, loadedUser, setLoadedUser } = props;
+  const { path, loadedUser, setLoadedUser, updateFavorites } = props;
   const [isEditing, setIsEditing] = useState(false);
   console.log("this is the path in Favorites ------", path);
 
@@ -113,6 +113,7 @@ function AssetFavorites(props) {
           setLoadedUser(session.user.username);
 
           if (state?.user?.favorites) {
+            console.log("this is from the redux state yo", state);
             loadFavoritesFromRedux(session.user.username, state);
           } else {
             getUser(session.user.username);
@@ -121,7 +122,7 @@ function AssetFavorites(props) {
         }
       }
     });
-  }, []);
+  }, [state]);
 
   const loadFavoritesFromRedux = async (session, state) => {
     fetchedUser = await fetch(`/api/user/get-user?user=${session}`).then((r) =>
