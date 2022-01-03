@@ -15,7 +15,7 @@ function EventList(props) {
             description={event.description}
             image={event.imageUrl}
             price={event.price}
-            favorited={event?.favorited}
+            favorited={event?.liked}
             updateFavorites={updateFavorites}
             setUpdateFavorites={setUpdateFavorites}
           />

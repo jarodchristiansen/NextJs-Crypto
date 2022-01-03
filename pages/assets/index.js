@@ -38,6 +38,7 @@ function AssetsPage(props) {
 
   const router = useRouter();
   const { dispatch, getState } = useStore();
+  const results = getState();
   // useEffect(() => {
   //   getSession().then((session) => {
   //     setIsLoading(false);
@@ -69,27 +70,27 @@ function AssetsPage(props) {
   //   };
   // }
 
-  async function loadFavorited(data) {
-    const results = getState();
-    if (results?.user?.favorites) {
-      console.log("this is the results.favorites", results?.user?.favorites);
-      for (let i of data) {
-        if (results?.user?.favorites.filter((e) => e.symbol === i.symbol)) {
-          /* vendors contains the element we're looking for */
-          i["favorited"] = true;
-        }
-      }
-    } else {
-      console.log("loadFavorited not finding results");
-    }
-    console.log("this is the data in loadFavorited", data);
-  }
+  // async function loadFavorited(data) {
+  //   if (results?.user?.favorites) {
+  //     console.log("this is the results.favorites", results?.user?.favorites);
+  //     for (let i of data) {
+  //       if (results?.user?.favorites.filter((e) => e.symbol === i.symbol)) {
+  //         /* vendors contains the element we're looking for */
+  //         i["favorited"] = true;
+  //       }
+  //     }
+  //   } else {
+  //     console.log("loadFavorited not finding results");
+  //   }
+  //   console.log("this is the data in loadFavorited", data);
+  // }
 
   useEffect(() => {
     axios.get("/api/all").then((res) => {
-      loadFavorited(res?.data);
+      // loadFavorited(res?.data);
       // console.log("this is results on the assets page", results);
       console.log("this is the res.data from assets", res.data);
+
       setEvents(res.data);
     });
   }, []);
