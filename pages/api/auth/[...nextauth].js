@@ -3,21 +3,18 @@ import Providers from "next-auth/providers";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import clientPromise from "../../../lib/mongodb";
 import { MongoClient } from "mongodb";
-import {hashPassword, verifyPassword} from "../../../lib/auth";
-
+import { hashPassword, verifyPassword } from "../../../lib/auth";
 
 function makeid(length) {
-  var result           = '';
-  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var result = "";
+  var characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   var charactersLength = characters.length;
-  for ( var i = 0; i < length; i++ ) {
-    result += characters.charAt(Math.floor(Math.random() *
-        charactersLength));
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return result;
 }
-
-
 
 const options = {
   // site: process.env.NEXTAUTH_URL,
@@ -38,54 +35,53 @@ const options = {
       return token;
     },
     async signIn(user, account, metadata) {
-
       let emails;
       let primaryEmail;
 
       if (account?.provider === "github") {
-        const emailRes = await fetch('https://api.github.com/user/emails', {
+        const emailRes = await fetch("https://api.github.com/user/emails", {
           headers: {
-            'Authorization': `token ${account.accessToken}`
-          }
-        })
-        emails = await emailRes.json()
-        primaryEmail = emails.find(e => e.primary).email;
+            Authorization: `token ${account.accessToken}`,
+          },
+        });
+        emails = await emailRes.json();
+        primaryEmail = emails.find((e) => e.primary).email;
 
         user.email = primaryEmail;
       }
-        const client = await MongoClient.connect(`${process.env.MONGODB_URI}`);
-        const db = client.db();
+      const client = await MongoClient.connect(`${process.env.MONGODB_URI}`);
+      const db = client.db();
 
-        const existingUser = await db.collection("users").findOne({email: user?.email});
+      const existingUser = await db
+        .collection("users")
+        .findOne({ email: user?.email });
 
-        if (existingUser) {
-          user?.favorites = existingUser?.favorites
+      if (existingUser) {
+        user.favorites = existingUser?.favorites;
 
+        if (!existingUser?.username) {
+          let newId = makeid(12).toString() + "!@$";
+          user.username = newId;
 
-          if (!existingUser?.username) {
-            let newId = makeid(12).toString() + "!@$"
-            user.username = newId;
-
-            const result = await usersCollection.updateOne(
-                { email: user?.email },
-                { $set: { username: newId } }
-            );
-          } else {
-            user.username = existingUser?.username
-          }
+          const result = await usersCollection.updateOne(
+            { email: user?.email },
+            { $set: { username: newId } }
+          );
         } else {
-          let tempId = makeid(12).toString() + "!@$"
-
-          const result = await db.collection("users").insertOne({
-            email:user?.email,
-            name: user?.name,
-            image: user?.image,
-            username: tempId
-          })
-          user.username = tempId
+          user.username = existingUser?.username;
         }
+      } else {
+        let tempId = makeid(12).toString() + "!@$";
 
-    }
+        const result = await db.collection("users").insertOne({
+          email: user?.email,
+          name: user?.name,
+          image: user?.image,
+          username: tempId,
+        });
+        user.username = tempId;
+      }
+    },
   },
   providers: [
     // Providers.Email({
@@ -106,9 +102,6 @@ const options = {
     Providers.GitHub({
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
-
-
-
     }),
     Providers.Google({
       clientId: process.env.GOOGLE_ID,
