@@ -71,7 +71,7 @@ const options = {
                 { $set: { username: newId } }
             );
           } else {
-            user?.username = existingUser?.username
+            user.username = existingUser?.username
           }
         } else {
           let tempId = makeid(12).toString() + "!@$"
