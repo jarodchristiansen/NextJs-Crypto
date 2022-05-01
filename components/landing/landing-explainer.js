@@ -26,7 +26,7 @@ function LandingExplainer(props) {
         </div>
         <button
           className={
-            "modal-trigger-button btn btn-primary mb-3 rounded mx-auto w-50 border border-dark border-1 shadow"
+            "modal-trigger-button mb-3 rounded mx-auto w-50 border border-dark border-1 shadow"
           }
           onClick={handleShow}
         >

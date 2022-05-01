@@ -277,6 +277,14 @@ function AuthForm(props) {
             <input type="text" id="username" ref={userNameInputRef} required />
           </div>
         )}
+        <div className={"card"}>
+          <div className={"card-body"}>
+            <p className={"card-text"}>For demo users</p>
+            <p className={"card-text"}>Demo Email: demoAccount@gmail.com</p>
+            <p className={"card-text"}>Demo Password: password12345!@#</p>
+            <p className={"card-text"}>Demo Username: demoaccount</p>
+          </div>
+        </div>
         <div className={classes.actions}>
           <Button
             type={"submit"}

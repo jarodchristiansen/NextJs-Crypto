@@ -22,10 +22,15 @@ import { useRouter } from "next/router";
 import { useStore } from "../../store";
 import { useSelector } from "react-redux";
 import AssetFavorites from "../../components/events/assets-favorites";
+import AssetListContainer from "../../components/assetList/AssetListContainer";
+import { useMediaQuery } from "react-responsive";
+import CustomSearchComponent from "../../components/searchComponents/CustomSearchComponent";
 
 function AssetsPage(props) {
   const [startingAssets, setStartingAssets] = useState([]);
   const [events, setEvents] = useState();
+  const [ogEvents, setOgEvents] = useState();
+
   const [query, setQuery] = useState();
   const [selected, setSelected] = useState([]);
   const [listOfTitles, setListOfTitles] = useState();
@@ -85,6 +90,10 @@ function AssetsPage(props) {
   //   console.log("this is the data in loadFavorited", data);
   // }
 
+  const isMobile = useMediaQuery({
+    query: `(max-width: 920px)`,
+  });
+
   useEffect(() => {
     axios.get("/api/all").then((res) => {
       // loadFavorited(res?.data);
@@ -92,6 +101,7 @@ function AssetsPage(props) {
       console.log("this is the res.data from assets", res.data);
 
       setEvents(res.data);
+      setOgEvents(res.data);
     });
   }, []);
 
@@ -124,7 +134,9 @@ function AssetsPage(props) {
     }
   }
 
-  async function searchQuery() {
+  async function searchQuery(e) {
+    e.preventDefault();
+    console.log("this is searchQuery", e);
     let returnedEvents = await getSearchEvents(query.toUpperCase());
     if (returnedEvents.length > 0) {
       setEvents(returnedEvents);
@@ -135,58 +147,64 @@ function AssetsPage(props) {
 
   const handleKeyPress = (target) => {
     if (target.charCode == 13) {
-      alert("Enter Clicked");
+      searchQuery(target.value);
+    } else {
+      setQuery(target.value);
     }
   };
 
   return (
-    <div>
-      <div style={{ margin: "2% 0 0 10%", width: "100%" }}>
-        <Search
-          placeholder="Search for an Asset"
-          onPressEnter={searchQuery}
-          size="large"
-          style={{ width: "100%" }}
-          onSearch={searchQuery}
-          onChange={(e) => {
-            setQuery(e.target.value);
+    <div className={"container "}>
+      <div
+        className={
+          !isMobile
+            ? "position-absolute top-0 end-0 mt-2 me-0"
+            : "my-3 mx-auto ms-5"
+        }
+      >
+        <CustomSearchComponent
+          onTextChange={(e) => {
+            e.target.value.length > 1
+              ? handleKeyPress(e.target)
+              : setEvents(ogEvents) && setQuery(e.target.value);
           }}
-          loading={false}
-          enterButton="Search"
+          handleSubmit={(e) => searchQuery(e)}
         />
       </div>
 
-      {updateFavorites ? (
-        // <Favorites
-        //   path={router.pathname}
-        //   loadedUser={loadedUser}
-        //   setLoadedUser={setLoadedUser}
-        // />
-        <AssetFavorites
-          path={router.pathname}
-          loadedUser={loadedUser}
-          setLoadedUser={setLoadedUser}
-        />
-      ) : (
-        // <Favorites
-        //   path={router.pathname}
-        //   loadedUser={loadedUser}
-        //   setLoadedUser={setLoadedUser}
-        //   />
-        <AssetFavorites
-          path={router.pathname}
-          loadedUser={loadedUser}
-          setLoadedUser={setLoadedUser}
-          updateFavorites={updateFavorites}
-        />
-      )}
+      {/*{updateFavorites ? (*/}
+      {/*  // <Favorites*/}
+      {/*  //   path={router.pathname}*/}
+      {/*  //   loadedUser={loadedUser}*/}
+      {/*  //   setLoadedUser={setLoadedUser}*/}
+      {/*  // />*/}
+      {/*  <AssetFavorites*/}
+      {/*    path={router.pathname}*/}
+      {/*    loadedUser={loadedUser}*/}
+      {/*    setLoadedUser={setLoadedUser}*/}
+      {/*  />*/}
+      {/*) : (*/}
+      {/*  // <Favorites*/}
+      {/*  //   path={router.pathname}*/}
+      {/*  //   loadedUser={loadedUser}*/}
+      {/*  //   setLoadedUser={setLoadedUser}*/}
+      {/*  //   />*/}
+      {/*  <AssetFavorites*/}
+      {/*    path={router.pathname}*/}
+      {/*    loadedUser={loadedUser}*/}
+      {/*    setLoadedUser={setLoadedUser}*/}
+      {/*    updateFavorites={updateFavorites}*/}
+      {/*  />*/}
+      {/*)}*/}
 
       {events && (
-        <EventList
-          items={events.length > 1 ? events : props.events}
-          setUpdateFavorites={setUpdateFavorites}
-          updateFavorites={updateFavorites}
-        />
+        <div className={"mx-auto"}>
+          <AssetListContainer
+            items={events?.length > 1 ? events : props.events}
+            setUpdateFavorites={setUpdateFavorites}
+            updateFavorites={updateFavorites}
+          />
+        </div>
       )}
     </div>
   );

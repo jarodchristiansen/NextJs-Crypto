@@ -5,11 +5,13 @@ import { useSession, signIn, signOut } from "next-auth/client";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useStore } from "../../store";
+import CustomSearchComponent from "../searchComponents/CustomSearchComponent";
 
 function MainHeader() {
   const [session, loading, status] = useSession();
 
   const { dispatch } = useStore();
+  const router = useRouter();
 
   const handleSignin = (e) => {
     e.preventDefault();
@@ -35,6 +37,8 @@ function MainHeader() {
     } else {
       console.log("other conditional in useEffect");
     }
+
+    console.log("this is the router in useEffect", router);
   }, [loading]);
 
   let username = session?.user?.username;
@@ -110,6 +114,13 @@ function MainHeader() {
                 {"Sign out"}
               </Nav.Link>
             )}
+            {/*{router?.route === "/assets" && (*/}
+            {/*  <div className={"position-relative"}>*/}
+            {/*    <CustomSearchComponent*/}
+            {/*      className={"position-absolute bottom-0 end-0"}*/}
+            {/*    />*/}
+            {/*  </div>*/}
+            {/*)}*/}
 
             {/*<NavDropdown title="Dropdown" id="collasible-nav-dropdown">*/}
             {/*  <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>*/}

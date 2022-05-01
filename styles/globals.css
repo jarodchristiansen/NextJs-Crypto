@@ -6,7 +6,7 @@
 
 body {
   margin: 0;
-  font-family: 'Open Sans', 'Lato', sans-serif;
+  font-family: var(--global-font-family)f;
   color: #414141;
   background-color: #e4f1f1;
 } 
@@ -17,7 +17,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Lato', sans-serif;
+  font-family: var(--global-font-family);
   color: #2b2b2b;
 }
 
@@ -54,6 +54,15 @@ ul {
   font-family: var(--global-font-family);
 }
 
+.standardized-button {
+  background-color: var(--global-color-primary);
+  color: var(--global-text-color-white);
+  border: 1px solid black;
+  border-radius: 10%;
+  font-family: var(--global-font-family);
+  height: 32px;
+  box-shadow: 2px 0px 8px lightgray;
+}
 
 :root {
   --global-font-family: Verdana, sans-serif;
@@ -61,12 +70,9 @@ ul {
   --global-text-color: #222;
   --global-text-color-white: #fff;
   --global-primary-title-size: 2rem;
-  --global-color-primary: #017bc9;
+  --global-color-primary: #6ac6d9;
   --global-color-secondary: #779fa1;
   --global-color-warning: #e28413;
   --global-color-danger: #ff6542;
 }
 
-/*.priceChart {*/
-/*  margin-left: 3.5%;*/
-/*}*/
