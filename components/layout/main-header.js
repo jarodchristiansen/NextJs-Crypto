@@ -74,13 +74,13 @@ function MainHeader() {
     <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
       <Container>
         <Navbar.Brand>
-          <Link href={"/"}>CryptoWatch</Link>
+          <Link href={"/"}>HoDLWatch</Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
             {session && (
-              <Nav.Link eventKey={"1"}>
+              <Nav.Link eventKey={"1"} role={"link"}>
                 <Link href="/assets">
                   <Navbar.Text>Assets</Navbar.Text>
                 </Link>
@@ -92,7 +92,7 @@ function MainHeader() {
             {/*<Nav.Link eventKey={"3"} onClick={session ? handleSignout : handleSignin}>{session ? "Sign out" : "Sign in"}</Nav.Link>*/}
 
             {session && (
-              <Nav.Link eventKey={"3"}>
+              <Nav.Link eventKey={"3"} role={"link"}>
                 <Link href={`/user/${username}`}>
                   <Navbar.Text>{"Profile"}</Navbar.Text>
                 </Link>
@@ -100,13 +100,13 @@ function MainHeader() {
             )}
 
             {!session ? (
-              <Nav.Link eventKey={"3"}>
+              <Nav.Link eventKey={"3"} role={"link"}>
                 <Link href="/auth">
                   <Navbar.Text>{"Sign in"}</Navbar.Text>
                 </Link>
               </Nav.Link>
             ) : (
-              <Nav.Link eventKey={"3"} onClick={handleSignout}>
+              <Nav.Link eventKey={"3"} role={"link"} onClick={handleSignout}>
                 {"Sign out"}
               </Nav.Link>
             )}

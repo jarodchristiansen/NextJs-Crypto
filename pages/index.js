@@ -24,30 +24,48 @@ function HomePage({ isConnected, initialReduxState }) {
     mainExplainer: {
       headerText: "Affordable Metrics For Decentralized Assets",
       subHeaderText: "Affordable Prices for helpful insights",
-      description: "This is the description text",
+      description:
+        "Metrics that benefit everyone, not just those that can afford thousands of dollars in subscriptions to make better investment choices",
       modalHeader: "Useful Metrics for Crypto Assets",
-      modalBodyText: "",
+      modalBodyText:
+        "Insightful metrics at affordable prices to make crypto available to everyone, not just those who already have an advantage.",
       modalBodyImage: "",
     },
     userProfiles: {
       headerText: "User Profile Customization",
-      subHeaderText: "Wallet Tracking",
-      description: "This is the description text",
+      subHeaderText: "Portfolio Building",
+      description:
+        "Track your favorite assets and build your portfolio using our portfolio tracker, engage based on favorited assets",
+      modalHeader: "User Profile Dashboard",
+      modalBodyText: "",
+      modalBodyImage: "",
     },
     socialMetrics: {
-      headerText: "Realtime social metrics",
-      subHeaderText: "Wallet Tracking",
-      description: "This is the description text",
+      headerText: "Realtime Social Metrics",
+      subHeaderText: "Social Media Metrics To Track Engagement",
+      description:
+        "Social media and search engine metrics to help identify the hottest assets as they start ot trend",
+      modalHeader: "Social Metrics",
+      modalBodyText: "",
+      modalBodyImage: "",
     },
     financialMetrics: {
       headerText: "Financial Metrics",
-      subHeaderText: "Wallet Tracking",
-      description: "This is the description text",
+      subHeaderText: "Stastical Models Made For You",
+      description:
+        "Ready made statistical models to quickly view some of the most important components of an asset before investing.",
+      modalHeader: "Useful Metrics for Crypto Assets",
+      modalBodyText: "",
+      modalBodyImage: "",
     },
     onChainMetrics: {
-      headerText: "On-chain metrics for analysis",
-      subHeaderText: "Wallet Tracking",
-      description: "This is the description text",
+      headerText: "On-chain Metrics",
+      subHeaderText: "Fundamental Analysis",
+      description:
+        "Fundamental metrics of asset usage and flows to give you insight into market movements",
+      modalHeader: "Useful Metrics for Crypto Assets",
+      modalBodyText: "",
+      modalBodyImage: "",
     },
   };
 
@@ -104,7 +122,7 @@ function HomePage({ isConnected, initialReduxState }) {
       />
 
       <div className="screener">
-        <div className={containerVisible ? "fadeIn" : "fadeOut"}>
+        <div>
           {/*<TradingViewEmbed*/}
           {/*  widgetType={widgetType.SCREENER_CRYPTOCURRENCY}*/}
           {/*  widgetConfig={{*/}

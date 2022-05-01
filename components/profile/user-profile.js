@@ -29,6 +29,8 @@ function UserProfile() {
   const [loadedSession, setLoadedSession] = useState();
   const [loadedUser, setLoadedUser] = useState();
 
+  const [profileSection, setProfileSection] = useState("Generic");
+
   let fetchedUser;
 
   useEffect(() => {
@@ -71,23 +73,60 @@ function UserProfile() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const profileIsUser = loadedSession?.user?.username === username;
 
   return (
     <section>
       {/*<Button variant="primary" onClick={handleShow}>*/}
       {/*  Launch demo modal*/}
       {/*</Button>*/}
-      <UsernameChangeModal show={show} setShow={setShow} />
 
-      {isLoading ? (
-        <LoadingSpinner />
+      {isLoading && <LoadingSpinner />}
+
+      {profileIsUser && !isLoading ? (
+        <div>
+          <div></div>
+          <div className={"text-center"}>
+            <h1>Your User Profile</h1>
+            {/*<AblyChatComponent />*/}
+          </div>
+        </div>
       ) : (
+        <section>
+          <h1>{`${username}'s`} Profile</h1>
+        </section>
+      )}
+
+      <div className="btn-group w-100 mx-auto ">
+        <button
+          type="button"
+          className="btn btn-outline-primary"
+          onClick={() => setProfileSection("Generic")}
+        >
+          Left
+        </button>
+        <button
+          type="button"
+          className="btn btn-outline-primary"
+          onClick={() => setProfileSection("History")}
+        >
+          Middle
+        </button>
+        <button
+          type="button"
+          className="btn btn-outline-primary"
+          onClick={() => setProfileSection("Analytics")}
+        >
+          Right
+        </button>
+      </div>
+
+      {!isLoading && profileSection == "Generic" && (
         <>
           {console.log("this is the loadedUser on user-profile", loadedUser)}
           {loadedUser && loadedUser?.favorites && (
-            <div>
-              <h1>User Favorites</h1>
-
+            <div className={"text-center"}>
+              {!profileIsUser && <h1>{`${username}'s`} favorites</h1>}
               <Favorites
                 path={router.pathname}
                 loadedUser={loadedUser}
@@ -98,11 +137,15 @@ function UserProfile() {
         </>
       )}
 
-      {loadedSession?.user?.username === username && (
+      {profileIsUser && !isLoading && (
         <div>
-          <h1>Your User Profile</h1>
-          <AblyChatComponent />
-          <ProfileForm onChangePassword={changePasswordHandler} />
+          <div></div>
+          <div className={"text-center"}>
+            <h1>Your User Profile</h1>
+            {/*<AblyChatComponent />*/}
+            <UsernameChangeModal show={show} setShow={setShow} />
+            <ProfileForm onChangePassword={changePasswordHandler} />
+          </div>
         </div>
       )}
     </section>
