@@ -29,7 +29,7 @@
     color: #74dacc;
     font-size: 1rem;
   }
-  
+
   @media (min-width: 768px) {
     .header {
       width: 100%;

@@ -7,17 +7,54 @@ import { useMediaQuery } from "react-responsive";
 import clientPromise from "../lib/mongodb";
 import { initializeStore, useStore } from "../store";
 import dynamic from "next/dynamic";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 function HomePage({ isConnected, initialReduxState }) {
   const [session, loading, status] = useSession();
+  const [containerVisible, setContainerVisible] = useState(false);
 
   const { dispatch } = useStore();
 
   const isDesktopOrLaptop = useMediaQuery({
     query: `(max-width: 620px)`,
   });
+
+  const textBlocks = {
+    mainExplainer: {
+      headerText: "Affordable Metrics For Decentralized Assets",
+      subHeaderText: "Affordable Prices for helpful insights",
+      description: "This is the description text",
+      modalHeader: "Useful Metrics for Crypto Assets",
+      modalBodyText: "",
+      modalBodyImage: "",
+    },
+    userProfiles: {
+      headerText: "User Profile Customization",
+      subHeaderText: "Wallet Tracking",
+      description: "This is the description text",
+    },
+    socialMetrics: {
+      headerText: "Realtime social metrics",
+      subHeaderText: "Wallet Tracking",
+      description: "This is the description text",
+    },
+    financialMetrics: {
+      headerText: "Financial Metrics",
+      subHeaderText: "Wallet Tracking",
+      description: "This is the description text",
+    },
+    onChainMetrics: {
+      headerText: "On-chain metrics for analysis",
+      subHeaderText: "Wallet Tracking",
+      description: "This is the description text",
+    },
+  };
+
+  useEffect(() => {
+    console.log("this is continaerVisible", containerVisible);
+    !containerVisible && setContainerVisible(true);
+  }, []);
 
   return (
     <div>
@@ -66,22 +103,51 @@ function HomePage({ isConnected, initialReduxState }) {
         }}
       />
 
-      <div className="explainer">{/*<LandingExplainer />*/}</div>
-
       <div className="screener">
-        <div style={{ marginLeft: "5%" }}>
-          <TradingViewEmbed
-            widgetType={widgetType.SCREENER_CRYPTOCURRENCY}
-            widgetConfig={{
-              width: 97 + "%",
-              height: isDesktopOrLaptop ? 650 : 800,
-              defaultColumn: "overview",
-              screener_type: "crypto_mkt",
-              displayCurrency: "USD",
-              colorTheme: "dark",
-              locale: "en",
-            }}
-          />
+        <div className={containerVisible ? "fadeIn" : "fadeOut"}>
+          {/*<TradingViewEmbed*/}
+          {/*  widgetType={widgetType.SCREENER_CRYPTOCURRENCY}*/}
+          {/*  widgetConfig={{*/}
+          {/*    width: 97 + "%",*/}
+          {/*    height: isDesktopOrLaptop ? 650 : 800,*/}
+          {/*    defaultColumn: "overview",*/}
+          {/*    screener_type: "crypto_mkt",*/}
+          {/*    displayCurrency: "USD",*/}
+          {/*    colorTheme: "dark",*/}
+          {/*    locale: "en",*/}
+          {/*  }}*/}
+          {/*/>*/}
+          <div className="container">
+            <div className={"row row-cols-1"}>
+              <div className="col">
+                <div className="explainer">
+                  {<LandingExplainer text={textBlocks.mainExplainer} />}
+                </div>
+              </div>
+            </div>
+            <div className="row row-cols-2">
+              <div className="col">
+                <div className="explainer">
+                  {<LandingExplainer text={textBlocks.userProfiles} />}
+                </div>
+              </div>
+              <div className="col">
+                <div className="explainer">
+                  {<LandingExplainer text={textBlocks.socialMetrics} />}
+                </div>
+              </div>
+              <div className="col">
+                <div className="explainer">
+                  {<LandingExplainer text={textBlocks.financialMetrics} />}
+                </div>
+              </div>
+              <div className="col">
+                <div className="explainer">
+                  {<LandingExplainer text={textBlocks.onChainMetrics} />}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/*<div>*/}

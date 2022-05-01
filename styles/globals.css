@@ -38,6 +38,35 @@ ul {
   max-width: 100%;
 }
 
+.fadeIn {
+  transition: opacity 0.5s;
+  opacity: 1;
+}
+.fadeOut {
+  opacity: 0;
+  transition: opacity 0.5s;
+  pointer-events:none;
+}
+.modal-trigger-button {
+  background-color: var(--global-color-primary);
+  color: var(--global-text-color-white);
+  border: 1px solid white;
+  font-family: var(--global-font-family);
+}
+
+
+:root {
+  --global-font-family: Verdana, sans-serif;
+  --global-font-size: 0.8rem;
+  --global-text-color: #222;
+  --global-text-color-white: #fff;
+  --global-primary-title-size: 2rem;
+  --global-color-primary: #08aed5;
+  --global-color-secondary: #779fa1;
+  --global-color-warning: #e28413;
+  --global-color-danger: #ff6542;
+}
+
 /*.priceChart {*/
 /*  margin-left: 3.5%;*/
 /*}*/
