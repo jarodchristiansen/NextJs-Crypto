@@ -200,7 +200,7 @@ function FibonacciChart(props) {
                 14
               </button>
             </div>
-            <h3 className={"my-2"}>{time} Days</h3>
+            <h3 className={"my-2"}>{time} Day View</h3>
             <ResponsiveContainer height={!isDesktopOrLaptop ? 400 : 350}>
               <ComposedChart
                 data={chartData}
