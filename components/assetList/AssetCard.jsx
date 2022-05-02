@@ -86,9 +86,9 @@ const AssetCard = (props) => {
         {/*  {"            Some quick example text to build on the card title and make up the\n" +*/}
         {/*    "            bulk of the card's content."}*/}
         {/*</p>*/}
-        <p className={"card-text"}>{urls?.website}</p>
-        <p className={"card-text"}>{urls?.source_code}</p>
-        <p className={"card-text"}>{urls?.technical_doc}</p>
+        {/*<p className={"card-text"}>{urls?.website}</p>*/}
+        {/*<p className={"card-text"}>{urls?.source_code}</p>*/}
+        {/*<p className={"card-text"}>{urls?.technical_doc}</p>*/}
         {/*<div className={"card-text"}>*/}
         {/*  {tags &&*/}
         {/*    tags.map((tag) => {*/}
