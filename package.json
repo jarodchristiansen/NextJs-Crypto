@@ -19,6 +19,7 @@
     "bootstrap": "^5.1.3",
     "chart.js": "^3.3.0",
     "chartjs-plugin-annotation": "^1.0.1",
+    "coingecko-api": "^1.0.10",
     "fetch": "^1.1.0",
     "memory-cache": "^0.2.0",
     "mongodb": "^3.5.9",

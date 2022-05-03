@@ -30,6 +30,8 @@ function AssetsPage(props) {
   const [startingAssets, setStartingAssets] = useState([]);
   const [events, setEvents] = useState();
   const [ogEvents, setOgEvents] = useState();
+  const [lengthOfResults, setLengthOfResults] = useState(100);
+  const [searchSelection, setSearchSelection] = useState("Assets");
 
   const [query, setQuery] = useState();
   const [selected, setSelected] = useState([]);
@@ -95,14 +97,16 @@ function AssetsPage(props) {
   });
 
   useEffect(() => {
-    axios.get("/api/all").then((res) => {
-      // loadFavorited(res?.data);
-      // console.log("this is results on the assets page", results);
-      console.log("this is the res.data from assets", res.data);
-
-      setEvents(res.data);
-      setOgEvents(res.data);
-    });
+    // axios.get("/api/all").then((res) => {
+    //   // loadFavorited(res?.data);
+    //   // console.log("this is results on the assets page", results);
+    //   console.log("this is the res.data from assets", res.data);
+    //
+    //   setEvents(res.data);
+    //   setOgEvents(res.data);
+    // });
+    console.log("this is useEffect above coinGeckodata request");
+    getOGAssets();
   }, []);
 
   // if (error) return <div>Failed to load</div>
@@ -137,13 +141,41 @@ function AssetsPage(props) {
   async function searchQuery(e) {
     e.preventDefault();
     console.log("this is searchQuery", e);
-    let returnedEvents = await getSearchEvents(query.toUpperCase());
+    console.log("this is og Events", ogEvents);
+    let returnedEvents = ogEvents.filter((event) => {
+      return event.symbol.toUpperCase().includes(query.toUpperCase());
+    });
+    // let returnedEvents = await getSearchEvents(query.toUpperCase());
     if (returnedEvents.length > 0) {
       setEvents(returnedEvents);
     } else {
       setEvents(startingAssets);
     }
   }
+
+  async function getExchangeData(e) {
+    console.log("this is select change", e.target.value);
+  }
+
+  async function getOGAssets() {
+    axios
+      .get(
+        `/api/coinGeckoData/?requestType=allData&numberOfResults=${lengthOfResults}`
+      )
+      .then((res) => {
+        // loadFavorited(res?.data);
+        // console.log("this is results on the assets page", results);
+        console.log(
+          "this is the res.data from assets in getOGAssets",
+          res.data.data
+        );
+
+        setEvents(res.data.data);
+        setOgEvents(res.data.data);
+      });
+  }
+
+  async function getAssetData(e) {}
 
   const handleKeyPress = (target) => {
     if (target.charCode == 13) {
@@ -168,6 +200,8 @@ function AssetsPage(props) {
               ? handleKeyPress(e.target)
               : setEvents(ogEvents) && setQuery(e.target.value);
           }}
+          onSelectionChange={(e) => setSearchSelection(e)}
+          searchSelection={searchSelection}
           handleSubmit={(e) => searchQuery(e)}
         />
       </div>

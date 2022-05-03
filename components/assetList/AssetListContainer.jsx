@@ -40,18 +40,29 @@ const AssetListContainer = (props) => {
         {items &&
           items.map((event) => (
             <div>
+              {/*<AssetCard*/}
+              {/*  key={event.id}*/}
+              {/*  id={event.id}*/}
+              {/*  title={event.title}*/}
+              {/*  symbol={event.symbol}*/}
+              {/*  image={event.imageUrl}*/}
+              {/*  price={event.price}*/}
+              {/*  favorited={event?.liked}*/}
+              {/*  tags={event?.tags}*/}
+              {/*  urls={event?.urls}*/}
+              {/*  updateFavorites={updateFavorites}*/}
+              {/*  setUpdateFavorites={setUpdateFavorites}*/}
+              {/*/>*/}
               <AssetCard
-                key={event.id}
-                id={event.id}
-                title={event.title}
-                symbol={event.symbol}
-                image={event.imageUrl}
-                price={event.price}
-                favorited={event?.liked}
-                tags={event?.tags}
-                urls={event?.urls}
-                updateFavorites={updateFavorites}
-                setUpdateFavorites={setUpdateFavorites}
+                key={event?.id}
+                id={event?.id}
+                title={event?.name}
+                symbol={event?.symbol.toUpperCase()}
+                image={event.image?.small}
+                price={event?.market_data?.current_price.usd}
+                marketCap={event?.market_data?.market_cap.usd}
+                circulatingSupply={event?.market_data?.circulating_supply}
+                totalSupply={event?.market_data?.totalSupply}
               />
             </div>
           ))}

@@ -9,12 +9,15 @@ import Link from "next/link";
 const AssetCard = (props) => {
   const {
     id,
+    circulatingSupply,
     title,
     symbol,
     image,
+    marketCap,
     price,
     favorited,
     tags,
+    totalSupply,
     updateFavorites,
     urls,
     setUpdateFavorites,
@@ -79,6 +82,12 @@ const AssetCard = (props) => {
         </h6>
         <div>
           <img src={image} style={{ maxHeight: "60px" }} />
+          <p className={"card-text mt-2"}>Daily Price - {price} USD</p>
+          <p className={"card-text mt-2"}>Market Cap - {marketCap} USD</p>
+          <p className={"card-text mt-2"}>
+            Circulating Supply- {circulatingSupply}
+          </p>
+          <p className={"card-text mt-2"}>Total Supply- {circulatingSupply}</p>
         </div>
 
         <hr className={"bg-dark"} />
