@@ -25,11 +25,14 @@ import AssetFavorites from "../../components/events/assets-favorites";
 import AssetListContainer from "../../components/assetList/AssetListContainer";
 import { useMediaQuery } from "react-responsive";
 import CustomSearchComponent from "../../components/searchComponents/CustomSearchComponent";
+import LoadingSpinner from "../../components/ui/loading-spinner";
 
 function AssetsPage(props) {
   const [startingAssets, setStartingAssets] = useState([]);
   const [events, setEvents] = useState();
-  const [ogEvents, setOgEvents] = useState();
+  const [lengthOfResults, setLengthOfResults] = useState(100);
+  const [searchSelection, setSearchSelection] = useState("Assets");
+  const [startingExchanges, setStartingExchanges] = useState([]);
 
   const [query, setQuery] = useState();
   const [selected, setSelected] = useState([]);
@@ -40,6 +43,8 @@ function AssetsPage(props) {
   const [loadedUser, setLoadedUser] = useState();
   const [favorites, setFavorites] = useState();
   const [updateFavorites, setUpdateFavorites] = useState();
+
+  const [isSearching, setIsSearching] = useState(false);
 
   const router = useRouter();
   const { dispatch, getState } = useStore();
@@ -95,14 +100,16 @@ function AssetsPage(props) {
   });
 
   useEffect(() => {
-    axios.get("/api/all").then((res) => {
-      // loadFavorited(res?.data);
-      // console.log("this is results on the assets page", results);
-      console.log("this is the res.data from assets", res.data);
-
-      setEvents(res.data);
-      setOgEvents(res.data);
-    });
+    // axios.get("/api/all").then((res) => {
+    //   // loadFavorited(res?.data);
+    //   // console.log("this is results on the assets page", results);
+    //   console.log("this is the res.data from assets", res.data);
+    //
+    //   setEvents(res.data);
+    //   setOgEvents(res.data);
+    // });
+    console.log("this is useEffect above coinGeckodata request");
+    getOGAssets();
   }, []);
 
   // if (error) return <div>Failed to load</div>
@@ -137,19 +144,85 @@ function AssetsPage(props) {
   async function searchQuery(e) {
     e.preventDefault();
     console.log("this is searchQuery", e);
-    let returnedEvents = await getSearchEvents(query.toUpperCase());
+    console.log("this is startingAssets", startingAssets);
+    // let returnedEvents = ogEvents.filter((event) => {
+    //   return event.symbol.toUpperCase().includes(query.toUpperCase());
+    // });
+    let returnedEvents;
+
+    if (searchSelection === "Assets") {
+      console.log("searchSelection conditional console logs", searchSelection);
+      returnedEvents = startingAssets.filter((event) => {
+        return event.symbol.toUpperCase().includes(query.toUpperCase());
+      });
+    }
+    // let returnedEvents = await getSearchEvents(query.toUpperCase());
     if (returnedEvents.length > 0) {
       setEvents(returnedEvents);
     } else {
-      setEvents(startingAssets);
+      setEvents("");
+      setIsSearching(true);
     }
   }
 
+  async function getExchangeData(e) {
+    console.log("this is select change", e);
+    let exchanges = axios
+      .get(
+        `/api/coinGeckoData/?requestType=exchangeData&numberOfResults=${lengthOfResults}`
+      )
+      .then((res) => {
+        // loadFavorited(res?.data);
+        // console.log("this is results on the assets page", results);
+        console.log(
+          "this is the res.data from assets in getExchangeData",
+          res.data.data
+        );
+        //
+        setEvents(res.data.data);
+        setStartingExchanges(res.data.data);
+      });
+    return exchanges;
+  }
+
+  async function getOGAssets() {
+    axios
+      .get(
+        `/api/coinGeckoData/?requestType=allData&numberOfResults=${lengthOfResults}`
+      )
+      .then((res) => {
+        // loadFavorited(res?.data);
+        // console.log("this is results on the assets page", results);
+        console.log(
+          "this is the res.data from assets in getOGAssets",
+          res.data.data
+        );
+
+        setEvents(res.data.data);
+        // setOgEvents(res.data.data);
+        setStartingAssets(res.data.data);
+      });
+  }
+
+  async function getAssetData(e) {}
+
   const handleKeyPress = (target) => {
-    if (target.charCode == 13) {
-      searchQuery(target.value);
-    } else {
-      setQuery(target.value);
+    if (searchSelection === "Assets") {
+      if (target.charCode == 13) {
+        searchQuery(target.value);
+      } else {
+        setQuery(target.value);
+      }
+    } else if (searchSelection === "Exchanges") {
+      console.log(
+        "this is the startingExchanges in exchanges handleKeyPress",
+        startingExchanges,
+        target.value
+      );
+      let returnedEvents = startingExchanges.filter((event) => {
+        return event.name.toUpperCase().includes(target.value.toUpperCase());
+      });
+      setEvents(returnedEvents);
     }
   };
 
@@ -164,10 +237,24 @@ function AssetsPage(props) {
       >
         <CustomSearchComponent
           onTextChange={(e) => {
-            e.target.value.length > 1
-              ? handleKeyPress(e.target)
-              : setEvents(ogEvents) && setQuery(e.target.value);
+            if (searchSelection === "Assets") {
+              e.target.value.length > 1
+                ? handleKeyPress(e.target)
+                : setEvents(startingAssets);
+            } else if (searchSelection) {
+              e.target.value.length > 1
+                ? handleKeyPress(e.target)
+                : setEvents(startingExchanges);
+            }
           }}
+          onSelectionChange={(e) => {
+            console.log("this is onSelectionChange", e);
+            // setEvents(getExchangeData());
+            setIsSearching(false);
+            setSearchSelection(e);
+            e === "Exchanges" ? getExchangeData() : setEvents(startingAssets);
+          }}
+          searchSelection={searchSelection}
           handleSubmit={(e) => searchQuery(e)}
         />
       </div>
@@ -197,13 +284,21 @@ function AssetsPage(props) {
       {/*  />*/}
       {/*)}*/}
 
-      {events && (
+      {events && !isSearching && (
         <div className={"mx-auto"}>
           <AssetListContainer
             items={events?.length > 1 ? events : props.events}
             setUpdateFavorites={setUpdateFavorites}
             updateFavorites={updateFavorites}
+            searchSelection={searchSelection}
           />
+        </div>
+      )}
+
+      {isSearching && (
+        <div className={"container text-center mt-5"}>
+          <h1 className={"card-text "}>Searching For {searchSelection}</h1>
+          <LoadingSpinner />
         </div>
       )}
     </div>

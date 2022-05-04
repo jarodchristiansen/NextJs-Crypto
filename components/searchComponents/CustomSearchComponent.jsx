@@ -1,12 +1,26 @@
-const CustomSearchComponent = ({ onTextChange, handleSubmit }) => {
+const CustomSearchComponent = ({
+  onTextChange,
+  handleSubmit,
+  onSelectionChange,
+  searchSelection,
+}) => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <div className="row g-0">
           <div className="col g-0">
-            <select className="form-select" aria-label="Default select example">
-              <option selected>Assets</option>
-              <option value="1">Exchanges</option>
+            <select
+              className="form-select"
+              aria-label="Default select example"
+              onChange={(e) => {
+                onSelectionChange(e.target.value);
+              }}
+              value={searchSelection}
+            >
+              <option selected value={"Assets"}>
+                Assets
+              </option>
+              <option value="Exchanges">Exchanges</option>
               {/*<option value="2">Two</option>*/}
               {/*<option value="3">Three</option>*/}
             </select>

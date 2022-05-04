@@ -5,16 +5,24 @@ import { useSession } from "next-auth/client";
 import addFavoriteUtil from "../../lib/favorites";
 import { StarFill } from "react-bootstrap-icons";
 import Link from "next/link";
+import {
+  currencyFormat,
+  internationalFormatter,
+  standardThousandsFormatter,
+} from "../../helpers/formatters";
 
 const AssetCard = (props) => {
   const {
     id,
+    circulatingSupply,
     title,
     symbol,
     image,
+    marketCap,
     price,
     favorited,
     tags,
+    totalSupply,
     updateFavorites,
     urls,
     setUpdateFavorites,
@@ -79,6 +87,19 @@ const AssetCard = (props) => {
         </h6>
         <div>
           <img src={image} style={{ maxHeight: "60px" }} />
+          <p className={"card-text mt-2"}>
+            Daily Price - {currencyFormat(price)} USD
+          </p>
+          <p className={"card-text mt-2"}>
+            Market Cap - {currencyFormat(marketCap)} USD
+          </p>
+          <p className={"card-text mt-2"}>
+            Circulating Supply-{" "}
+            {standardThousandsFormatter.format(circulatingSupply)}
+          </p>
+          <p className={"card-text mt-2"}>
+            Total Supply- {standardThousandsFormatter.format(totalSupply)}
+          </p>
         </div>
 
         <hr className={"bg-dark"} />

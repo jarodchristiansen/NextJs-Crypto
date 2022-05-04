@@ -303,15 +303,6 @@ function FinancialChart(props) {
     query: `(max-width: 920px)`,
   });
 
-  const currencyFormat = (num) => {
-    return "$" + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-  };
-
-  let formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
-
   if (error) return <div>failed to load</div>;
   if (!data) return <div>loading...</div>;
   return (
