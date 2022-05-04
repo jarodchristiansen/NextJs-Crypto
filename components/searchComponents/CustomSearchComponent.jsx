@@ -13,9 +13,9 @@ const CustomSearchComponent = ({
               className="form-select"
               aria-label="Default select example"
               onChange={(e) => {
-                console.log("this is select change", e.target.value);
                 onSelectionChange(e.target.value);
               }}
+              value={searchSelection}
             >
               <option selected value={"Assets"}>
                 Assets

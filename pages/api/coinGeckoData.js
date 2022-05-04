@@ -46,9 +46,10 @@ export default async (req, res) => {
 
     data = await CoinGeckoClient.coins.all({ per_page: numberOfResults });
   } else if (requestType === "exchangeData") {
+    console.log("this is the requestType at conditional", requestType);
     data = await CoinGeckoClient.exchanges.all({ per_page: numberOfResults });
   }
-
+  // data = await CoinGeckoClient.exchanges.all({ per_page: numberOfResults });
   cache.put(
     `coinGecko: ${requestType} - ${numberOfResults}`,
     data,

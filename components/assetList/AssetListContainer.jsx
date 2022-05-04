@@ -2,9 +2,10 @@ import AssetCard from "./AssetCard";
 import EventItem from "../events/event-item";
 import { useMediaQuery } from "react-responsive";
 import { useState, useEffect } from "react";
+import ExchangeCard from "./ExchangeCard";
 
 const AssetListContainer = (props) => {
-  const { items, updateFavorites, setUpdateFavorites } = props;
+  const { items, searchSelection, updateFavorites, setUpdateFavorites } = props;
 
   const isMobile = useMediaQuery({
     query: `(max-width: 920px)`,
@@ -53,17 +54,37 @@ const AssetListContainer = (props) => {
               {/*  updateFavorites={updateFavorites}*/}
               {/*  setUpdateFavorites={setUpdateFavorites}*/}
               {/*/>*/}
-              <AssetCard
-                key={event?.id}
-                id={event?.id}
-                title={event?.name}
-                symbol={event?.symbol.toUpperCase()}
-                image={event.image?.small}
-                price={event?.market_data?.current_price.usd}
-                marketCap={event?.market_data?.market_cap.usd}
-                circulatingSupply={event?.market_data?.circulating_supply}
-                totalSupply={event?.market_data?.totalSupply}
-              />
+              {searchSelection === "Assets" && (
+                <AssetCard
+                  key={event?.id}
+                  id={event?.id}
+                  title={event?.name}
+                  symbol={event?.symbol?.toUpperCase()}
+                  image={event?.image?.small}
+                  price={event?.market_data?.current_price.usd}
+                  marketCap={event?.market_data?.market_cap.usd}
+                  circulatingSupply={event?.market_data?.circulating_supply}
+                  totalSupply={event?.market_data?.total_supply}
+                />
+              )}
+
+              {searchSelection === "Exchanges" && (
+                <ExchangeCard
+                  key={event?.id}
+                  id={event?.id}
+                  title={event?.name}
+                  image={event?.image}
+                  country={event?.country}
+                  yearEstablished={event?.year_established}
+                  url={event?.url}
+                  trustScore={event?.trust_score}
+                  btcTradeVolume={event?.trade_volume_24h_btc}
+                  // price={event?.market_data?.current_price.usd}
+                  // marketCap={event?.market_data?.market_cap.usd}
+                  // circulatingSupply={event?.market_data?.circulating_supply}
+                  // totalSupply={event?.market_data?.totalSupply}
+                />
+              )}
             </div>
           ))}
       </div>
