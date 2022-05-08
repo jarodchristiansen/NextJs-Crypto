@@ -48,6 +48,8 @@ function AuthForm(props) {
   const [hasError, setHasError] = useState();
   const [showPassword, setShowPassword] = useState();
   const [password, setPassword] = useState();
+  const [termsAndConditionsChecked, setTermsAndConditionsChecked] =
+    useState(false);
 
   useEffect(() => {
     getSession().then((session) => {
@@ -81,6 +83,22 @@ function AuthForm(props) {
       await validate();
     }
 
+    if (!termsAndConditionsChecked && !isLogin) {
+      console.log("this is inside the conditional");
+      toast.notify(
+        `${"You must agree to the terms and conditions to register"}`,
+        {
+          duration: 10,
+          type: "error",
+        }
+      );
+      setButtonsDisabled(true);
+      setHasError({
+        MissingTermsAndConditions: (
+          <div>Terms and Conditions Must Be Agreed to to create an account</div>
+        ),
+      });
+    }
     //optional: Add validation on input form.
     if (!hasError) {
       console.log("hasError within !hasError", hasError);
@@ -126,7 +144,7 @@ function AuthForm(props) {
           });
           console.log("this is the result.error", result.error);
         }
-      } else {
+      } else if (termsAndConditionsChecked) {
         try {
           const result = await createUser(
             enteredEmail,
@@ -239,6 +257,14 @@ function AuthForm(props) {
     }
   };
 
+  useEffect(() => {
+    if (hasError) {
+      setButtonsDisabled(true);
+    } else {
+      setButtonsDisabled(false);
+    }
+  }, [hasError]);
+
   return (
     <section className={classes.auth}>
       <ToastContainer position={"bottom"} />
@@ -273,18 +299,47 @@ function AuthForm(props) {
         </div>
         {!isLogin && (
           <div className={classes.control}>
-            <label htmlFor="username">Your Username (Optional)</label>
+            <label htmlFor="username">Your Username</label>
             <input type="text" id="username" ref={userNameInputRef} required />
           </div>
         )}
-        <div className={"card"}>
-          <div className={"card-body"}>
-            <p className={"card-text"}>For demo users</p>
-            <p className={"card-text"}>Demo Email: demoAccount@gmail.com</p>
-            <p className={"card-text"}>Demo Password: password12345!@#</p>
-            <p className={"card-text"}>Demo Username: demoaccount</p>
+
+        {!isLogin && (
+          <div>
+            <label htmlFor="termsAndConditions">
+              I have read and agree to the terms and conditions
+            </label>
+            <input
+              type="checkbox"
+              id="termsAndConditions"
+              // ref={termsAndConditionsRef}
+              onChange={(e) => {
+                console.log("this is some validation stuff ", e.target.value);
+                setTermsAndConditionsChecked(!termsAndConditionsChecked);
+                hasError?.MissingTermsAndConditions &&
+                  !termsAndConditionsChecked &&
+                  setHasError();
+              }}
+              value={!termsAndConditionsChecked}
+              checked={termsAndConditionsChecked}
+              required
+            />
+            {hasError?.MissingTermsAndConditions && !isLogin && (
+              <div>{hasError?.MissingTermsAndConditions}</div>
+            )}
           </div>
-        </div>
+        )}
+        {/*{isLogin && (*/}
+        {/*  <div className={"card"}>*/}
+        {/*    <div className={"card-body"}>*/}
+        {/*      <p className={"card-text"}>For demo users</p>*/}
+        {/*      <p className={"card-text"}>Demo Email: demoAccount@gmail.com</p>*/}
+        {/*      <p className={"card-text"}>Demo Password: password12345!@#</p>*/}
+        {/*      <p className={"card-text"}>Demo Username: demoaccount</p>*/}
+        {/*    </div>*/}
+        {/*  </div>*/}
+        {/*)}*/}
+
         <div className={classes.actions}>
           <Button
             type={"submit"}
