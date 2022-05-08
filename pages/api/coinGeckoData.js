@@ -26,8 +26,9 @@ export default async (req, res) => {
   //     });
   // }
   const CoinGeckoClient = new CoinGecko();
-  let requestType = req.query.requestType;
-  let numberOfResults = req.query.numberOfResults;
+  let requestType = req.query?.requestType;
+  let numberOfResults = req.query?.numberOfResults;
+  let requestedAsset = req.query?.requestedAsset;
   let data;
   if (requestType === "allData") {
     // coins.all()
@@ -45,19 +46,53 @@ export default async (req, res) => {
     // params.sparkline: Boolean [default: false] - Include sparkline 7 days data
 
     data = await CoinGeckoClient.coins.all({ per_page: numberOfResults });
+
+    cache.put(
+      `coinGecko: ${requestType} - ${numberOfResults}`,
+      data,
+      43200000,
+      function (key, value) {
+        console.log(key + " did " + value);
+      }
+    );
+  } else if (requestType === "specifiedAsset") {
+    let assetList = await CoinGeckoClient.coins.list();
+    assetList = assetList?.data;
+    cache.put(`coinGeckoAssetList`, assetList, 43200000, function (key, value) {
+      console.log(key + " did " + value);
+    });
+
+    let filteredList = assetList.filter((obj) => {
+      return obj.symbol === requestedAsset;
+    });
+
+    if (filteredList.length) {
+      let filteredObject = filteredList[0];
+      console.log("this is the filteredObject", filteredObject);
+      console.log("this is filteredObject.id", filteredObject.id);
+      data = await CoinGeckoClient.coins.fetch(filteredObject.id, {});
+    }
+
+    // cache.put(
+    //   `coinGecko: ${requestType} - ${requestedAsset}`,
+    //   data,
+    //   43200000,
+    //   function (key, value) {
+    //     console.log(key + " did " + value);
+    //   }
+    // );
   } else if (requestType === "exchangeData") {
-    console.log("this is the requestType at conditional", requestType);
     data = await CoinGeckoClient.exchanges.all({ per_page: numberOfResults });
+    cache.put(
+      `coinGecko: ${requestType} - ${numberOfResults}`,
+      data,
+      43200000,
+      function (key, value) {
+        console.log(key + " did " + value);
+      }
+    );
   }
   // data = await CoinGeckoClient.exchanges.all({ per_page: numberOfResults });
-  cache.put(
-    `coinGecko: ${requestType} - ${numberOfResults}`,
-    data,
-    43200000,
-    function (key, value) {
-      console.log(key + " did " + value);
-    }
-  );
 
   res.json(data);
 

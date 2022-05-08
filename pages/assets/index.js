@@ -30,9 +30,10 @@ import LoadingSpinner from "../../components/ui/loading-spinner";
 function AssetsPage(props) {
   const [startingAssets, setStartingAssets] = useState([]);
   const [events, setEvents] = useState();
-  const [lengthOfResults, setLengthOfResults] = useState(100);
+  const [lengthOfResults, setLengthOfResults] = useState(30);
   const [searchSelection, setSearchSelection] = useState("Assets");
   const [startingExchanges, setStartingExchanges] = useState([]);
+  const [filterSelection, setFilterSelection] = useState("");
 
   const [query, setQuery] = useState();
   const [selected, setSelected] = useState([]);
@@ -145,6 +146,7 @@ function AssetsPage(props) {
     e.preventDefault();
     console.log("this is searchQuery", e);
     console.log("this is startingAssets", startingAssets);
+    setIsSearching(true);
     // let returnedEvents = ogEvents.filter((event) => {
     //   return event.symbol.toUpperCase().includes(query.toUpperCase());
     // });
@@ -158,11 +160,38 @@ function AssetsPage(props) {
     }
     // let returnedEvents = await getSearchEvents(query.toUpperCase());
     if (returnedEvents.length > 0) {
+      setTimeout(() => {
+        setIsSearching(false);
+      }, [1000]);
       setEvents(returnedEvents);
     } else {
-      setEvents("");
       setIsSearching(true);
+      getUnpulledAsset(query);
+      // setEvents("");
     }
+  }
+
+  async function getUnpulledAsset(query) {
+    console.log("this is the query in getUnpulledAsset", query);
+    axios
+      .get(
+        `/api/coinGeckoData/?requestType=specifiedAsset&requestedAsset=${query.toLowerCase()}`
+      )
+      .then((res) => {
+        // loadFavorited(res?.data);
+        // console.log("this is results on the assets page", results);
+        console.log(
+          "this is the res.data from assets in getUnpulledAsset",
+          res.data.data
+        );
+        if (res.data.data) {
+          console.log("setting events with res.data.data", res.data.data);
+          setEvents(res.data.data);
+          setIsSearching(false);
+        } else {
+          console.log("No data was found");
+        }
+      });
   }
 
   async function getExchangeData(e) {
@@ -222,9 +251,38 @@ function AssetsPage(props) {
       let returnedEvents = startingExchanges.filter((event) => {
         return event.name.toUpperCase().includes(target.value.toUpperCase());
       });
-      setEvents(returnedEvents);
+      if (returnedEvents.length > 0) {
+        setEvents(returnedEvents);
+      } else {
+        returnedEvents = startingExchanges.filter((event) => {
+          return event.name.toUpperCase() === target.value.toUpperCase();
+        });
+        setEvents(returnedEvents);
+      }
     }
   };
+
+  async function filterEventsByCondition(condition) {
+    switch (condition) {
+      case "Year Established":
+        // code block
+        if (events) {
+          console.log("this is the Year Established switch case");
+          let filteredEvents = events.sort((a, b) =>
+            a.year_established > b.year_established ? 1 : -1
+          );
+          setEvents("");
+          console.log("this is the filteredEvents", filteredEvents);
+          // setEvents(filteredEvents);
+        }
+        break;
+      case "Trust Score":
+        return events.sort((a, b) => (a.trust_score > b.trust_score ? 1 : -1));
+        break;
+      default:
+      // code block
+    }
+  }
 
   return (
     <div className={"container "}>
@@ -254,6 +312,10 @@ function AssetsPage(props) {
             setSearchSelection(e);
             e === "Exchanges" ? getExchangeData() : setEvents(startingAssets);
           }}
+          onFilterChange={(e) => {
+            filterEventsByCondition(e);
+          }}
+          filterSelection={filterSelection}
           searchSelection={searchSelection}
           handleSubmit={(e) => searchQuery(e)}
         />
@@ -286,8 +348,9 @@ function AssetsPage(props) {
 
       {events && !isSearching && (
         <div className={"mx-auto"}>
+          {console.log("in events and !isSearching", events)}
           <AssetListContainer
-            items={events?.length > 1 ? events : props.events}
+            items={events ? events : props.events}
             setUpdateFavorites={setUpdateFavorites}
             updateFavorites={updateFavorites}
             searchSelection={searchSelection}
