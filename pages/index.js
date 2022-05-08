@@ -9,6 +9,7 @@ import { initializeStore, useStore } from "../store";
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 function HomePage({ isConnected, initialReduxState }) {
   const [session, loading, status] = useSession();
@@ -72,7 +73,20 @@ function HomePage({ isConnected, initialReduxState }) {
   useEffect(() => {
     console.log("this is continaerVisible", containerVisible);
     !containerVisible && setContainerVisible(true);
+
+    getDate();
   }, []);
+
+  async function getDate() {
+    axios.get(`/api/date}`).then((res) => {
+      // loadFavorited(res?.data);
+      // console.log("this is results on the assets page", results);
+      if (res) {
+        console.log("this is the response from get date", res);
+      }
+      console.log("this is the response from get date outside", res);
+    });
+  }
 
   return (
     <div>
