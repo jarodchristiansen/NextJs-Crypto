@@ -72,15 +72,6 @@ export default async (req, res) => {
       console.log("this is filteredObject.id", filteredObject.id);
       data = await CoinGeckoClient.coins.fetch(filteredObject.id, {});
     }
-
-    // cache.put(
-    //   `coinGecko: ${requestType} - ${requestedAsset}`,
-    //   data,
-    //   43200000,
-    //   function (key, value) {
-    //     console.log(key + " did " + value);
-    //   }
-    // );
   } else if (requestType === "exchangeData") {
     data = await CoinGeckoClient.exchanges.all({ per_page: numberOfResults });
     cache.put(

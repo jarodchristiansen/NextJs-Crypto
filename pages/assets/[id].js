@@ -11,6 +11,8 @@ import SocialPosts from "../../components/details/social-posts";
 import { ResponsiveContainer } from "recharts";
 import { getSession } from "next-auth/client";
 import FinancialPanel from "../../components/details/financial/financialPanel/FinancialPanel";
+import AssetBasicsCard from "../../components/details/basics/AssetBasicsCard";
+import axios from "axios";
 
 function AssetDetails() {
   const router = useRouter();
@@ -18,21 +20,19 @@ function AssetDetails() {
   let id = router.query.id || "BTC";
 
   const [tabState, setTabState] = useState("Financial");
+
   const [isLoading, setIsLoading] = useState(true);
   const [loadedSession, setLoadedSession] = useState();
 
-  // useEffect(() => {
-  //   getSession().then((session) => {
-  //     if (!session) {
-  //       window.location.href = "/auth";
-  //     } else {
-  //       setIsLoading(false);
-  //     }
-  //   });
-  // }, []);
-
   return (
     <div className={"container text-center"}>
+      <div className={"card mt-4"}>
+        Asset Basics
+        <div>
+          <AssetBasicsCard id={id} />
+        </div>
+      </div>
+
       <div
         className="btn-group my-4"
         role="group"

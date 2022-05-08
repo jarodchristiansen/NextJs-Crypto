@@ -2,21 +2,22 @@ import { useState, useEffect } from "react";
 import fetch from "unfetch";
 import FibonacciChart from "./FibonacciChart";
 import FinancialChart from "../financial-chart";
+import axios from "axios";
 
 const FinancialPanel = ({ id }) => {
   const [time] = useState(90);
-  const [data, setData] = useState();
+  const [lunarData, setLunarData] = useState();
 
   let key = "688o9wuzvzst3uybpg6eh";
 
-  const fetchPriceData = async () => {
+  const fetchLunarData = async () => {
     let priceData = await fetch(
       `/api/asset-details/lunardata?key=${key}&symbol=${id}&time=${time}`
     ).then((r) => r.json());
     if (priceData?.data) {
       let test = priceData?.data?.data[0]?.timeSeries.slice(time * -1);
       console.log("this is the testTime", priceData?.data);
-      setData(priceData?.data);
+      setLunarData(priceData?.data);
       console.log("this is running fetchPriceData", priceData?.data);
     } else {
       console.log("unable to load data from endpoint");
@@ -43,13 +44,13 @@ const FinancialPanel = ({ id }) => {
   };
 
   useEffect(() => {
-    fetchPriceData();
+    fetchLunarData();
     // fetchUniswap();
   }, [time]);
 
   return (
     <div className={"col"}>
-      <FibonacciChart priceData={data} />
+      {lunarData && <FibonacciChart priceData={lunarData} />}
     </div>
   );
 };
