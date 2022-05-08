@@ -257,6 +257,14 @@ function AuthForm(props) {
     }
   };
 
+  useEffect(() => {
+    if (hasError) {
+      setButtonsDisabled(true);
+    } else {
+      setButtonsDisabled(false);
+    }
+  }, [hasError]);
+
   return (
     <section className={classes.auth}>
       <ToastContainer position={"bottom"} />
@@ -310,7 +318,7 @@ function AuthForm(props) {
                 setTermsAndConditionsChecked(!termsAndConditionsChecked);
                 hasError?.MissingTermsAndConditions &&
                   !termsAndConditionsChecked &&
-                  setHasError("");
+                  setHasError();
               }}
               value={!termsAndConditionsChecked}
               checked={termsAndConditionsChecked}
