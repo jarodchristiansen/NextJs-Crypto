@@ -38,7 +38,45 @@ const AssetListContainer = (props) => {
     <div className={"col col-rows-3"}>
       <div className={isMobile ? "row row-cols-2 my-3" : "row row-cols-3 my-3"}>
         {console.log("this is items", items)}
+
+        {items && items.id && (
+          <div>
+            {console.log("this is the items above assetCard", items)}
+            {searchSelection === "Assets" && (
+              <AssetCard
+                key={items?.id}
+                id={items?.id}
+                title={items?.name}
+                symbol={items?.symbol?.toUpperCase()}
+                image={items?.image?.small}
+                price={items?.market_data?.current_price.usd}
+                marketCap={items.market_data?.market_cap.usd}
+                circulatingSupply={items.market_data?.circulating_supply}
+                totalSupply={items.market_data?.total_supply}
+              />
+            )}
+
+            {searchSelection === "Exchanges" && (
+              <ExchangeCard
+                key={items[0].id}
+                id={items[0].id}
+                title={items[0].name}
+                image={items[0].image}
+                country={items[0].country}
+                yearEstablished={items[0].year_established}
+                url={items[0].url}
+                trustScore={items[0].trust_score}
+                btcTradeVolume={items[0].trade_volume_24h_btc}
+                // price={event?.market_data?.current_price.usd}
+                // marketCap={event?.market_data?.market_cap.usd}
+                // circulatingSupply={event?.market_data?.circulating_supply}
+                // totalSupply={event?.market_data?.totalSupply}
+              />
+            )}
+          </div>
+        )}
         {items &&
+          items.length > 1 &&
           items.map((event) => (
             <div>
               {/*<AssetCard*/}

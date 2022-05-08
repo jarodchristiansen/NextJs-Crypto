@@ -3,6 +3,8 @@ const CustomSearchComponent = ({
   handleSubmit,
   onSelectionChange,
   searchSelection,
+  onFilterChange,
+  filterSelection,
 }) => {
   return (
     <div>
@@ -25,6 +27,43 @@ const CustomSearchComponent = ({
               {/*<option value="3">Three</option>*/}
             </select>
           </div>
+          {searchSelection === "Assets" ? (
+            <div className="col g-0">
+              <select
+                className="form-select"
+                aria-label="Default select example"
+                onChange={(e) => {
+                  // onFilterChange(e.target.value);
+                }}
+                // value={filterSelection}
+              >
+                <option selected value={"Market Cap"}>
+                  Market Cap
+                </option>
+                {/*<option value="Circulating Supply">Circulating Supply</option>*/}
+                {/*<option value="2">Two</option>*/}
+                {/*<option value="3">Three</option>*/}
+              </select>
+            </div>
+          ) : (
+            <div className="col g-0">
+              <select
+                className="form-select"
+                aria-label="Default select example"
+                onChange={(e) => {
+                  onFilterChange(e.target.value);
+                }}
+                // value={filterSelection}
+              >
+                <option value={"Year Established"}>Year Established</option>
+                <option value="Trust Score">Trust Score</option>
+                <option value="BTC Trade Vol">BTC Trade Vol</option>
+                {/*<option value="2">Two</option>*/}
+                {/*<option value="3">Three</option>*/}
+              </select>
+            </div>
+          )}
+
           <div className="col g-0 w-100">
             <input
               type="text"
