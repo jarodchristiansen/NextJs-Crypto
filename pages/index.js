@@ -73,20 +73,7 @@ function HomePage({ isConnected, initialReduxState }) {
   useEffect(() => {
     console.log("this is continaerVisible", containerVisible);
     !containerVisible && setContainerVisible(true);
-
-    getDate();
   }, []);
-
-  async function getDate() {
-    axios.get(`/api/date}`).then((res) => {
-      // loadFavorited(res?.data);
-      // console.log("this is results on the assets page", results);
-      if (res) {
-        console.log("this is the response from get date", res);
-      }
-      console.log("this is the response from get date outside", res);
-    });
-  }
 
   return (
     <div>
