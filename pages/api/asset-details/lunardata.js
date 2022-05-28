@@ -8,7 +8,7 @@ export default async (req, res) => {
   let id = req.query.symbol;
   let time = parseInt(req.query.time);
 
-  let testData = cache.get(`lunarData: ${id}`);
+  let testData = cache.get(`lunarData: ${id} ${time}`);
 
   let data;
   if (testData) {

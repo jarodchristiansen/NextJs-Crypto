@@ -10,7 +10,6 @@ const AssetListContainer = (props) => {
   const isMobile = useMediaQuery({
     query: `(max-width: 920px)`,
   });
-  console.log("this is the items", items);
   // const [items, setItems] = useState(assets);
 
   // useEffect(() => {
@@ -37,11 +36,8 @@ const AssetListContainer = (props) => {
   return (
     <div className={"col col-rows-3"}>
       <div className={isMobile ? "row row-cols-2 my-3" : "row row-cols-3 my-3"}>
-        {console.log("this is items", items)}
-
         {items && items.id && (
           <div>
-            {console.log("this is the items above assetCard", items)}
             {searchSelection === "Assets" && (
               <AssetCard
                 key={items?.id}

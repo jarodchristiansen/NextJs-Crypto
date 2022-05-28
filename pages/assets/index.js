@@ -285,12 +285,15 @@ function AssetsPage(props) {
   }
 
   return (
-    <div className={"container "}>
+    <div className={"container"}>
       <div
+        // className={
+        //   !isMobile
+        //     ? "position-absolute top-0 end-0 mt-2 me-0"
+        //     : "my-3 mx-auto ms-5"
+        // }
         className={
-          !isMobile
-            ? "position-absolute top-0 end-0 mt-2 me-0"
-            : "my-3 mx-auto ms-5"
+          isMobile ? "my-3 mx-auto ms-5" : "d-flex justify-content-center mt-3"
         }
       >
         <CustomSearchComponent
@@ -348,7 +351,6 @@ function AssetsPage(props) {
 
       {events && !isSearching && (
         <div className={"mx-auto"}>
-          {console.log("in events and !isSearching", events)}
           <AssetListContainer
             items={events ? events : props.events}
             setUpdateFavorites={setUpdateFavorites}

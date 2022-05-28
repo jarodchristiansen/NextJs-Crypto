@@ -48,29 +48,43 @@ ul {
   pointer-events:none;
 }
 .modal-trigger-button {
-  background-color: var(--global-color-primary);
+  background-color: var(--global-light-blue);
   color: var(--global-text-color-white);
   border: 1px solid white;
   font-family: var(--global-font-family);
+  box-shadow: 4px 0px 8px var(--global-dark-blue);
 }
 
 .standardized-button {
-  background-color: var(--global-color-primary);
+  background-color: var(--global-light-blue);
   color: var(--global-text-color-white);
-  border: 1px solid black;
+  border: 2px solid var(--global-dark-blue);
   border-radius: 10%;
   font-family: var(--global-font-family);
   height: 32px;
-  box-shadow: 2px 0px 8px lightgray;
+  box-shadow: 2px 0px 5px var(--global-dark-blue);
+  font-weight: bold;
+}
+.standardized-button:hover {
+  background-color: var(--global-text-color-white);
+  color: var(--global-light-blue);
+  border: 2px solid var(--global-dark-blue);
+  border-radius: 10%;
+  font-family: var(--global-font-family);
+  height: 32px;
+  box-shadow: 2px 0px 4px rgba(2, 53, 121, 0.5);
+  font-weight: bold;
 }
 
+
 :root {
-  --global-font-family: Verdana, sans-serif;
+  --global-font-family: Helvetica, sans-serif;
   --global-font-size: 0.8rem;
   --global-text-color: #222;
   --global-text-color-white: #fff;
   --global-primary-title-size: 2rem;
-  --global-color-primary: #6ac6d9;
+  --global-light-blue: #022759;
+  --global-dark-blue: #011c3f;
   --global-color-secondary: #779fa1;
   --global-color-warning: #e28413;
   --global-color-danger: #ff6542;
