@@ -7,6 +7,7 @@ import * as stats from "simple-statistics";
 import VolatilityChart from "../../../financialCharts/VolatilityChart";
 import MarketDominanceChart from "../../../financialCharts/MarketDominanceChart";
 import VolumeChart from "../../../financialCharts/VolumeChart";
+import { useFetch } from "../../../../hooks/useFetch";
 
 const FinancialPanel = ({ id }) => {
   const [time, setTime] = useState(180);

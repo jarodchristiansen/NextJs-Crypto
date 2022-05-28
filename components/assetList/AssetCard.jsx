@@ -91,21 +91,20 @@ const AssetCard = (props) => {
         <div>
           <img src={image} style={{ maxHeight: "60px" }} />
           <p className={"card-text mt-2"}>
-            <b>Daily Price - {currencyFormat(price)}</b>
+            <b>Daily Price - </b>
+            {currencyFormat(price)}
           </p>
           <p className={"card-text mt-2"}>
-            <b>Market Cap - {currencyFormat(marketCap)}</b>
+            <b>Market Cap - </b>
+            {currencyFormat(marketCap)}
           </p>
           <p className={"card-text mt-2"}>
-            <b>
-              Circulating Supply-{" "}
-              {standardThousandsFormatter.format(circulatingSupply)}
-            </b>
+            <b>Circulating Supply- </b>
+            {standardThousandsFormatter.format(circulatingSupply)}
           </p>
           <p className={"card-text mt-2"}>
-            <b>
-              Total Supply- {standardThousandsFormatter.format(totalSupply)}
-            </b>
+            <b>Total Supply-</b>
+            {standardThousandsFormatter.format(totalSupply)}
           </p>
         </div>
 
