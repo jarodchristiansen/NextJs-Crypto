@@ -10,6 +10,7 @@ import {
   internationalFormatter,
   standardThousandsFormatter,
 } from "../../helpers/formatters";
+import styles from "./AssetCard.module.css";
 
 const AssetCard = (props) => {
   const {
@@ -68,7 +69,9 @@ const AssetCard = (props) => {
 
   const exploreLink = `/assets/${symbol}`;
   return (
-    <div className="card text-center mb-3 border border-dark border-1 rounded shadow">
+    <div
+      className={`card text-center mb-3 border border-dark border-1 rounded shadow`}
+    >
       <div className={"flex flex-row flex-end"}>
         {/*{!favorite ? (*/}
         {/*  <StarFill*/}
@@ -88,17 +91,20 @@ const AssetCard = (props) => {
         <div>
           <img src={image} style={{ maxHeight: "60px" }} />
           <p className={"card-text mt-2"}>
-            Daily Price - {currencyFormat(price)} USD
+            <b>Daily Price - </b>
+            {currencyFormat(price)}
           </p>
           <p className={"card-text mt-2"}>
-            Market Cap - {currencyFormat(marketCap)} USD
+            <b>Market Cap - </b>
+            {currencyFormat(marketCap)}
           </p>
           <p className={"card-text mt-2"}>
-            Circulating Supply-{" "}
+            <b>Circulating Supply- </b>
             {standardThousandsFormatter.format(circulatingSupply)}
           </p>
           <p className={"card-text mt-2"}>
-            Total Supply- {standardThousandsFormatter.format(totalSupply)}
+            <b>Total Supply-</b>
+            {standardThousandsFormatter.format(totalSupply)}
           </p>
         </div>
 

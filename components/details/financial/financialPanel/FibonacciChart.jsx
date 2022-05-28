@@ -38,7 +38,7 @@ function FibonacciChart(props) {
 
   const [chartData, setChartData] = useState();
   const [labels, setLabels] = useState();
-  const [time, setTimeScale] = useState(90);
+  // const [time, setTimeScale] = useState(90);
 
   let labelHolder = [];
   let chartHolder = [];
@@ -62,10 +62,12 @@ function FibonacciChart(props) {
   const [data, setData] = useState(props.priceData);
   const [error, setError] = useState();
 
+  const { time, setTime } = props;
+
   useEffect(() => {
     setData(props.priceData);
     setChartData(props.priceData);
-  }, [props]);
+  }, [props.priceData]);
 
   useEffect(() => {
     if (data) {
@@ -118,7 +120,6 @@ function FibonacciChart(props) {
         percentChange.push(y.percent_change_24h * 100);
       });
       // processPrice(closes, time)
-      console.log("this is data2", data2);
       setChartData(data2);
     }
   }, [data, time]);
@@ -129,7 +130,6 @@ function FibonacciChart(props) {
         chartHolder.push(y);
       });
 
-      console.log("this is chartHolder", chartHolder);
       // setChartData(chartHolder)
       // setLabels(labelHolder)
       let priceMax = Math.max(...chartHolder);
@@ -162,40 +162,63 @@ function FibonacciChart(props) {
 
   if (error) return <div>failed to load</div>;
   if (!data) return <div>loading...</div>;
+
   return (
     <div>
       <div>
         {data && (
           <div className={"border border-1"}>
-            <h6>Fibonacci Retracement Chart</h6>
-            <div
-              className="btn-group"
-              role="group"
-              aria-label="Basic outlined example"
-            >
-              <button
-                type="button"
-                className="standardized-button px-3"
-                onClick={() => setTimeScale(90)}
-              >
-                90
-              </button>
-              <button
-                type="button"
-                className="standardized-button px-3"
-                onClick={() => setTimeScale(30)}
-              >
-                30
-              </button>
-              <button
-                type="button"
-                className="standardized-button px-3"
-                onClick={() => setTimeScale(14)}
-              >
-                14
-              </button>
-            </div>
+            {/*<div*/}
+            {/*  className="btn-group mt-3"*/}
+            {/*  role="group"*/}
+            {/*  aria-label="Basic outlined example"*/}
+            {/*>*/}
+            {/*  <button*/}
+            {/*    type="button"*/}
+            {/*    className="standardized-button px-3"*/}
+            {/*    onClick={() => setTime(180)}*/}
+            {/*  >*/}
+            {/*    180*/}
+            {/*  </button>*/}
+            {/*  <button*/}
+            {/*    type="button"*/}
+            {/*    className="standardized-button px-3"*/}
+            {/*    onClick={() => setTime(90)}*/}
+            {/*  >*/}
+            {/*    90*/}
+            {/*  </button>*/}
+            {/*  <button*/}
+            {/*    type="button"*/}
+            {/*    className="standardized-button px-3"*/}
+            {/*    onClick={() => setTime(30)}*/}
+            {/*  >*/}
+            {/*    30*/}
+            {/*  </button>*/}
+            {/*  <button*/}
+            {/*    type="button"*/}
+            {/*    className="standardized-button px-3"*/}
+            {/*    onClick={() => setTime(14)}*/}
+            {/*  >*/}
+            {/*    14*/}
+            {/*  </button>*/}
+            {/*  <button*/}
+            {/*    type="button"*/}
+            {/*    className="standardized-button px-3"*/}
+            {/*    onClick={() => setTime(7)}*/}
+            {/*  >*/}
+            {/*    7*/}
+            {/*  </button>*/}
+            {/*  <button*/}
+            {/*    type="button"*/}
+            {/*    className="standardized-button px-3"*/}
+            {/*    onClick={() => setTime(3)}*/}
+            {/*  >*/}
+            {/*    3*/}
+            {/*  </button>*/}
+            {/*</div>*/}
             <h3 className={"my-2"}>{time} Day View</h3>
+
+            <h6>Fibonacci Retracement Chart</h6>
             <ResponsiveContainer height={!isDesktopOrLaptop ? 400 : 350}>
               <ComposedChart
                 data={chartData}
