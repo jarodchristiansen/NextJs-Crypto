@@ -140,17 +140,27 @@ const FinancialPanel = ({ id }) => {
         <button
           type="button"
           className="standardized-button px-3"
-          onClick={() => setTime(180)}
+          onClick={() => setTime(3)}
         >
-          180
+          3
         </button>
+
         <button
           type="button"
           className="standardized-button px-3"
-          onClick={() => setTime(90)}
+          onClick={() => setTime(7)}
         >
-          90
+          7
         </button>
+
+        <button
+          type="button"
+          className="standardized-button px-3"
+          onClick={() => setTime(14)}
+        >
+          14
+        </button>
+
         <button
           type="button"
           className="standardized-button px-3"
@@ -161,23 +171,25 @@ const FinancialPanel = ({ id }) => {
         <button
           type="button"
           className="standardized-button px-3"
-          onClick={() => setTime(14)}
+          onClick={() => setTime(90)}
         >
-          14
+          90
         </button>
+
         <button
           type="button"
           className="standardized-button px-3"
-          onClick={() => setTime(7)}
+          onClick={() => setTime(180)}
         >
-          7
+          180
         </button>
+
         <button
           type="button"
           className="standardized-button px-3"
-          onClick={() => setTime(3)}
+          onClick={() => setTime(365)}
         >
-          3
+          365
         </button>
       </div>
 
