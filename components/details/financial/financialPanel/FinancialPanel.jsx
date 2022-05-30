@@ -11,11 +11,12 @@ import { useFetch } from "../../../../hooks/useFetch";
 
 const FinancialPanel = ({ id }) => {
   const [time, setTime] = useState(180);
-  const [daysAgoDate, setDaysAgoDate] = useState();
+  const [startDate, setStartDate] = useState();
 
   const [lunarData, setLunarData] = useState();
   const [tradData, setTradData] = useState();
   const [formattedCryptoData, setFormattedCryptoData] = useState([]);
+  const [geckoData, setGeckoData] = useState([]);
 
   const formatFinancialData = async (cryptoData) => {
     console.log("this is cryptoData in formatFInancialData", cryptoData);
@@ -32,6 +33,7 @@ const FinancialPanel = ({ id }) => {
           volume: i.volume,
         });
       }
+      console.log({ financeDataArray });
       setFormattedCryptoData(financeDataArray.slice(time * -1));
     }
   };
@@ -42,16 +44,75 @@ const FinancialPanel = ({ id }) => {
     let priceData = await fetch(
       `/api/asset-details/lunardata?key=${key}&symbol=${id}&time=${time}`
     ).then((r) => r.json());
-    if (priceData?.data) {
+    if (priceData?.data && priceData?.data?.length > 1) {
       let test = priceData?.data?.data[0]?.timeSeries.slice(time * -1);
       console.log("this is the testTime", priceData?.data);
       setLunarData(priceData?.data);
       formatFinancialData(priceData?.data?.data[0]?.timeSeries);
     } else {
       console.log("unable to load data from endpoint");
-      setError("unable to load data from endpoint");
+      // setError("unable to load data from endpoint");
+      fetchGeckoData();
     }
   };
+
+  async function fetchGeckoData() {
+    console.log("this is fetchGeckoData running", time);
+    axios
+      .get(
+        `/api/coinGeckoData/?requestType=assetHistory&requestedAsset=${id.toLowerCase()}&startDate=${time}`
+      )
+      .then((res) => {
+        // loadFavorited(res?.data);
+        // console.log("this is results on the assets page", results);
+        console.log("fetchGeckoData in financialPanel", res.data.data);
+
+        if (res?.data?.data?.total_volumes) {
+          let objs = res.data.data.total_volumes.map((x) => ({
+            time: x[0],
+            volume: x[1],
+          }));
+          console.log({ objs });
+          setGeckoData(objs);
+        }
+
+        // if (res?.data?.data?.prices) {
+        //   let objs = res.data.data.prices.map((x) => ({
+        //     time: x[0],
+        //     price: x[1],
+        //   }));
+        //   console.log({ objs });
+        //   setGeckoData(objs);
+        // }
+
+        // let data = res.data.data;
+        // const basicAssetDataObject = {
+        //   block_time_in_minutes: data?.block_time_in_minutes,
+        //   coingecko_score: data?.coingecko_score,
+        //   community_data: data?.community_data,
+        //   description: data?.description?.en,
+        //   developer_data: data?.developer_data,
+        //   developer_score: data?.developer_score,
+        //   genesis_date: data?.genesis_date,
+        //   hashing_algorithm: data?.hashing_algorithm,
+        //   image: data?.image?.small || data?.image?.thumb,
+        //   links: data?.links,
+        //   liquidity_score: data?.liquidity_score,
+        // };
+        // setBasicAssetData(basicAssetDataObject);
+        // setData(res.data.data);
+        // if (res.data.data) {
+        //   console.log("setting events with res.data.data", res.data.data);
+        //   setEvents(res.data.data);
+        //   setIsSearching(false);
+        // } else {
+        //   console.log("No data was found");
+        // }
+      })
+      .catch((error) => {
+        console.log("this is the error on fetchPriceData", error);
+      });
+  }
 
   const fetchTradHistory = async (date) => {
     console.log("this is fetchTradeHistoryDate", date);
@@ -105,7 +166,7 @@ const FinancialPanel = ({ id }) => {
     let daysAgo = new Date(date.getTime());
 
     daysAgo.setDate(date.getDate() - numOfDays);
-    let startDate =
+    let start =
       daysAgo.getMonth() +
       1 +
       "/" +
@@ -113,9 +174,10 @@ const FinancialPanel = ({ id }) => {
       "/" +
       daysAgo.getFullYear();
 
-    console.log({ startDate });
+    console.log({ start });
 
-    return startDate;
+    setStartDate(start);
+    return start;
   }
 
   useEffect(() => {
@@ -201,11 +263,17 @@ const FinancialPanel = ({ id }) => {
         />
       )}
 
-      {formattedCryptoData && <VolatilityChart data={formattedCryptoData} />}
-      {formattedCryptoData && (
+      {formattedCryptoData && formattedCryptoData?.length > 1 && (
+        <VolatilityChart data={formattedCryptoData} />
+      )}
+      {formattedCryptoData && formattedCryptoData?.length > 1 && (
         <MarketDominanceChart data={formattedCryptoData} />
       )}
-      {formattedCryptoData && <VolumeChart data={formattedCryptoData} />}
+      {formattedCryptoData && formattedCryptoData?.length > 1 && (
+        <VolumeChart data={formattedCryptoData} />
+      )}
+
+      {geckoData && geckoData?.length > 1 && <VolumeChart data={geckoData} />}
     </div>
   );
 };

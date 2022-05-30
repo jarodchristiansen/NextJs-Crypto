@@ -29,6 +29,8 @@ export default async (req, res) => {
   let requestType = req.query?.requestType;
   let numberOfResults = req.query?.numberOfResults;
   let requestedAsset = req.query?.requestedAsset;
+  let startDate = req.query?.startDate;
+
   let data;
   if (requestType === "allData") {
     // coins.all()
@@ -70,7 +72,28 @@ export default async (req, res) => {
       let filteredObject = filteredList[0];
       console.log("this is the filteredObject", filteredObject);
       console.log("this is filteredObject.id", filteredObject.id);
-      data = await CoinGeckoClient.coins.fetch(filteredObject.id, {});
+      data = await CoinGeckoClient.coins.fetch(filteredObject.id, {
+        market_data: true,
+      });
+    }
+  } else if (requestType === "assetHistory") {
+    let assetList = await CoinGeckoClient.coins.list();
+    assetList = assetList?.data;
+    cache.put(`coinGeckoAssetList`, assetList, 43200000, function (key, value) {
+      console.log(key + " did " + value);
+    });
+
+    let filteredList = assetList.filter((obj) => {
+      return obj.symbol === requestedAsset;
+    });
+
+    if (filteredList.length) {
+      let filteredObject = filteredList[0];
+      console.log("startDate from endpoint", startDate);
+      data = await CoinGeckoClient.coins.fetchMarketChart(filteredObject.id, {
+        days: startDate,
+      });
+      console.log("data from assetHistory", data);
     }
   } else if (requestType === "exchangeData") {
     data = await CoinGeckoClient.exchanges.all({ per_page: numberOfResults });
