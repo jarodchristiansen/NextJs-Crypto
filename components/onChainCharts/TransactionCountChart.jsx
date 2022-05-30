@@ -18,7 +18,6 @@ const TransactionCountChart = ({ data }) => {
   return (
     <div>
       <h1>Transaction Count Chart</h1>
-      {console.log("transaction data chart", data)}
       {data && (
         <ResponsiveContainer height={350}>
           <LineChart

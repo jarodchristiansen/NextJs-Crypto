@@ -1,65 +1,46 @@
 import {
   CartesianGrid,
-  ComposedChart,
-  Legend,
-  Line,
-  ResponsiveContainer,
-  Tooltip,
   XAxis,
   YAxis,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  LineChart,
+  Line,
 } from "recharts";
 import { useMediaQuery } from "react-responsive";
 
-const SOPRChart = (props) => {
-  const { data } = props;
-
-  const isDesktopOrLaptop = useMediaQuery({
+const SOPRChart = ({ data }) => {
+  const isMobile = useMediaQuery({
     query: `(max-width: 920px)`,
   });
-
   return (
     <div>
-      SOPRCHART
-      <div>
-        <ResponsiveContainer
-          height={!isDesktopOrLaptop ? 400 : 250}
-          width={isDesktopOrLaptop ? 250 : 850}
-        >
-          <ComposedChart
+      <h1>SOPR Chart</h1>
+      {data && (
+        <ResponsiveContainer height={350}>
+          <LineChart
+            width={430}
+            height={250}
             data={data}
-
-            // margin={{
-            //   top: 20,
-            //   right: 20,
-            //   bottom: 20,
-            //   left: 20,
-            // }}
+            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
           >
-            <CartesianGrid stroke="#f5f5f5" fill={"#f5f5f5"} />
+            <CartesianGrid strokeDasharray="3 3" />
 
-            <XAxis datakey={"t"} />
-            {!isDesktopOrLaptop ? (
-              <YAxis domain={[0, 2]} allowDataOverflow={true} />
+            {isMobile ? (
+              <XAxis dataKey="t" height={0} />
             ) : (
-              <div>Nope</div>
+              <XAxis dataKey="t" />
             )}
+
+            {!isMobile && <YAxis dataKey={"v"} />}
+
             <Tooltip />
             <Legend />
-            {/*<Line type="linear" dataKey="v"  />*/}
-            <Line
-              type="linear"
-              dataKey="v"
-              fill="red"
-              stroke={"red"}
-              dot={false}
-            />
-            {/*<Line type="linear" dataKey="e" fill="blue" stroke={"blue"}/>*/}
-            {/*<Line type="linear" dataKey="f" fill="green" stroke={"green"}/>*/}
-
-            {/*<Bar dataKey="ratio" fill="blue"/>*/}
-          </ComposedChart>
+            <Line type="monotone" dataKey="v" stroke="#8884d8" />
+          </LineChart>
         </ResponsiveContainer>
-      </div>
+      )}
     </div>
   );
 };

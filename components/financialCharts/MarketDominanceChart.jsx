@@ -11,8 +11,6 @@ import {
 import { useMediaQuery } from "react-responsive";
 
 const MarketDominanceChart = ({ data }) => {
-  console.log({ data });
-
   const isMobile = useMediaQuery({
     query: `(max-width: 920px)`,
   });

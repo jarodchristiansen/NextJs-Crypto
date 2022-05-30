@@ -25,8 +25,6 @@ async function handler(req, res) {
 
   const user = await usersCollection.findOne({ email: userEmail });
 
-  console.log("this is the user", user);
-
   if (!user) {
     res.status(400).json({ message: "User not found." });
     client.close();
@@ -55,14 +53,12 @@ async function handler(req, res) {
 }
 
 function containsObject(obj, list) {
-  console.log("running containsObject --", obj);
   for (let i = 0; i < list?.length; i++) {
     if (list[i]?.symbol === obj?.symbol) {
       console.log("found obj in list", obj.symbol);
       return true;
     }
   }
-  console.log("didnt find obj in list");
   return false;
 }
 

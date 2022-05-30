@@ -71,7 +71,6 @@ function HomePage({ isConnected, initialReduxState }) {
   };
 
   useEffect(() => {
-    console.log("this is continaerVisible", containerVisible);
     !containerVisible && setContainerVisible(true);
   }, []);
 
@@ -124,27 +123,15 @@ function HomePage({ isConnected, initialReduxState }) {
 
       <div className="screener">
         <div>
-          {/*<TradingViewEmbed*/}
-          {/*  widgetType={widgetType.SCREENER_CRYPTOCURRENCY}*/}
-          {/*  widgetConfig={{*/}
-          {/*    width: 97 + "%",*/}
-          {/*    height: isDesktopOrLaptop ? 650 : 800,*/}
-          {/*    defaultColumn: "overview",*/}
-          {/*    screener_type: "crypto_mkt",*/}
-          {/*    displayCurrency: "USD",*/}
-          {/*    colorTheme: "dark",*/}
-          {/*    locale: "en",*/}
-          {/*  }}*/}
-          {/*/>*/}
           <div className="container">
-            <div className={"row row-cols-1"}>
+            <div className={"row row-cols-1 mt-5"}>
               <div className="col">
                 <div className="explainer">
                   {<LandingExplainer text={textBlocks.mainExplainer} />}
                 </div>
               </div>
             </div>
-            <div className="row row-cols-2">
+            <div className="row row-cols-2 mt-5">
               <div className="col">
                 <div className="explainer">
                   {<LandingExplainer text={textBlocks.userProfiles} />}
@@ -168,43 +155,6 @@ function HomePage({ isConnected, initialReduxState }) {
             </div>
           </div>
         </div>
-
-        {/*<div>*/}
-        {/*    {!isDesktopOrLaptop ? (*/}
-        {/*        <div style={{marginLeft:"5%"}}>*/}
-        {/*            <TradingViewEmbed*/}
-        {/*                widgetType={widgetType.SCREENER_CRYPTOCURRENCY}*/}
-        {/*                widgetConfig={{*/}
-        {/*                    "width":97 + "%",*/}
-        {/*                    "defaultColumn": "overview",*/}
-        {/*                    "screener_type": "crypto_mkt",*/}
-        {/*                    "displayCurrency": "USD",*/}
-        {/*                    "colorTheme": "dark",*/}
-        {/*                    "locale": "en"*/}
-        {/*                }}/>*/}
-        {/*        </div>*/}
-        {/*    ) : (*/}
-        {/*        <div style={{marginLeft:"4%"}}>*/}
-        {/*            <div>*/}
-        {/*                (Horizontal scrolling is enabled for mobile)*/}
-        {/*            </div>*/}
-        {/*            <TradingViewEmbed*/}
-        {/*                widgetType={widgetType.SCREENER_CRYPTOCURRENCY}*/}
-        {/*                widgetConfig={{*/}
-        {/*                    "width":"100" + "%",*/}
-        {/*                    "height": "600",*/}
-        {/*                    "defaultColumn": "overview",*/}
-        {/*                    "screener_type": "crypto_mkt",*/}
-        {/*                    "displayCurrency": "USD",*/}
-        {/*                    "colorTheme": "dark",*/}
-        {/*                    "locale": "en"*/}
-        {/*                }}/>*/}
-        {/*            Mobile Flow*/}
-        {/*            <div style={{height: '400px'}}></div>*/}
-        {/*        </div>*/}
-
-        {/*    )}*/}
-        {/*</div>*/}
       </div>
     </div>
   );

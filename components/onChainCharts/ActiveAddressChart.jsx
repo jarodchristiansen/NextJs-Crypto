@@ -18,7 +18,6 @@ const ActiveAddressChart = ({ data }) => {
   return (
     <div>
       <h1>Active Address Chart</h1>
-      {console.log("this is data above active addresses".data)}
       {data && (
         <ResponsiveContainer height={350}>
           <LineChart

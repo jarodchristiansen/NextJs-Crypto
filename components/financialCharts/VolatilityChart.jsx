@@ -16,8 +16,6 @@ import {
 import { useMediaQuery } from "react-responsive";
 
 const VolatilityChart = ({ data }) => {
-  console.log({ data });
-
   const isMobile = useMediaQuery({
     query: `(max-width: 920px)`,
   });

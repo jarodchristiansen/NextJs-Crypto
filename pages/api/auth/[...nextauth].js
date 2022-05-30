@@ -138,8 +138,6 @@ const options = {
 
         delete userCopy["password"];
 
-        console.log("user/userCopy ----", user, userCopy);
-
         return userCopy;
 
         client.close();

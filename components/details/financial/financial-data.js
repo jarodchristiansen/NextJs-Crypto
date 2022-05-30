@@ -22,7 +22,6 @@ function FinancialData(props) {
 
   if (data) {
     responseData = data;
-    console.log(responseData);
     //   console.log(responseData)
   }
 

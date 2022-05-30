@@ -21,7 +21,6 @@ function CustomToggle({
 
   const decoratedOnClick = useAccordionButton(eventKey, () => {
     setExpandedState(!expandedState);
-    console.log("expandedState", expandedState);
   });
 
   return (

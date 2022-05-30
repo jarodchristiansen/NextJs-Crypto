@@ -9,6 +9,8 @@ import VolumeChart from "../../../financialCharts/VolumeChart";
 import ActiveAddressChart from "../../../onChainCharts/ActiveAddressChart";
 import TransactionCountChart from "../../../onChainCharts/TransactionCountChart";
 import TransactionMeanChart from "../../../onChainCharts/TransactionMeanChart";
+import DifficultyRibbonChart from "../../../onChainCharts/DifficultyRibbonChart";
+import PiCycleTopChart from "../../../onChainCharts/PiCycleTopChart";
 
 export default function OnChainMetrics(props) {
   const { id } = props;
@@ -22,9 +24,13 @@ export default function OnChainMetrics(props) {
   const [soprData, setSoprData] = useState();
   const [activeAddressData, setActiveAddressData] = useState([]);
   const [transactionData, setTransactionData] = useState({});
+  const [difficultyRibbonData, setDifficultyRibbonData] = useState([]);
+  const [piCycleData, setPiCycleData] = useState([]);
+  const [isBTCorETH, setIsBTCorETH] = useState(
+    (id && id === "BTC") || id === "ETH" || id === "LTC"
+  );
+  const [isBTC, setIsBTC] = useState(id && id === "BTC");
 
-  const isBTCorETH = (id && id === "BTC") || id === "ETH" || id === "LTC";
-  const isBTC = id && id === "BTC";
   useEffect(() => {
     // fetchStockToFlow()
     // if (id === "BTC") {
@@ -32,6 +38,7 @@ export default function OnChainMetrics(props) {
     // }
     fetchActiveAddresses();
     isBTCorETH && fetchTransactionData();
+    isBTC && fetchIndicatorData();
   }, []);
 
   let s2fData;
@@ -42,6 +49,53 @@ export default function OnChainMetrics(props) {
     ).then((r) => r.json());
 
     data?.data && setActiveAddressData(data.data);
+  };
+
+  const fetchIndicatorData = async () => {
+    let data = await fetch(`/api/indicators/indicators?symbol=${id}`).then(
+      (r) => r.json()
+    );
+
+    // data?.data && setActiveAddressData(data.data);
+    if (data && data?.data.length > 1) {
+      console.log("this is fetchindicatorData", data.data);
+      let difficultyData = [];
+      for (let i of data.data[0]) {
+        difficultyData.push({
+          t: i.t,
+          ma9: i.o.ma9,
+          ma14: i.o.ma14,
+          ma25: i.o.ma25,
+          ma40: i.o.ma40,
+          ma60: i.o.ma60,
+          ma90: i.o.ma90,
+          ma128: i.o.ma128,
+          ma200: i.o.ma200,
+        });
+      }
+      setDifficultyRibbonData(difficultyData.splice(-365));
+      setSoprData(data.data[1].splice(-365));
+
+      let s2fData = [];
+      for (let i of data?.data[2]) {
+        s2fData.push({
+          t: i.t,
+          daysTillHalving: i.o.daysTillHalving,
+          ratio: i.o.ratio,
+        });
+      }
+      setStockToFlow(s2fData.splice(-365));
+
+      let piData = [];
+      for (let i of data?.data[3]) {
+        piData.push({
+          t: i.t,
+          ma111: i.o.ma111,
+          ma350x2: i.o.ma350x2,
+        });
+      }
+      setPiCycleData(piData.splice(-365));
+    }
   };
 
   const fetchTransactionData = async () => {
@@ -108,43 +162,23 @@ export default function OnChainMetrics(props) {
         <ActiveAddressChart data={activeAddressData.splice(-365)} />
       )}
 
-      {transactionData && (
+      {transactionData && isBTCorETH && (
         <TransactionCountChart data={transactionData.count} />
       )}
 
-      {transactionData && (
+      {transactionData && isBTCorETH && (
         <TransactionMeanChart data={transactionData.size_mean} />
       )}
 
-      {id === "BTC" && soprData && (
-        <Accordion defaultActiveKey="0">
-          <Accordion.Item eventKey="0">
-            <Accordion.Header>BTC Stats</Accordion.Header>
-            <Accordion.Body
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                width: "100%",
-                alignItems: "center",
-                textAlign: "center",
-              }}
-            >
-              <div className={classes.chart}>
-                <SOPRChart data={soprData} />
-              </div>
-              {/*<div className={classes.chart}>*/}
-              {/*  <CardChart price={data} time_scale={90} symbol={id}/>*/}
-              {/*</div>*/}
-              {/*<div className={classes.chart}>*/}
-              {/*  <CardChart price={data} time_scale={90} symbol={id}/>*/}
-              {/*</div>*/}
-              {/*<div className={classes.chart}>*/}
-              {/*  <CardChart price={data} time_scale={90} symbol={id}/>*/}
-              {/*</div>*/}
-            </Accordion.Body>
-          </Accordion.Item>
-        </Accordion>
+      {difficultyRibbonData && difficultyRibbonData.length > 1 && (
+        <DifficultyRibbonChart data={difficultyRibbonData} />
       )}
+
+      {id === "BTC" && soprData && <SOPRChart data={soprData} />}
+
+      {id === "BTC" && stockToFlow && <StockToFlowChart data={stockToFlow} />}
+
+      {id === "BTC" && piCycleData && <PiCycleTopChart data={piCycleData} />}
     </div>
   );
 }
