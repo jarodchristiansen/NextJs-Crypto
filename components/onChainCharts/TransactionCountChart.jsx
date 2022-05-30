@@ -7,6 +7,7 @@ import {
   ResponsiveContainer,
   LineChart,
   Line,
+  Brush,
 } from "recharts";
 import { currencyFormat } from "../../helpers/formatters";
 import { useMediaQuery } from "react-responsive";
@@ -18,7 +19,7 @@ const TransactionCountChart = ({ data }) => {
     query: `(max-width: 920px)`,
   });
   return (
-    <div>
+    <div className={"card mt-2"}>
       <div className={"flex flex-row"}>
         <h1>
           Transaction Count Chart

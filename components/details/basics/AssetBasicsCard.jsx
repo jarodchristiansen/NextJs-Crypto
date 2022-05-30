@@ -83,17 +83,18 @@ const AssetBasicsCard = ({ id }) => {
 
   const checkDescriptionForLinks = () => {
     const descriptionSpan = document.getElementById("descriptionContainer");
-    if (basicAssetData?.description) {
+    if (basicAssetData?.description && descriptionSpan) {
       descriptionSpan.innerHTML = basicAssetData?.description;
     }
   };
 
   return (
-    <div className={"card p-4"}>
+    <div className={"card pt-4 px-4"}>
       <div className={"row"}>
         <div className={"my-2"}>
           <img src={basicAssetData?.image} />
         </div>
+        <hr className={"mt-2"} />
         <div className={"row row-cols-3"}>
           <div className={"col"}>
             <p>
@@ -134,22 +135,8 @@ const AssetBasicsCard = ({ id }) => {
         </div>
       </div>
       <div className={"row"}>
-        <div className={"row"}>
-          <div>
-            <h4 onClick={() => setOpen(!open)}>
-              Toggle Description : {open ? "Close" : "Open"}
-            </h4>
-            <span></span>
-          </div>
-
-          <p>
-            <Collapse in={open}>
-              <div>
-                <span id={"descriptionContainer"}>{""}</span>
-              </div>
-            </Collapse>
-            <span id={"descriptionContainer"}>{""}</span>
-          </p>
+        <div className={"row py-2 pb-3"}>
+          <span>Asset Description Would Be</span>
         </div>
       </div>
     </div>

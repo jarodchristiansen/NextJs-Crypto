@@ -18,7 +18,7 @@ const VolumeChart = ({ data }) => {
     query: `(max-width: 920px)`,
   });
   return (
-    <div>
+    <div className={"card mt-2"}>
       <div className={"flex flex-row"}>
         <h1>
           Volume Chart

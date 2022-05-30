@@ -27,45 +27,47 @@ function AssetDetails() {
   return (
     <div className={"container text-center"}>
       <div className={"card mt-4"}>
-        Asset Basics
         <div>
           <AssetBasicsCard id={id} />
         </div>
       </div>
 
-      <div
-        className="btn-group my-4"
-        role="group"
-        aria-label="Basic outlined example"
-      >
-        <button
-          type="button"
-          className="standardized-button px-3"
-          onClick={() => {
-            setTabState("Social");
-          }}
+      <div className={"border border-1 border-gray"}>
+        <div
+          className="btn-group my-4"
+          role="group"
+          aria-label="Basic outlined example"
         >
-          Social
-        </button>
-        <button
-          type="button"
-          className="standardized-button px-3"
-          onClick={() => {
-            setTabState("Financial");
-          }}
-        >
-          Financial
-        </button>
-        <button
-          type="button"
-          className="standardized-button px-3"
-          onClick={() => {
-            setTabState("onChain");
-          }}
-        >
-          On-chain
-        </button>
+          <button
+            type="button"
+            className="standardized-button px-3"
+            onClick={() => {
+              setTabState("Social");
+            }}
+          >
+            Social
+          </button>
+          <button
+            type="button"
+            className="standardized-button px-3"
+            onClick={() => {
+              setTabState("Financial");
+            }}
+          >
+            Financial
+          </button>
+          <button
+            type="button"
+            className="standardized-button px-3"
+            onClick={() => {
+              setTabState("onChain");
+            }}
+          >
+            On-chain
+          </button>
+        </div>
       </div>
+
       {tabState === "Financial" && (
         <div>
           <div>
