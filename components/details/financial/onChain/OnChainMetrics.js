@@ -11,6 +11,7 @@ import TransactionCountChart from "../../../onChainCharts/TransactionCountChart"
 import TransactionMeanChart from "../../../onChainCharts/TransactionMeanChart";
 import DifficultyRibbonChart from "../../../onChainCharts/DifficultyRibbonChart";
 import PiCycleTopChart from "../../../onChainCharts/PiCycleTopChart";
+import { getSession } from "next-auth/client";
 
 export default function OnChainMetrics(props) {
   const { id } = props;
@@ -30,6 +31,7 @@ export default function OnChainMetrics(props) {
     (id && id === "BTC") || id === "ETH" || id === "LTC"
   );
   const [isBTC, setIsBTC] = useState(id && id === "BTC");
+  const [lunarPriceData, setLunarPriceData] = useState();
 
   useEffect(() => {
     // fetchStockToFlow()
@@ -39,6 +41,15 @@ export default function OnChainMetrics(props) {
     fetchActiveAddresses();
     isBTCorETH && fetchTransactionData();
     isBTC && fetchIndicatorData();
+  }, []);
+
+  useEffect(() => {
+    let rawLunarData = sessionStorage.getItem(`lunarData:${id}`);
+    if (rawLunarData) {
+      rawLunarData = JSON.parse(rawLunarData);
+      let priceData = rawLunarData?.data[0]?.timeSeries;
+      priceData && setLunarPriceData(priceData);
+    }
   }, []);
 
   let s2fData;
@@ -62,15 +73,15 @@ export default function OnChainMetrics(props) {
       let difficultyData = [];
       for (let i of data.data[0]) {
         difficultyData.push({
-          t: i.t,
-          ma9: i.o.ma9,
-          ma14: i.o.ma14,
-          ma25: i.o.ma25,
-          ma40: i.o.ma40,
-          ma60: i.o.ma60,
-          ma90: i.o.ma90,
-          ma128: i.o.ma128,
-          ma200: i.o.ma200,
+          t: new Date(i?.t * 1000).toLocaleDateString(),
+          ma9: i.o.ma9 / 1000000000000000000,
+          ma14: i.o.ma14 / 1000000000000000000,
+          ma25: i.o.ma25 / 1000000000000000000,
+          ma40: i.o.ma40 / 1000000000000000000,
+          ma60: i.o.ma60 / 1000000000000000000,
+          ma90: i.o.ma90 / 1000000000000000000,
+          ma128: i.o.ma128 / 1000000000000000000,
+          ma200: i.o.ma200 / 1000000000000000000,
         });
       }
       setDifficultyRibbonData(difficultyData.splice(-365));
@@ -79,7 +90,7 @@ export default function OnChainMetrics(props) {
       let s2fData = [];
       for (let i of data?.data[2]) {
         s2fData.push({
-          t: i.t,
+          t: new Date(i?.t * 1000).toLocaleDateString(),
           daysTillHalving: i.o.daysTillHalving,
           ratio: i.o.ratio,
         });
@@ -89,7 +100,7 @@ export default function OnChainMetrics(props) {
       let piData = [];
       for (let i of data?.data[3]) {
         piData.push({
-          t: i.t,
+          t: new Date(i?.t * 1000).toLocaleDateString(),
           ma111: i.o.ma111,
           ma350x2: i.o.ma350x2,
         });
@@ -170,15 +181,22 @@ export default function OnChainMetrics(props) {
         <TransactionMeanChart data={transactionData.size_mean} />
       )}
 
-      {difficultyRibbonData && difficultyRibbonData.length > 1 && (
-        <DifficultyRibbonChart data={difficultyRibbonData} />
-      )}
+      {difficultyRibbonData &&
+        difficultyRibbonData.length > 1 &&
+        lunarPriceData && (
+          <DifficultyRibbonChart
+            data={difficultyRibbonData}
+            lunarPriceData={lunarPriceData}
+          />
+        )}
 
       {id === "BTC" && soprData && <SOPRChart data={soprData} />}
 
       {id === "BTC" && stockToFlow && <StockToFlowChart data={stockToFlow} />}
 
-      {id === "BTC" && piCycleData && <PiCycleTopChart data={piCycleData} />}
+      {id === "BTC" && piCycleData && lunarPriceData && (
+        <PiCycleTopChart data={piCycleData} lunarPriceData={lunarPriceData} />
+      )}
     </div>
   );
 }

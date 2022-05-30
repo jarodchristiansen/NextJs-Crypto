@@ -8,17 +8,25 @@ import {
   LineChart,
   Line,
 } from "recharts";
-import { currencyFormat } from "../../helpers/formatters";
+import { currencyFormat, formatDecimals } from "../../helpers/formatters";
 import { useMediaQuery } from "react-responsive";
+import FinanceChartModal from "../financialCharts/FinanceChartModal";
+import React from "react";
 
 const TransactionMeanChart = ({ data }) => {
   const isMobile = useMediaQuery({
     query: `(max-width: 920px)`,
   });
-  console.log("this is transactions mean", data);
   return (
     <div>
-      <h1>Transaction Size Mean Chart</h1>
+      <div className={"flex flex-row"}>
+        <h1>
+          Transcation Mean Size
+          <span className={"ms-3"}>
+            <FinanceChartModal />
+          </span>
+        </h1>
+      </div>
       {data && (
         <ResponsiveContainer height={350}>
           <LineChart
@@ -32,14 +40,30 @@ const TransactionMeanChart = ({ data }) => {
             {isMobile ? (
               <XAxis dataKey="t" height={0} />
             ) : (
-              <XAxis dataKey="t" />
+              <XAxis
+                dataKey="t"
+                tickFormatter={(value) =>
+                  new Date(value * 1000).toLocaleDateString()
+                }
+              />
             )}
 
-            {!isMobile && <YAxis dataKey={"v"} />}
+            {!isMobile && (
+              <YAxis
+                dataKey={"v"}
+                tickFormatter={(value) => currencyFormat(value)}
+              />
+            )}
 
-            <Tooltip />
+            <Tooltip formatter={(value) => formatDecimals(value, 2)} />
             <Legend />
-            <Line type="monotone" dataKey="v" stroke="#8884d8" />
+            <Line
+              type="monotone"
+              dataKey="v"
+              stroke="#8884d8"
+              strokeWidth={2}
+              dot={false}
+            />
           </LineChart>
         </ResponsiveContainer>
       )}

@@ -7,23 +7,58 @@ import {
   ResponsiveContainer,
   LineChart,
   Line,
+  Area,
 } from "recharts";
-import { currencyFormat } from "../../helpers/formatters";
+import {
+  currencyFormat,
+  formatDecimals,
+  standardThousandsFormatter,
+} from "../../helpers/formatters";
 import { useMediaQuery } from "react-responsive";
+import React, { useEffect, useState } from "react";
+import FinanceChartModal from "../financialCharts/FinanceChartModal";
 
-const DifficultyRibbonChart = ({ data }) => {
+const DifficultyRibbonChart = ({ data, lunarPriceData }) => {
   const isMobile = useMediaQuery({
     query: `(max-width: 920px)`,
   });
+
+  const [chartData, setChartData] = useState([]);
+
+  console.log({ data, lunarPriceData });
+
+  useEffect(() => {
+    formatChartData();
+  }, []);
+
+  const formatChartData = () => {
+    let chartArray = [];
+    for (let i = 0; i < data.length; i++) {
+      chartArray.push({
+        ...data[i],
+        ...lunarPriceData[i],
+      });
+    }
+    setChartData(chartArray);
+  };
+
   return (
     <div>
-      <h1>Difficulty Ribbon Chart</h1>
+      <div className={"flex flex-row"}>
+        <h1>
+          Difficulty Ribbon Chart
+          <span className={"ms-3"}>
+            <FinanceChartModal />
+          </span>
+        </h1>
+        <span>(Scaled to Price)</span>
+      </div>
       {data && (
         <ResponsiveContainer height={350}>
           <LineChart
             width={430}
             height={250}
-            data={data}
+            data={chartData && chartData}
             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
@@ -34,18 +69,76 @@ const DifficultyRibbonChart = ({ data }) => {
               <XAxis dataKey="t" />
             )}
 
-            {!isMobile && <YAxis />}
+            {!isMobile && (
+              <YAxis tickFormatter={(value) => formatDecimals(value, 2)} />
+            )}
 
-            <Tooltip />
+            <Tooltip formatter={(value) => formatDecimals(value, 2)} />
             <Legend />
-            <Line type="monotone" dataKey="ma9" stroke="#8884d8" />
-            <Line type="monotone" dataKey="ma14" stroke="#8884d8" />
-            <Line type="monotone" dataKey="ma25" stroke="#8884d8" />
-            <Line type="monotone" dataKey="ma40" stroke="#8884d8" />
-            <Line type="monotone" dataKey="ma60" stroke="#8884d8" />
-            <Line type="monotone" dataKey="ma90" stroke="#8884d8" />
-            <Line type="monotone" dataKey="ma128" stroke="#8884d8" />
-            <Line type="monotone" dataKey="ma200" stroke="#8884d8" />
+            <Line
+              type="monotone"
+              dataKey="ma9"
+              stroke="red"
+              dot={false}
+              strokeWidth={2}
+            />
+            <Line
+              type="monotone"
+              dataKey="ma14"
+              stroke="forestgreen"
+              dot={false}
+              strokeWidth={2}
+            />
+            <Line
+              type="monotone"
+              dataKey="ma25"
+              stroke="darkblue"
+              dot={false}
+              strokeWidth={2}
+            />
+            <Line
+              type="monotone"
+              dataKey="ma40"
+              stroke="violet"
+              dot={false}
+              strokeWidth={2}
+            />
+            <Line
+              type="monotone"
+              dataKey="ma60"
+              stroke="orange"
+              dot={false}
+              strokeWidth={2}
+            />
+            <Line
+              type="monotone"
+              dataKey="ma90"
+              stroke="darkred"
+              dot={false}
+              strokeWidth={2}
+            />
+            <Line
+              type="monotone"
+              dataKey="ma128"
+              stroke="limegreen"
+              dot={false}
+            />
+            <Line
+              type="monotone"
+              dataKey="ma200"
+              stroke="#8884d8"
+              dot={false}
+            />
+            <Line type="monotone" dataKey="close" stroke="black" dot={false} />
+            <Area
+              type="natural"
+              name={"Daily Closing Price"}
+              dataKey="close"
+              fill="black"
+              legendType={"plainline"}
+              stroke={"rgb(12,0,220)"}
+              strokeWidth={1.25}
+            />
           </LineChart>
         </ResponsiveContainer>
       )}

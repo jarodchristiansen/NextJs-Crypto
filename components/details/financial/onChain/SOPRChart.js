@@ -9,6 +9,7 @@ import {
   Line,
 } from "recharts";
 import { useMediaQuery } from "react-responsive";
+import { formatDecimals } from "../../../../helpers/formatters";
 
 const SOPRChart = ({ data }) => {
   const isMobile = useMediaQuery({
@@ -30,14 +31,33 @@ const SOPRChart = ({ data }) => {
             {isMobile ? (
               <XAxis dataKey="t" height={0} />
             ) : (
-              <XAxis dataKey="t" />
+              <XAxis
+                dataKey="t"
+                tickFormatter={(value) =>
+                  new Date(value * 1000).toLocaleDateString()
+                }
+              />
             )}
 
-            {!isMobile && <YAxis dataKey={"v"} />}
+            {!isMobile && (
+              <YAxis
+                dataKey={"v"}
+                domain={[
+                  (dataMin) => 0 - Math.abs(dataMin),
+                  (dataMax) => dataMax * 2,
+                ]}
+              />
+            )}
 
-            <Tooltip />
+            <Tooltip formatter={(value) => formatDecimals(value, 4)} />
             <Legend />
-            <Line type="monotone" dataKey="v" stroke="#8884d8" />
+            <Line
+              type="monotone"
+              dataKey="v"
+              stroke="#8884d8"
+              dot={false}
+              strokeWidth={3}
+            />
           </LineChart>
         </ResponsiveContainer>
       )}

@@ -10,6 +10,8 @@ import {
 } from "recharts";
 import { currencyFormat } from "../../helpers/formatters";
 import { useMediaQuery } from "react-responsive";
+import FinanceChartModal from "../financialCharts/FinanceChartModal";
+import React from "react";
 
 const TransactionCountChart = ({ data }) => {
   const isMobile = useMediaQuery({
@@ -17,7 +19,14 @@ const TransactionCountChart = ({ data }) => {
   });
   return (
     <div>
-      <h1>Transaction Count Chart</h1>
+      <div className={"flex flex-row"}>
+        <h1>
+          Transaction Count Chart
+          <span className={"ms-3"}>
+            <FinanceChartModal />
+          </span>
+        </h1>
+      </div>
       {data && (
         <ResponsiveContainer height={350}>
           <LineChart
@@ -31,7 +40,12 @@ const TransactionCountChart = ({ data }) => {
             {isMobile ? (
               <XAxis dataKey="t" height={0} />
             ) : (
-              <XAxis dataKey="t" />
+              <XAxis
+                dataKey="t"
+                tickFormatter={(value) =>
+                  new Date(value * 1000).toLocaleDateString()
+                }
+              />
             )}
 
             {!isMobile && <YAxis dataKey={"v"} />}

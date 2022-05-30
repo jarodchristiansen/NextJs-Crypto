@@ -14,6 +14,9 @@ import {
   Line,
 } from "recharts";
 import { useMediaQuery } from "react-responsive";
+import { FaInfoCircle } from "react-icons/fa";
+import React from "react";
+import FinanceChartModal from "./FinanceChartModal";
 
 const VolatilityChart = ({ data }) => {
   const isMobile = useMediaQuery({
@@ -21,8 +24,16 @@ const VolatilityChart = ({ data }) => {
   });
 
   return (
-    <div>
-      <h1>Volatility of Asset</h1>
+    <div className={"card mt-2"}>
+      <div className={"flex flex-row"}>
+        <h1>
+          Volatility of Asset
+          <span className={"ms-3"}>
+            <FinanceChartModal />
+          </span>
+        </h1>
+      </div>
+
       {data && (
         <ResponsiveContainer height={350}>
           <LineChart
@@ -35,13 +46,19 @@ const VolatilityChart = ({ data }) => {
             {isMobile ? (
               <XAxis dataKey="time" tick={{ fill: "white" }} height={0} />
             ) : (
-              <XAxis dataKey="time" tick={{ fill: "black" }} />
+              <XAxis dataKey="time" tick={{ fill: "black" }} height={50} />
             )}
             {!isMobile && <YAxis />}
 
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="volatility" stroke="#8884d8" />
+            <Line
+              type="linear"
+              dataKey="volatility"
+              stroke="#8884d8"
+              dot={false}
+              strokeWidth={2}
+            />
           </LineChart>
         </ResponsiveContainer>
       )}

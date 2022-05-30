@@ -22,7 +22,7 @@ export default async (req, res) => {
     console.log("testDta is there, setting from cache");
   } else {
     data = await fetch(
-      `https://api.glassnode.com/v1/metrics/addresses/active_count?a=${id}&timestamp_format=humanized&api_key=${GLASSNODE_KEY}`
+      `https://api.glassnode.com/v1/metrics/addresses/active_count?a=${id}&api_key=${GLASSNODE_KEY}`
     ).then((response) => response.json());
 
     // Hits this area if the value is no longer in the cache to prevent the data from being hit too frequently. currently 12 hours as it is on a daily UI
