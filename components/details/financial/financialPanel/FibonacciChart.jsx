@@ -70,8 +70,8 @@ function FibonacciChart(props) {
   }, [props.priceData]);
 
   useEffect(() => {
-    if (data) {
-      responseData = data.data[0].timeSeries.slice(time * -1);
+    if (data?.data[0]?.timeSeries) {
+      responseData = data.data[0]?.timeSeries.slice(time * -1);
       // console.log('responsedata ----', responseData)
       maxSupply = data.data[0].max_supply;
       oneDay = data.data[0].percent_change_24h;

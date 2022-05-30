@@ -15,6 +15,8 @@ import {
   FaTwitter,
 } from "react-icons/fa";
 import PasswordStrengthBar from "react-password-strength-bar";
+import UsernameChangeModal from "../profile/username-change-modal";
+import TermsAndConditionsModal from "./termsAndConditionsModal";
 
 async function createUser(email, password, username) {
   const response = await fetch("/api/auth/signup", {
@@ -50,6 +52,8 @@ function AuthForm(props) {
   const [password, setPassword] = useState();
   const [termsAndConditionsChecked, setTermsAndConditionsChecked] =
     useState(false);
+
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     getSession().then((session) => {
@@ -95,7 +99,7 @@ function AuthForm(props) {
       setButtonsDisabled(true);
       setHasError({
         MissingTermsAndConditions: (
-          <div>Terms and Conditions Must Be Agreed to to create an account</div>
+          <div>Terms and Conditions must be agreed to to create an account</div>
         ),
       });
     }
@@ -266,10 +270,10 @@ function AuthForm(props) {
   }, [hasError]);
 
   return (
-    <section className={classes.auth}>
+    <div className={classes.auth}>
       <ToastContainer position={"bottom"} />
       <h1>{isLogin ? "Login" : "Sign Up"}</h1>
-      <form onSubmit={submitHandler} className={classes.form}>
+      <form onSubmit={submitHandler} className={"w-100"}>
         <div className={classes.control}>
           <label htmlFor="email">Your Email</label>
           <input
@@ -304,14 +308,20 @@ function AuthForm(props) {
           </div>
         )}
 
+        <TermsAndConditionsModal show={show} setShow={setShow} />
+
         {!isLogin && (
           <div>
-            <label htmlFor="termsAndConditions">
-              I have read and agree to the terms and conditions
-            </label>
+            <span htmlFor="termsAndConditions">
+              I have read and agree to the{" "}
+              <span className={"text-primary"} onClick={() => setShow(!show)}>
+                terms and conditions
+              </span>
+            </span>
             <input
               type="checkbox"
               id="termsAndConditions"
+              className={"ms-2"}
               // ref={termsAndConditionsRef}
               onChange={(e) => {
                 console.log("this is some validation stuff ", e.target.value);
@@ -408,7 +418,7 @@ function AuthForm(props) {
           </div>
         </div>
       </form>
-    </section>
+    </div>
   );
 }
 
