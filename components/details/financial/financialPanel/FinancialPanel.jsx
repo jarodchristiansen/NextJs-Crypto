@@ -44,7 +44,7 @@ const FinancialPanel = ({ id }) => {
     let priceData = await fetch(
       `/api/asset-details/lunardata?key=${key}&symbol=${id}&time=${time}`
     ).then((r) => r.json());
-    if (priceData?.data && priceData?.data?.length > 1) {
+    if (priceData?.data) {
       let test = priceData?.data?.data[0]?.timeSeries.slice(time * -1);
       console.log("this is the testTime", priceData?.data);
       setLunarData(priceData?.data);
@@ -202,25 +202,9 @@ const FinancialPanel = ({ id }) => {
         <button
           type="button"
           className="standardized-button px-3"
-          onClick={() => setTime(3)}
-        >
-          3
-        </button>
-
-        <button
-          type="button"
-          className="standardized-button px-3"
           onClick={() => setTime(7)}
         >
           7
-        </button>
-
-        <button
-          type="button"
-          className="standardized-button px-3"
-          onClick={() => setTime(14)}
-        >
-          14
         </button>
 
         <button

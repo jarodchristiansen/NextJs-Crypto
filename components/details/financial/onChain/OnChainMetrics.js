@@ -7,6 +7,8 @@ import StockToFlowChart from "./StockToFlowChart";
 import SOPRChart from "./SOPRChart";
 import VolumeChart from "../../../financialCharts/VolumeChart";
 import ActiveAddressChart from "../../../onChainCharts/ActiveAddressChart";
+import TransactionCountChart from "../../../onChainCharts/TransactionCountChart";
+import TransactionMeanChart from "../../../onChainCharts/TransactionMeanChart";
 
 export default function OnChainMetrics(props) {
   const { id } = props;
@@ -19,8 +21,10 @@ export default function OnChainMetrics(props) {
   const [stockToFlow, setStockToFlow] = useState();
   const [soprData, setSoprData] = useState();
   const [activeAddressData, setActiveAddressData] = useState([]);
+  const [transactionData, setTransactionData] = useState({});
 
   const isBTCorETH = (id && id === "BTC") || id === "ETH" || id === "LTC";
+  const isBTC = id && id === "BTC";
   useEffect(() => {
     // fetchStockToFlow()
     // if (id === "BTC") {
@@ -44,8 +48,18 @@ export default function OnChainMetrics(props) {
     let data = await fetch(
       `/api/asset-details/transactionAnalytics?symbol=${id}`
     ).then((r) => r.json());
-    console.log("this is fetchTransactions data", data);
+
     // data?.data && setActiveAddressData(data.data);
+    if (data && data?.data.length > 3) {
+      console.log("this is fetchTransactions data", data);
+      let transactionsObject = {
+        count: data.data[0].splice(-365),
+        rate: data.data[1].splice(-365),
+        size_mean: data.data[2].splice(-365),
+        size_sum: data.data[3].splice(-365),
+      };
+      setTransactionData(transactionsObject);
+    }
   };
 
   const fetchStockToFlow = async () => {
@@ -92,6 +106,14 @@ export default function OnChainMetrics(props) {
     <div>
       {activeAddressData && activeAddressData.length > 1 && (
         <ActiveAddressChart data={activeAddressData.splice(-365)} />
+      )}
+
+      {transactionData && (
+        <TransactionCountChart data={transactionData.count} />
+      )}
+
+      {transactionData && (
+        <TransactionMeanChart data={transactionData.size_mean} />
       )}
 
       {id === "BTC" && soprData && (
