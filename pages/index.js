@@ -30,7 +30,7 @@ function HomePage({ isConnected, initialReduxState }) {
       modalHeader: "Useful Metrics for Crypto Assets",
       modalBodyText:
         "Insightful metrics at affordable prices to make crypto available to everyone, not just those who already have an advantage.",
-      modalBodyImage: "",
+      modalBodyImage: "/../ModalImages/Assets.jpg",
     },
     userProfiles: {
       headerText: "User Profile Customization",
@@ -64,9 +64,10 @@ function HomePage({ isConnected, initialReduxState }) {
       subHeaderText: "Fundamental Analysis",
       description:
         "Fundamental metrics of asset usage and flows to give you insight into market movements",
-      modalHeader: "Useful Metrics for Crypto Assets",
-      modalBodyText: "",
-      modalBodyImage: "",
+      modalHeader: "On-chain analytics",
+      modalBodyText:
+        "Analytics utilizing the benefits of blockchain. Analytics and data tracking transaction volume, address averages, network difficulty, hashrate etc",
+      modalBodyImage: "/../ModalImages/Charts.jpg",
     },
   };
 

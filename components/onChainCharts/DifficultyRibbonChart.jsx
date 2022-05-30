@@ -8,6 +8,7 @@ import {
   LineChart,
   Line,
   Area,
+  Brush,
 } from "recharts";
 import {
   currencyFormat,
@@ -43,7 +44,7 @@ const DifficultyRibbonChart = ({ data, lunarPriceData }) => {
   };
 
   return (
-    <div>
+    <div className={"card mt-2"}>
       <div className={"flex flex-row"}>
         <h1>
           Difficulty Ribbon Chart

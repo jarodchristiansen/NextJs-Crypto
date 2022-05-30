@@ -25,7 +25,7 @@ const MarketDominanceChart = ({ data }) => {
     });
 
   return (
-    <div>
+    <div className={"card mt-2"}>
       <div className={"flex flex-row"}>
         <h1>
           Market Dominance

@@ -55,11 +55,12 @@ export default function OnChainMetrics(props) {
   let s2fData;
 
   const fetchActiveAddresses = async () => {
+    console.log("fetchActiveAddresses running");
     let data = await fetch(
       `/api/asset-details/glassnode?symbol=${id}&requestType="active_addresses"`
     ).then((r) => r.json());
 
-    data?.data && setActiveAddressData(data.data);
+    data?.data && setActiveAddressData(data.data.splice(-365));
   };
 
   const fetchIndicatorData = async () => {
@@ -170,7 +171,7 @@ export default function OnChainMetrics(props) {
   return (
     <div>
       {activeAddressData && activeAddressData.length > 1 && (
-        <ActiveAddressChart data={activeAddressData.splice(-365)} />
+        <ActiveAddressChart data={activeAddressData} />
       )}
 
       {transactionData && isBTCorETH && (

@@ -7,6 +7,7 @@ import {
   ResponsiveContainer,
   LineChart,
   Line,
+  Brush,
 } from "recharts";
 import { currencyFormat, formatDecimals } from "../../helpers/formatters";
 import { useMediaQuery } from "react-responsive";
@@ -17,11 +18,12 @@ const TransactionMeanChart = ({ data }) => {
   const isMobile = useMediaQuery({
     query: `(max-width: 920px)`,
   });
+
   return (
-    <div>
+    <div className={"card mt-2"}>
       <div className={"flex flex-row"}>
         <h1>
-          Transcation Mean Size
+          Transaction Mean Size
           <span className={"ms-3"}>
             <FinanceChartModal />
           </span>

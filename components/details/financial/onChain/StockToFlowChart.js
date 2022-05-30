@@ -15,7 +15,7 @@ const StockToFlowChart = ({ data }) => {
     query: `(max-width: 920px)`,
   });
   return (
-    <div>
+    <div className={"card mt-2"}>
       <h1>Stock to Flow</h1>
       {data && (
         <ResponsiveContainer height={350}>

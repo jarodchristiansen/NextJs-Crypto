@@ -7,9 +7,10 @@ import {
   ResponsiveContainer,
   LineChart,
   Line,
+  Brush,
 } from "recharts";
 import { useMediaQuery } from "react-responsive";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const PiCycleTopChart = ({ data, lunarPriceData }) => {
   const isMobile = useMediaQuery({
@@ -37,7 +38,7 @@ const PiCycleTopChart = ({ data, lunarPriceData }) => {
   }, [data]);
 
   return (
-    <div>
+    <div className={"card mt-2"}>
       <h1>Pi Cycle Top Indicator</h1>
       {data && (
         <ResponsiveContainer height={350}>

@@ -1,6 +1,7 @@
 import classes from "./landing-explainer.module.css";
 import { Carousel, Modal, Button } from "react-bootstrap";
 import { useState } from "react";
+import Image from "next/image";
 
 function LandingExplainer(props) {
   // userProfiles: {headerText: 'User Profile Customization', subHeaderText: 'Wallet Tracking', description: 'This is the description text'}
@@ -37,8 +38,17 @@ function LandingExplainer(props) {
             <Modal.Title>{text?.modalHeader || "Modal Heading"}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {text?.modalBodyText || "This is the modal description"}
-            {/*<img src{text?.modalBodyImage || ''} />*/}
+            <div className={"card-text text-center my-2"}>
+              <span>
+                <b>{text?.modalBodyText || "This is the modal description"}</b>
+              </span>
+            </div>
+
+            <img
+              src={text?.modalBodyImage || "../vercel.svg"}
+              alt={text?.modalBodyText || "This is the modal description"}
+              width="450"
+            />
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
