@@ -9,15 +9,31 @@ import {
   Line,
 } from "recharts";
 import { useMediaQuery } from "react-responsive";
+import { currencyFormat } from "../../helpers/formatters";
+import FinanceChartModal from "./FinanceChartModal";
+import React from "react";
 
 const MarketDominanceChart = ({ data }) => {
   const isMobile = useMediaQuery({
     query: `(max-width: 920px)`,
   });
 
+  const format = (num, decimals) =>
+    num.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+
   return (
     <div>
-      <h1>Market Dominance</h1>
+      <div className={"flex flex-row"}>
+        <h1>
+          Market Dominance
+          <span className={"ms-3"}>
+            <FinanceChartModal />
+          </span>
+        </h1>
+      </div>
       {data && (
         <ResponsiveContainer height={350}>
           <LineChart
@@ -33,11 +49,25 @@ const MarketDominanceChart = ({ data }) => {
               <XAxis dataKey="time" />
             )}
 
-            {!isMobile && <YAxis />}
+            {!isMobile && (
+              <YAxis
+                domain={[
+                  (dataMin) => 0 - Math.abs(dataMin),
+                  (dataMax) => dataMax * 2,
+                ]}
+                tickFormatter={(value) => format(value)}
+              />
+            )}
 
-            <Tooltip />
+            <Tooltip formatter={(value) => format(value)} />
             <Legend />
-            <Line type="monotone" dataKey="market_dominance" stroke="#8884d8" />
+            <Line
+              type="linear"
+              dataKey="market_dominance"
+              stroke="#8884d8"
+              dot={false}
+              strokeWidth={2}
+            />
           </LineChart>
         </ResponsiveContainer>
       )}

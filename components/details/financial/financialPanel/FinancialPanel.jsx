@@ -10,7 +10,7 @@ import VolumeChart from "../../../financialCharts/VolumeChart";
 import { useFetch } from "../../../../hooks/useFetch";
 
 const FinancialPanel = ({ id }) => {
-  const [time, setTime] = useState(180);
+  const [time, setTime] = useState(365);
   const [startDate, setStartDate] = useState();
 
   const [lunarData, setLunarData] = useState();
@@ -47,7 +47,13 @@ const FinancialPanel = ({ id }) => {
       let test = priceData?.data?.data[0]?.timeSeries.slice(time * -1);
       console.log("this is the testTime", priceData?.data);
       setLunarData(priceData?.data);
+
       formatFinancialData(priceData?.data?.data[0]?.timeSeries);
+
+      sessionStorage.setItem(
+        `lunarData:${id}`,
+        JSON.stringify(priceData?.data)
+      );
     } else {
       console.log("unable to load data from endpoint");
       // setError("unable to load data from endpoint");

@@ -10,6 +10,8 @@ import {
 } from "recharts";
 import { currencyFormat } from "../../helpers/formatters";
 import { useMediaQuery } from "react-responsive";
+import FinanceChartModal from "./FinanceChartModal";
+import React from "react";
 
 const VolumeChart = ({ data }) => {
   const isMobile = useMediaQuery({
@@ -17,7 +19,14 @@ const VolumeChart = ({ data }) => {
   });
   return (
     <div>
-      <h1>Volume Chart</h1>
+      <div className={"flex flex-row"}>
+        <h1>
+          Volume Chart
+          <span className={"ms-3"}>
+            <FinanceChartModal />
+          </span>
+        </h1>
+      </div>
       {data && (
         <ResponsiveContainer height={350}>
           <LineChart
