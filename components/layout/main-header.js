@@ -37,8 +37,6 @@ function MainHeader() {
     } else {
       console.log("other conditional in useEffect");
     }
-
-    console.log("this is the router in useEffect", router);
   }, [loading]);
 
   let username = session?.user?.username;

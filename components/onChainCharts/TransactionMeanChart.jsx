@@ -15,10 +15,10 @@ const TransactionMeanChart = ({ data }) => {
   const isMobile = useMediaQuery({
     query: `(max-width: 920px)`,
   });
+  console.log("this is transactions mean", data);
   return (
     <div>
       <h1>Transaction Size Mean Chart</h1>
-      {console.log("transaction data chart", data)}
       {data && (
         <ResponsiveContainer height={350}>
           <LineChart

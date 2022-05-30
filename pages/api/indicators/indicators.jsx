@@ -33,12 +33,12 @@ export default async (req, res) => {
       fetch(
         `https://api.glassnode.com/v1/metrics/indicators/sopr?a=${id}&api_key=${GLASSNODE_KEY}`
       ).then((resp) => resp.json()),
-      // fetch(
-      //     `https://api.glassnode.com/v1/metrics/transactions/size_mean?a=${id}&api_key=${GLASSNODE_KEY}`
-      // ).then((resp) => resp.json()),
-      // fetch(
-      //     `https://api.glassnode.com/v1/metrics/transactions/size_sum?a=${id}&api_key=${GLASSNODE_KEY}`
-      // ).then((resp) => resp.json()),
+      fetch(
+        `https://api.glassnode.com/v1/metrics/indicators/stock_to_flow_ratio?a=${id}&api_key=${GLASSNODE_KEY}`
+      ).then((resp) => resp.json()),
+      fetch(
+        `https://api.glassnode.com/v1/metrics/indicators/pi_cycle_top?a=${id}&api_key=${GLASSNODE_KEY}`
+      ).then((resp) => resp.json()),
     ]).then((result) => {
       console.log("this is the result in indicators", result);
       data = result;

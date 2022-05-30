@@ -74,7 +74,6 @@ function FinancialChart(props) {
     ).then((r) => r.json());
     if (priceData?.data) {
       let test = priceData?.data?.data[0]?.timeSeries.slice(time * -1);
-      console.log("this is the testTime", priceData?.data);
       setData(priceData?.data);
     } else {
       console.log("unable to load data from endpoint");

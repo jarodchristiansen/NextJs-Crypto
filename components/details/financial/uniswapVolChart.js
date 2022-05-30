@@ -18,8 +18,6 @@ const UniswapVolChart = (props) => {
     query: `(max-width: 920px)`,
   });
 
-  console.log("this is data", data);
-
   return (
     <div>
       This is uniswapVol

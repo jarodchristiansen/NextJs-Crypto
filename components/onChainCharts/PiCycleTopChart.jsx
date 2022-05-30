@@ -10,13 +10,13 @@ import {
 } from "recharts";
 import { useMediaQuery } from "react-responsive";
 
-const StockToFlowChart = ({ data }) => {
+const PiCycleTopChart = ({ data }) => {
   const isMobile = useMediaQuery({
     query: `(max-width: 920px)`,
   });
   return (
     <div>
-      <h1>Stock to Flow</h1>
+      <h1>Pi Cycle Top Indicator</h1>
       {data && (
         <ResponsiveContainer height={350}>
           <LineChart
@@ -37,8 +37,8 @@ const StockToFlowChart = ({ data }) => {
 
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="daysTillHalving" stroke="#8884d8" />
-            <Line type="monotone" dataKey="ratio" stroke="#8884d8" />
+            <Line type="monotone" dataKey="ma111" stroke="#8884d8" />
+            <Line type="monotone" dataKey="ma350x2" stroke="#8884d8" />
           </LineChart>
         </ResponsiveContainer>
       )}
@@ -46,4 +46,4 @@ const StockToFlowChart = ({ data }) => {
   );
 };
 
-export default StockToFlowChart;
+export default PiCycleTopChart;

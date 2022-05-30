@@ -88,7 +88,6 @@ function AuthForm(props) {
     }
 
     if (!termsAndConditionsChecked && !isLogin) {
-      console.log("this is inside the conditional");
       toast.notify(
         `${"You must agree to the terms and conditions to register"}`,
         {
@@ -168,7 +167,6 @@ function AuthForm(props) {
             type: "error",
           });
           setButtonsDisabled(false);
-          console.log(err);
         }
       }
     } else {
@@ -324,7 +322,6 @@ function AuthForm(props) {
               className={"ms-2"}
               // ref={termsAndConditionsRef}
               onChange={(e) => {
-                console.log("this is some validation stuff ", e.target.value);
                 setTermsAndConditionsChecked(!termsAndConditionsChecked);
                 hasError?.MissingTermsAndConditions &&
                   !termsAndConditionsChecked &&

@@ -12,8 +12,6 @@ import { currencyFormat } from "../../helpers/formatters";
 import { useMediaQuery } from "react-responsive";
 
 const VolumeChart = ({ data }) => {
-  console.log({ data });
-
   const isMobile = useMediaQuery({
     query: `(max-width: 920px)`,
   });

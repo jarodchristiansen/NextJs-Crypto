@@ -109,7 +109,6 @@ function AssetsPage(props) {
     //   setEvents(res.data);
     //   setOgEvents(res.data);
     // });
-    console.log("this is useEffect above coinGeckodata request");
     getOGAssets();
   }, []);
 
@@ -144,8 +143,6 @@ function AssetsPage(props) {
 
   async function searchQuery(e) {
     e.preventDefault();
-    console.log("this is searchQuery", e);
-    console.log("this is startingAssets", startingAssets);
     setIsSearching(true);
     // let returnedEvents = ogEvents.filter((event) => {
     //   return event.symbol.toUpperCase().includes(query.toUpperCase());
@@ -272,7 +269,6 @@ function AssetsPage(props) {
             a.year_established > b.year_established ? 1 : -1
           );
           setEvents("");
-          console.log("this is the filteredEvents", filteredEvents);
           // setEvents(filteredEvents);
         }
         break;

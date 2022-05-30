@@ -33,7 +33,6 @@ const FinancialPanel = ({ id }) => {
           volume: i.volume,
         });
       }
-      console.log({ financeDataArray });
       setFormattedCryptoData(financeDataArray.slice(time * -1));
     }
   };

@@ -8,15 +8,16 @@ import {
   LineChart,
   Line,
 } from "recharts";
+import { currencyFormat } from "../../helpers/formatters";
 import { useMediaQuery } from "react-responsive";
 
-const StockToFlowChart = ({ data }) => {
+const DifficultyRibbonChart = ({ data }) => {
   const isMobile = useMediaQuery({
     query: `(max-width: 920px)`,
   });
   return (
     <div>
-      <h1>Stock to Flow</h1>
+      <h1>Difficulty Ribbon Chart</h1>
       {data && (
         <ResponsiveContainer height={350}>
           <LineChart
@@ -37,8 +38,14 @@ const StockToFlowChart = ({ data }) => {
 
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="daysTillHalving" stroke="#8884d8" />
-            <Line type="monotone" dataKey="ratio" stroke="#8884d8" />
+            <Line type="monotone" dataKey="ma9" stroke="#8884d8" />
+            <Line type="monotone" dataKey="ma14" stroke="#8884d8" />
+            <Line type="monotone" dataKey="ma25" stroke="#8884d8" />
+            <Line type="monotone" dataKey="ma40" stroke="#8884d8" />
+            <Line type="monotone" dataKey="ma60" stroke="#8884d8" />
+            <Line type="monotone" dataKey="ma90" stroke="#8884d8" />
+            <Line type="monotone" dataKey="ma128" stroke="#8884d8" />
+            <Line type="monotone" dataKey="ma200" stroke="#8884d8" />
           </LineChart>
         </ResponsiveContainer>
       )}
@@ -46,4 +53,4 @@ const StockToFlowChart = ({ data }) => {
   );
 };
 
-export default StockToFlowChart;
+export default DifficultyRibbonChart;
