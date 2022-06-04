@@ -76,7 +76,9 @@ function MainHeader() {
     <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
       <Container>
         <Navbar.Brand>
-          <Link href={"/"}>HoDLWatch</Link>
+          <Link href={"/"}>
+            <img src={"../chain.png"} className={"pointer-link"} />
+          </Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
@@ -84,7 +86,9 @@ function MainHeader() {
             {session && (
               <Nav.Link eventKey={"1"} role={"link"}>
                 <Link href="/assets">
-                  <Navbar.Text>Assets</Navbar.Text>
+                  <Navbar.Text className={"pointer-link mx-1"}>
+                    Assets
+                  </Navbar.Text>
                 </Link>
               </Nav.Link>
             )}
@@ -96,7 +100,9 @@ function MainHeader() {
             {session && (
               <Nav.Link eventKey={"3"} role={"link"}>
                 <Link href={`/user/${username}`}>
-                  <Navbar.Text>{"Profile"}</Navbar.Text>
+                  <Navbar.Text className={"pointer-link mx-1"}>
+                    {"Profile"}
+                  </Navbar.Text>
                 </Link>
               </Nav.Link>
             )}
@@ -104,11 +110,18 @@ function MainHeader() {
             {!session ? (
               <Nav.Link eventKey={"3"} role={"link"}>
                 <Link href="/auth">
-                  <Navbar.Text>{"Sign in"}</Navbar.Text>
+                  <Navbar.Text className={"pointer-link mx-1"}>
+                    {"Sign in"}
+                  </Navbar.Text>
                 </Link>
               </Nav.Link>
             ) : (
-              <Nav.Link eventKey={"3"} role={"link"} onClick={handleSignout}>
+              <Nav.Link
+                eventKey={"3"}
+                role={"link"}
+                onClick={handleSignout}
+                className={"pointer-link mx-1"}
+              >
                 {"Sign out"}
               </Nav.Link>
             )}
