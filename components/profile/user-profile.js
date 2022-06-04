@@ -1,6 +1,6 @@
 import { userState, useEffect, useState } from "react";
 import ProfileForm from "./profile-form";
-import { getSession } from "next-auth/client";
+import { getSession, session } from "next-auth/client";
 import { useRouter } from "next/router";
 import UsernameChangeModal from "./username-change-modal";
 import fetch from "unfetch";
@@ -9,6 +9,7 @@ import { Button } from "react-bootstrap";
 import Favorites from "./favorites";
 import dynamic from "next/dynamic";
 import LoadingSpinner from "../ui/loading-spinner";
+import SessionFavoritesTable from "./SessionFavoritesTable";
 
 const AblyChatComponent = dynamic(() => import("../chat/AblyChatComponent"), {
   ssr: false,
@@ -55,7 +56,6 @@ function UserProfile() {
       r.json()
     );
     setLoadedUser(fetchedUser);
-    console.log("this is fetchedUser", fetchedUser);
   };
 
   async function changePasswordHandler(passwordData) {
@@ -136,6 +136,8 @@ function UserProfile() {
           )}
         </>
       )}
+
+      <SessionFavoritesTable />
 
       {profileIsUser && !isLoading && (
         <div>

@@ -55,10 +55,10 @@ function EventItem(props) {
       image,
     };
 
-    dispatch({
-      type: "ADD_FAVORITE",
-      favorite: favoriteObject,
-    });
+    // dispatch({
+    //   type: "ADD_FAVORITE",
+    //   favorite: favoriteObject,
+    // });
     await addFavoriteUtil(favoriteObject);
     setUpdateFavorites(!updateFavorites);
   }

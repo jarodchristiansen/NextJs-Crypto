@@ -172,7 +172,7 @@ export async function getServerSideProps(context, req) {
   const session = await getSession({ req });
   const reduxStore = initializeStore();
   const { dispatch } = reduxStore;
-  //
+
   // console.log('this is the client', client)
   // console.log("this is the session", session)
   // // dispatch({
