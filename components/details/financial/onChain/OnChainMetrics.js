@@ -12,6 +12,7 @@ import TransactionMeanChart from "../../../onChainCharts/TransactionMeanChart";
 import DifficultyRibbonChart from "../../../onChainCharts/DifficultyRibbonChart";
 import PiCycleTopChart from "../../../onChainCharts/PiCycleTopChart";
 import { getSession } from "next-auth/client";
+import FadeIn from "react-fade-in";
 
 export default function OnChainMetrics(props) {
   const { id } = props;
@@ -170,34 +171,78 @@ export default function OnChainMetrics(props) {
 
   return (
     <div>
-      {activeAddressData && activeAddressData.length > 1 && (
-        <ActiveAddressChart data={activeAddressData} />
-      )}
+      <FadeIn transitionDuration={2000}>
+        <Accordion defaultActiveKey={"1"}>
+          {activeAddressData && activeAddressData.length > 1 && (
+            <Accordion.Item eventKey="1">
+              <Accordion.Header>Active Address Chart</Accordion.Header>
+              <Accordion.Body>
+                <ActiveAddressChart data={activeAddressData} />
+              </Accordion.Body>
+            </Accordion.Item>
+          )}
 
-      {transactionData && isBTCorETH && (
-        <TransactionCountChart data={transactionData.count} />
-      )}
+          {transactionData && isBTCorETH && (
+            <>
+              <Accordion.Item eventKey={"2"}>
+                <Accordion.Header>Transaction Count Chart</Accordion.Header>
+                <Accordion.Body>
+                  <TransactionCountChart data={transactionData.count} />{" "}
+                </Accordion.Body>
+              </Accordion.Item>
 
-      {transactionData && isBTCorETH && (
-        <TransactionMeanChart data={transactionData.size_mean} />
-      )}
+              <Accordion.Item eventKey={"3"}>
+                <Accordion.Header>Transaction Mean Chart</Accordion.Header>
+                <Accordion.Body>
+                  <TransactionMeanChart data={transactionData.size_mean} />
+                </Accordion.Body>
+              </Accordion.Item>
+            </>
+          )}
 
-      {difficultyRibbonData &&
-        difficultyRibbonData.length > 1 &&
-        lunarPriceData && (
-          <DifficultyRibbonChart
-            data={difficultyRibbonData}
-            lunarPriceData={lunarPriceData}
-          />
-        )}
+          {difficultyRibbonData &&
+            difficultyRibbonData.length > 1 &&
+            lunarPriceData && (
+              <Accordion.Item eventKey={"4"}>
+                <Accordion.Header>Difficulty Ribbon Chart</Accordion.Header>
+                <Accordion.Body>
+                  <DifficultyRibbonChart
+                    data={difficultyRibbonData}
+                    lunarPriceData={lunarPriceData}
+                  />
+                </Accordion.Body>
+              </Accordion.Item>
+            )}
 
-      {id === "BTC" && soprData && <SOPRChart data={soprData} />}
+          {id === "BTC" && soprData && (
+            <>
+              <Accordion.Item eventKey={"5"}>
+                <Accordion.Header>SOPR Chart</Accordion.Header>
+                <Accordion.Body>
+                  <SOPRChart data={soprData} />
+                </Accordion.Body>
+              </Accordion.Item>
 
-      {id === "BTC" && stockToFlow && <StockToFlowChart data={stockToFlow} />}
+              <Accordion.Item eventKey={"6"}>
+                <Accordion.Header>Stock To Flow Chart</Accordion.Header>
+                <Accordion.Body>
+                  <StockToFlowChart data={stockToFlow} />
+                </Accordion.Body>
+              </Accordion.Item>
 
-      {id === "BTC" && piCycleData && lunarPriceData && (
-        <PiCycleTopChart data={piCycleData} lunarPriceData={lunarPriceData} />
-      )}
+              <Accordion.Item eventKey={"7"}>
+                <Accordion.Header>Pi Cycle top Indicator</Accordion.Header>
+                <Accordion.Body>
+                  <PiCycleTopChart
+                    data={piCycleData}
+                    lunarPriceData={lunarPriceData}
+                  />
+                </Accordion.Body>
+              </Accordion.Item>
+            </>
+          )}
+        </Accordion>
+      </FadeIn>
     </div>
   );
 }

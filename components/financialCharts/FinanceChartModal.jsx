@@ -29,7 +29,7 @@ function FinanceChartModal(props) {
           <Modal.Title>{text?.modalHeader || "Modal Heading"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {text?.modalBodyText || "This is the modal description"}
+          {text?.modalBodyText() || "This is the modal description"}
           {/*<img src{text?.modalBodyImage || ''} />*/}
         </Modal.Body>
         <Modal.Footer>

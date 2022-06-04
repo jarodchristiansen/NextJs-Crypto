@@ -8,6 +8,9 @@ import VolatilityChart from "../../../financialCharts/VolatilityChart";
 import MarketDominanceChart from "../../../financialCharts/MarketDominanceChart";
 import VolumeChart from "../../../financialCharts/VolumeChart";
 import { useFetch } from "../../../../hooks/useFetch";
+import { Accordion } from "react-bootstrap";
+import { TradingViewEmbed, widgetType } from "react-tradingview-embed";
+import FadeIn from "react-fade-in";
 
 const FinancialPanel = ({ id }) => {
   const [time, setTime] = useState(365);
@@ -245,24 +248,129 @@ const FinancialPanel = ({ id }) => {
       </div>
 
       {lunarData && (
-        <FibonacciChart
-          priceData={lunarData}
-          time={time}
-          setTime={(e) => setTime(e)}
-        />
+        <Accordion defaultActiveKey="1">
+          <Accordion.Item eventKey="1">
+            <Accordion.Header>Fibonacci Retracement Chart</Accordion.Header>
+            <Accordion.Body>
+              <FibonacciChart
+                priceData={lunarData}
+                time={time}
+                setTime={(e) => setTime(e)}
+              />
+            </Accordion.Body>
+          </Accordion.Item>
+
+          {formattedCryptoData && formattedCryptoData?.length > 1 && (
+            <>
+              <Accordion.Item eventKey="2">
+                <Accordion.Header>Volatility Chart</Accordion.Header>
+                <Accordion.Body>
+                  <VolatilityChart data={formattedCryptoData} />
+                </Accordion.Body>
+              </Accordion.Item>
+
+              <Accordion.Item eventKey="3">
+                <Accordion.Header>Market Dominance Chart</Accordion.Header>
+                <Accordion.Body>
+                  <MarketDominanceChart data={formattedCryptoData} />
+                </Accordion.Body>
+              </Accordion.Item>
+
+              <Accordion.Item eventKey="4">
+                <Accordion.Header>Volume Chart</Accordion.Header>
+                <Accordion.Body>
+                  <VolumeChart data={formattedCryptoData} />
+                </Accordion.Body>
+              </Accordion.Item>
+            </>
+          )}
+
+          {geckoData && geckoData?.length > 1 && (
+            <Accordion.Item eventKey="5">
+              <Accordion.Header>Volume Chart</Accordion.Header>
+              <Accordion.Body>
+                <VolumeChart data={geckoData} />
+              </Accordion.Body>
+            </Accordion.Item>
+          )}
+
+          <Accordion.Item eventKey="6">
+            <Accordion.Header>TradingView Chart</Accordion.Header>
+            <Accordion.Body>
+              <TradingViewEmbed
+                widgetType={widgetType.ADVANCED_CHART}
+                widgetConfig={{
+                  interval: "1D",
+                  colorTheme: "dark",
+                  width: "100%",
+                  symbol: id + "USD" || "BTCUSD",
+                  studies: [
+                    "MACD@tv-basicstudies",
+                    "StochasticRSI@tv-basicstudies",
+                    "TripleEMA@tv-basicstudies",
+                  ],
+                }}
+              />
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
       )}
 
-      {formattedCryptoData && formattedCryptoData?.length > 1 && (
-        <VolatilityChart data={formattedCryptoData} />
-      )}
-      {formattedCryptoData && formattedCryptoData?.length > 1 && (
-        <MarketDominanceChart data={formattedCryptoData} />
-      )}
-      {formattedCryptoData && formattedCryptoData?.length > 1 && (
-        <VolumeChart data={formattedCryptoData} />
-      )}
+      {/*{formattedCryptoData && formattedCryptoData?.length > 1 && (*/}
+      {/*  <Accordion defaultActiveKey="0">*/}
+      {/*    <Accordion.Item eventKey="1">*/}
+      {/*      <Accordion.Header>Volatility Chart</Accordion.Header>*/}
+      {/*      <Accordion.Body>*/}
+      {/*        <VolatilityChart data={formattedCryptoData} />*/}
+      {/*      </Accordion.Body>*/}
+      {/*    </Accordion.Item>*/}
+      {/*  </Accordion>*/}
+      {/*)}*/}
 
-      {geckoData && geckoData?.length > 1 && <VolumeChart data={geckoData} />}
+      {/*{formattedCryptoData && formattedCryptoData?.length > 1 && (*/}
+      {/*  <Accordion defaultActiveKey="0">*/}
+      {/*    <Accordion.Item eventKey="1">*/}
+      {/*      <Accordion.Header>Market Dominance Chart</Accordion.Header>*/}
+      {/*      <Accordion.Body>*/}
+      {/*        <MarketDominanceChart data={formattedCryptoData} />*/}
+      {/*      </Accordion.Body>*/}
+      {/*    </Accordion.Item>*/}
+      {/*  </Accordion>*/}
+      {/*)}*/}
+
+      {/*{formattedCryptoData && formattedCryptoData?.length > 1 && (*/}
+      {/*  <Accordion defaultActiveKey="0">*/}
+      {/*    <Accordion.Item eventKey="1">*/}
+      {/*      <Accordion.Header>Volume Chart</Accordion.Header>*/}
+      {/*      <Accordion.Body>*/}
+      {/*        <VolumeChart data={formattedCryptoData} />*/}
+      {/*      </Accordion.Body>*/}
+      {/*    </Accordion.Item>*/}
+      {/*  </Accordion>*/}
+      {/*)}*/}
+
+      {/*{geckoData && geckoData?.length > 1 && (*/}
+      {/*  <Accordion defaultActiveKey="0">*/}
+      {/*    <Accordion.Item eventKey="1">*/}
+      {/*      <Accordion.Header>Volume Chart</Accordion.Header>*/}
+      {/*      <Accordion.Body>*/}
+      {/*        <VolumeChart data={geckoData} />*/}
+      {/*      </Accordion.Body>*/}
+      {/*    </Accordion.Item>*/}
+      {/*  </Accordion>*/}
+      {/*)}*/}
+
+      {/*{formattedCryptoData && formattedCryptoData?.length > 1 && (*/}
+      {/*  <VolatilityChart data={formattedCryptoData} />*/}
+      {/*)}*/}
+      {/*{formattedCryptoData && formattedCryptoData?.length > 1 && (*/}
+      {/*  <MarketDominanceChart data={formattedCryptoData} />*/}
+      {/*)}*/}
+      {/*{formattedCryptoData && formattedCryptoData?.length > 1 && (*/}
+      {/*  <VolumeChart data={formattedCryptoData} />*/}
+      {/*)}*/}
+
+      {/*{geckoData && geckoData?.length > 1 && <VolumeChart data={geckoData} />}*/}
     </div>
   );
 };

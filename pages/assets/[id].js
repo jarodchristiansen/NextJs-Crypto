@@ -13,6 +13,7 @@ import { getSession } from "next-auth/client";
 import FinancialPanel from "../../components/details/financial/financialPanel/FinancialPanel";
 import AssetBasicsCard from "../../components/details/basics/AssetBasicsCard";
 import axios from "axios";
+import FadeIn from "react-fade-in";
 
 function AssetDetails() {
   const router = useRouter();
@@ -70,35 +71,10 @@ function AssetDetails() {
 
       {tabState === "Financial" && (
         <div>
-          <div>
+          <FadeIn transitionDuration={2000}>
             <h1>Financial Metrics</h1>
             <FinancialPanel id={id} className={"my-5"} />
-            <div className={"card"}></div>
-          </div>
-
-          <div className="priceChart">
-            <Accordion defaultActiveKey="0">
-              <Accordion.Item eventKey="1">
-                <Accordion.Header>TradingView Chart</Accordion.Header>
-                <Accordion.Body>
-                  <TradingViewEmbed
-                    widgetType={widgetType.ADVANCED_CHART}
-                    widgetConfig={{
-                      interval: "1D",
-                      colorTheme: "dark",
-                      width: "100%",
-                      symbol: id + "USD" || "BTCUSD",
-                      studies: [
-                        "MACD@tv-basicstudies",
-                        "StochasticRSI@tv-basicstudies",
-                        "TripleEMA@tv-basicstudies",
-                      ],
-                    }}
-                  />
-                </Accordion.Body>
-              </Accordion.Item>
-            </Accordion>
-          </div>
+          </FadeIn>
         </div>
       )}
 

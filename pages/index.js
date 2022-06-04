@@ -10,6 +10,7 @@ import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import FadeIn from "react-fade-in";
 
 function HomePage({ isConnected, initialReduxState }) {
   const [session, loading, status] = useSession();
@@ -125,35 +126,37 @@ function HomePage({ isConnected, initialReduxState }) {
       <div className="screener">
         <div>
           <div className="container">
-            <div className={"row row-cols-1 mt-5"}>
-              <div className="col">
-                <div className="explainer">
-                  {<LandingExplainer text={textBlocks.mainExplainer} />}
+            <FadeIn transitionDuration={2000}>
+              <div className={"row row-cols-1 mt-5"}>
+                <div className="col">
+                  <div className="explainer">
+                    {<LandingExplainer text={textBlocks.mainExplainer} />}
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="row row-cols-2 mt-5">
-              <div className="col">
-                <div className="explainer">
-                  {<LandingExplainer text={textBlocks.userProfiles} />}
+              <div className="row row-cols-2 mt-5">
+                <div className="col">
+                  <div className="explainer">
+                    {<LandingExplainer text={textBlocks.userProfiles} />}
+                  </div>
+                </div>
+                <div className="col">
+                  <div className="explainer">
+                    {<LandingExplainer text={textBlocks.socialMetrics} />}
+                  </div>
+                </div>
+                <div className="col">
+                  <div className="explainer">
+                    {<LandingExplainer text={textBlocks.financialMetrics} />}
+                  </div>
+                </div>
+                <div className="col">
+                  <div className="explainer">
+                    {<LandingExplainer text={textBlocks.onChainMetrics} />}
+                  </div>
                 </div>
               </div>
-              <div className="col">
-                <div className="explainer">
-                  {<LandingExplainer text={textBlocks.socialMetrics} />}
-                </div>
-              </div>
-              <div className="col">
-                <div className="explainer">
-                  {<LandingExplainer text={textBlocks.financialMetrics} />}
-                </div>
-              </div>
-              <div className="col">
-                <div className="explainer">
-                  {<LandingExplainer text={textBlocks.onChainMetrics} />}
-                </div>
-              </div>
-            </div>
+            </FadeIn>
           </div>
         </div>
       </div>
