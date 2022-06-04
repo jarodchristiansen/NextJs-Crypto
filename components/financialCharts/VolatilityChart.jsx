@@ -23,13 +23,33 @@ const VolatilityChart = ({ data }) => {
     query: `(max-width: 920px)`,
   });
 
+  const modalText = {
+    modalHeader: "Volatility",
+    modalBodyText: () => (
+      <div>
+        <h5>Volatility</h5>
+        <p>
+          <a
+            href={
+              "https://www.investopedia.com/terms/f/fibonacciretracement.asp"
+            }
+            target={"#"}
+            className={"ms-1"}
+          >
+            Visit Investopedia Article
+          </a>
+        </p>
+      </div>
+    ),
+  };
+
   return (
     <div className={"card mt-2"}>
       <div className={"flex flex-row"}>
         <h1>
           Volatility of Asset
           <span className={"ms-3"}>
-            <FinanceChartModal />
+            <FinanceChartModal text={modalText} />
           </span>
         </h1>
       </div>

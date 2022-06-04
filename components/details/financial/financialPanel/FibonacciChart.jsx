@@ -1,6 +1,6 @@
 import Link from "next/link";
 import fetch from "unfetch";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Line, Bar } from "react-chartjs-2";
 // import FinancialData from "./financial-data";
 
@@ -22,6 +22,7 @@ import {
   Label,
 } from "recharts";
 import { Accordion, Col } from "react-bootstrap";
+import FinanceChartModal from "../../../financialCharts/FinanceChartModal";
 // import UniswapVolChart from "./uniswapVolChart";
 
 function FibonacciChart(props) {
@@ -163,62 +164,58 @@ function FibonacciChart(props) {
   if (error) return <div>failed to load</div>;
   if (!data) return <div>loading...</div>;
 
+  const modalText = {
+    modalHeader: "Fibonacci Retracement Chart",
+    modalBodyText: () => (
+      <div>
+        <h5>What Are Fibonacci Retracement Levels?</h5>
+        <p>
+          Fibonacci retracement levels—stemming from the Fibonacci sequence—are
+          horizontal lines that indicate where support and resistance are likely
+          to occur. Each level is associated with a percentage. The percentage
+          is how much of a prior move the price has retraced. The Fibonacci
+          retracement levels are 23.6%, 38.2%, 61.8%, and 78.6%. While not
+          officially a Fibonacci ratio, 50% is also used. The indicator is
+          useful because it can be drawn between any two significant price
+          points, such as a high and a low. The indicator will then create the
+          levels between those two points. Suppose the price of a stock rises
+          $10 and then drops $2.36. In that case, it has retraced 23.6%, which
+          is a Fibonacci number. Fibonacci numbers are found throughout nature.
+          Therefore, many traders believe that these numbers also have relevance
+          in financial markets. Fibonacci retracement levels were named after
+          Italian mathemetician Leonardo Pisano Bigollo, who was famously known
+          as Leonardo Fibonacci. However, Fibonacci did not create the Fibonacci
+          sequence. Fibonacci, instead, introduced these numbers to western
+          Europe after learning about them from Indian merchants.1 Fibonacci
+          retracement levels were formulated in Ancient India between 450 and
+          200 BCE. -
+          <a
+            href={
+              "https://www.investopedia.com/terms/f/fibonacciretracement.asp"
+            }
+            target={"#"}
+            className={"ms-1"}
+          >
+            Visit Investopedia Article
+          </a>
+        </p>
+      </div>
+    ),
+  };
+
   return (
     <div>
       <div>
         {data && (
           <div className={"border border-1"}>
-            {/*<div*/}
-            {/*  className="btn-group mt-3"*/}
-            {/*  role="group"*/}
-            {/*  aria-label="Basic outlined example"*/}
-            {/*>*/}
-            {/*  <button*/}
-            {/*    type="button"*/}
-            {/*    className="standardized-button px-3"*/}
-            {/*    onClick={() => setTime(180)}*/}
-            {/*  >*/}
-            {/*    180*/}
-            {/*  </button>*/}
-            {/*  <button*/}
-            {/*    type="button"*/}
-            {/*    className="standardized-button px-3"*/}
-            {/*    onClick={() => setTime(90)}*/}
-            {/*  >*/}
-            {/*    90*/}
-            {/*  </button>*/}
-            {/*  <button*/}
-            {/*    type="button"*/}
-            {/*    className="standardized-button px-3"*/}
-            {/*    onClick={() => setTime(30)}*/}
-            {/*  >*/}
-            {/*    30*/}
-            {/*  </button>*/}
-            {/*  <button*/}
-            {/*    type="button"*/}
-            {/*    className="standardized-button px-3"*/}
-            {/*    onClick={() => setTime(14)}*/}
-            {/*  >*/}
-            {/*    14*/}
-            {/*  </button>*/}
-            {/*  <button*/}
-            {/*    type="button"*/}
-            {/*    className="standardized-button px-3"*/}
-            {/*    onClick={() => setTime(7)}*/}
-            {/*  >*/}
-            {/*    7*/}
-            {/*  </button>*/}
-            {/*  <button*/}
-            {/*    type="button"*/}
-            {/*    className="standardized-button px-3"*/}
-            {/*    onClick={() => setTime(3)}*/}
-            {/*  >*/}
-            {/*    3*/}
-            {/*  </button>*/}
-            {/*</div>*/}
             <h3 className={"my-2"}>{time} Day View</h3>
 
-            <h6>Fibonacci Retracement Chart</h6>
+            <h5>
+              Fibonacci Retracement Chart{" "}
+              <span className={"ms-1"}>
+                <FinanceChartModal text={modalText} />
+              </span>
+            </h5>
             <ResponsiveContainer height={!isDesktopOrLaptop ? 400 : 350}>
               <ComposedChart
                 data={chartData}

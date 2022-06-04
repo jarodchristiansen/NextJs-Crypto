@@ -41,7 +41,6 @@ export default async (req, res) => {
         `https://api.glassnode.com/v1/metrics/transactions/size_sum?a=${id}&api_key=${GLASSNODE_KEY}`
       ).then((resp) => resp.json()),
     ]).then((result) => {
-      console.log("this is the result", result);
       data = result;
     });
 

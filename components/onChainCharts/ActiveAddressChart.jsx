@@ -9,7 +9,7 @@ import {
   Line,
   Brush,
 } from "recharts";
-import { currencyFormat } from "../../helpers/formatters";
+import { currencyFormat, formatDecimals } from "../../helpers/formatters";
 import { useMediaQuery } from "react-responsive";
 import FinanceChartModal from "../financialCharts/FinanceChartModal";
 import React from "react";
@@ -51,7 +51,7 @@ const ActiveAddressChart = ({ data }) => {
 
             {!isMobile && <YAxis dataKey={"v"} />}
 
-            <Tooltip />
+            <Tooltip formatter={(value) => formatDecimals(value, 2)} />
             <Legend />
             <Line type="monotone" dataKey="v" stroke="#8884d8" dot={false} />
           </LineChart>

@@ -21,7 +21,6 @@ export default async (req, res) => {
 
   if (testData) {
     data = testData;
-    console.log("testDta is there, setting from cache");
   } else {
     // data = await fetch(
     //   `https://api.glassnode.com/v1/metrics/transactions/count?a=${id}&api_key=${GLASSNODE_KEY}`
@@ -40,7 +39,6 @@ export default async (req, res) => {
         `https://api.glassnode.com/v1/metrics/indicators/pi_cycle_top?a=${id}&api_key=${GLASSNODE_KEY}`
       ).then((resp) => resp.json()),
     ]).then((result) => {
-      console.log("this is the result in indicators", result);
       data = result;
     });
     // Hits this area if the value is no longer in the cache to prevent the data from being hit too frequently. currently 12 hours as it is on a daily UI
