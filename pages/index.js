@@ -126,7 +126,7 @@ function HomePage({ isConnected, initialReduxState }) {
       <div className="screener">
         <div>
           <div className="container">
-            <FadeIn transitionDuration={2000}>
+            <FadeIn transitionDuration={1000}>
               <div className={"row row-cols-1 mt-5"}>
                 <div className="col">
                   <div className="explainer">

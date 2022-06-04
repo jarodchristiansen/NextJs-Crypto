@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import fetch from "unfetch";
 import FibonacciChart from "./FibonacciChart";
 import FinancialChart from "../financial-chart";
@@ -246,6 +246,8 @@ const FinancialPanel = ({ id }) => {
           365
         </button>
       </div>
+
+      <h3 className={"my-2"}>{time} Day View</h3>
 
       {lunarData && (
         <Accordion defaultActiveKey="1">

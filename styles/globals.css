@@ -76,6 +76,9 @@ ul {
   font-weight: bold;
 }
 
+.pointer-link {
+  cursor: pointer;
+}
 
 :root {
   --global-font-family: Helvetica, sans-serif;

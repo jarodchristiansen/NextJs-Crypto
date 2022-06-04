@@ -208,8 +208,6 @@ function FibonacciChart(props) {
       <div>
         {data && (
           <div className={"border border-1"}>
-            <h3 className={"my-2"}>{time} Day View</h3>
-
             <h5>
               Fibonacci Retracement Chart{" "}
               <span className={"ms-1"}>
