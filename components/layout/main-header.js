@@ -96,7 +96,6 @@ function MainHeader() {
             {/*  Pricing*/}
             {/*</Nav.Link>*/}
             {/*<Nav.Link eventKey={"3"} onClick={session ? handleSignout : handleSignin}>{session ? "Sign out" : "Sign in"}</Nav.Link>*/}
-
             {session && (
               <Nav.Link eventKey={"3"} role={"link"}>
                 <Link href={`/user/${username}`}>
@@ -106,9 +105,16 @@ function MainHeader() {
                 </Link>
               </Nav.Link>
             )}
+            <Nav.Link eventKey={"3"} role={"link"}>
+              <Link href="/education">
+                <Navbar.Text className={"pointer-link mx-1"}>
+                  Education
+                </Navbar.Text>
+              </Link>
+            </Nav.Link>
 
             {!session ? (
-              <Nav.Link eventKey={"3"} role={"link"}>
+              <Nav.Link eventKey={"4"} role={"link"} className={"ms-5"}>
                 <Link href="/auth">
                   <Navbar.Text className={"pointer-link mx-1"}>
                     {"Sign in"}
@@ -117,10 +123,10 @@ function MainHeader() {
               </Nav.Link>
             ) : (
               <Nav.Link
-                eventKey={"3"}
+                eventKey={"4"}
                 role={"link"}
                 onClick={handleSignout}
-                className={"pointer-link mx-1"}
+                className={"pointer-link"}
               >
                 {"Sign out"}
               </Nav.Link>
@@ -132,7 +138,6 @@ function MainHeader() {
             {/*    />*/}
             {/*  </div>*/}
             {/*)}*/}
-
             {/*<NavDropdown title="Dropdown" id="collasible-nav-dropdown">*/}
             {/*  <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>*/}
             {/*  <NavDropdown.Item href="#action/3.2">*/}

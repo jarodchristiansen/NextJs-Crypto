@@ -77,7 +77,7 @@ const AssetListContainer = (props) => {
           )}
           {items &&
             items.length > 1 &&
-            items.map((event) => (
+            items.map((event, idx) => (
               <div>
                 {/*<AssetCard*/}
                 {/*  key={event.id}*/}
@@ -94,7 +94,7 @@ const AssetListContainer = (props) => {
                 {/*/>*/}
                 {searchSelection === "Assets" && (
                   <AssetCard
-                    key={event?.id}
+                    key={event?.id + idx}
                     id={event?.id}
                     title={event?.name}
                     symbol={event?.symbol?.toUpperCase()}
@@ -108,7 +108,7 @@ const AssetListContainer = (props) => {
 
                 {searchSelection === "Exchanges" && (
                   <ExchangeCard
-                    key={event?.id}
+                    key={event?.id + idx}
                     id={event?.id}
                     title={event?.name}
                     image={event?.image}
