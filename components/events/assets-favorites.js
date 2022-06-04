@@ -9,6 +9,7 @@ import FavoritesTable from "../profile/favoritesTable";
 // import { FaPlus, FaMinus } from "react-icons/all";
 // import { CgAdd } from "react-icons/cg";
 import { useStore } from "../../store";
+import FavoriteAssetRow from "../assetList/FavoriteAssetRow";
 
 function CustomToggle({
   children,
@@ -95,8 +96,6 @@ function AssetFavorites(props) {
   const [favorites, setFavorites] = useState();
   const [isAuthorized, setIsAuthorized] = useState(false);
 
-  let state = getState();
-
   useEffect(() => {
     console.log("this is the username in favorites", username);
     getSession().then((session) => {
@@ -108,38 +107,37 @@ function AssetFavorites(props) {
           setIsAuthorized(true);
         }
         if (path.includes("assets")) {
-          console.log("favorites on assets page");
-          console.log("this is the getState in favorites", getState());
-          setLoadedUser(session.user.username);
+          console.log("favorites on assets page", session.user.username);
+          // console.log("this is the getState in favorites", getState());
+          getUser(session.user.username);
 
-          if (state?.user?.favorites) {
-            console.log("this is from the redux state yo", state);
-            loadFavoritesFromRedux(session.user.username, state);
-          } else {
-            getUser(session.user.username);
-          }
+          // if (state?.user?.favorites) {
+          //   console.log("this is from the redux state yo", state);
+          //   loadFavoritesFromRedux(session.user.username, state);
+          // } else {
+          //   getUser(session.user.username);
+          // }
           // setLoadedSession(session);
         }
       }
     });
-  }, [state]);
-
-  const loadFavoritesFromRedux = async (session, state) => {
-    fetchedUser = await fetch(`/api/user/get-user?user=${session}`).then((r) =>
-      r.json()
-    );
-    setLoadedUser(fetchedUser);
-    setFavorites(state?.user?.favorites);
-  };
+  }, []);
 
   const getUser = async (session) => {
-    fetchedUser = await fetch(`/api/user/get-user?user=${session}`).then((r) =>
-      r.json()
-    );
-    setLoadedUser(fetchedUser);
+    let user = undefined;
+    if (!user) {
+      fetchedUser = await fetch(`/api/user/get-user?user=${session}`).then(
+        (r) => r.json()
+      );
+      sessionStorage.setItem("user", JSON.stringify(fetchedUser));
+      setLoadedUser(fetchedUser);
+    } else {
+      console.log("this is the user setLoadedUser", user);
+      setLoadedUser(user);
+    }
 
-    if (fetchedUser) {
-      setFavorites(fetchedUser?.favorites);
+    if (user || fetchedUser) {
+      setFavorites(user?.favorites || fetchedUser?.favorites);
     }
     console.log(
       "this is favorites in Favorites Component after get user -----",
@@ -149,30 +147,51 @@ function AssetFavorites(props) {
 
   return (
     <div>
-      <div
-        style={{ width: "80%", border: "2px solid black", marginLeft: "10%" }}
-      >
-        <Accordion defaultActiveKey="0">
-          <Card>
-            <Card.Header>
-              <CustomToggle eventKey="0" isAuthorized={isAuthorized}>
-                Click me!
-              </CustomToggle>
-            </Card.Header>
-            <Accordion.Collapse eventKey="0">
-              <div>
-                {loadedUser?.favorites?.length >= 1 && (
-                  <FavoritesTable
-                    data={loadedUser?.favorites}
-                    isEditing={isEditing}
-                    setIsEditing={setIsEditing}
-                  />
-                )}
-              </div>
-            </Accordion.Collapse>
-          </Card>
-        </Accordion>
-      </div>
+      <Accordion>
+        <Accordion.Item>
+          <Accordion.Header>Favorite Assets Table</Accordion.Header>
+          <Accordion.Body>
+            {/*{loadedUser?.favorites?.length >= 1 && (*/}
+            {/*  <FavoritesTable*/}
+            {/*    data={loadedUser?.favorites}*/}
+            {/*    isEditing={isEditing}*/}
+            {/*    setIsEditing={setIsEditing}*/}
+            {/*  />*/}
+            {/*)}*/}
+            {loadedUser?.favorites?.length >= 1 && (
+              <FavoriteAssetRow
+                favorites={loadedUser?.favorites}
+                isEditing={isEditing}
+                setIsEditing={setIsEditing}
+              />
+            )}
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+      {/*<div*/}
+      {/*  style={{ width: "80%", border: "2px solid black", marginLeft: "10%" }}*/}
+      {/*>*/}
+      {/*  <Accordion defaultActiveKey="0">*/}
+      {/*    <Card>*/}
+      {/*      <Card.Header>*/}
+      {/*        <CustomToggle eventKey="0" isAuthorized={isAuthorized}>*/}
+      {/*          Click me!*/}
+      {/*        </CustomToggle>*/}
+      {/*      </Card.Header>*/}
+      {/*      <Accordion.Collapse eventKey="0">*/}
+      {/*        <div>*/}
+      {/*          {loadedUser?.favorites?.length >= 1 && (*/}
+      {/*            <FavoritesTable*/}
+      {/*              data={loadedUser?.favorites}*/}
+      {/*              isEditing={isEditing}*/}
+      {/*              setIsEditing={setIsEditing}*/}
+      {/*            />*/}
+      {/*          )}*/}
+      {/*        </div>*/}
+      {/*      </Accordion.Collapse>*/}
+      {/*    </Card>*/}
+      {/*  </Accordion>*/}
+      {/*</div>*/}
     </div>
   );
 }

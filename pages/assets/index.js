@@ -320,6 +320,12 @@ function AssetsPage(props) {
         />
       </div>
 
+      <AssetFavorites
+        path={router.pathname}
+        loadedUser={loadedUser}
+        setLoadedUser={setLoadedUser}
+      />
+
       {/*{updateFavorites ? (*/}
       {/*  // <Favorites*/}
       {/*  //   path={router.pathname}*/}

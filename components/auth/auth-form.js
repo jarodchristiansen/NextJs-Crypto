@@ -123,10 +123,11 @@ function AuthForm(props) {
               const { dispatch } = reduxStore;
 
               try {
-                dispatch({
-                  type: "SET_USER",
-                  user: session.user,
-                });
+                // dispatch({
+                //   type: "SET_USER",
+                //   user: session.user,
+                // });
+                console.log("this si the session.user", session);
                 setTimeout(() => {
                   router.replace("/");
                 }, 3000);
@@ -196,10 +197,11 @@ function AuthForm(props) {
           const { dispatch } = reduxStore;
 
           try {
-            dispatch({
-              type: "SET_USER",
-              user: session.user,
-            });
+            // dispatch({
+            //   type: "SET_USER",
+            //   user: session.user,
+            // });
+            console.log("this si the session.user", session);
           } catch (err) {
             toast.notify(`No User to Set`, {
               duration: 10,

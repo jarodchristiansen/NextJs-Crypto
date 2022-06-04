@@ -4,8 +4,9 @@ import Link from "next/link";
 function FavoritesTable(props) {
   const { data, isEditing, setIsEditing } = props;
 
+  console.log("this is favoritesData data", data);
   return (
-    <div style={{ maxWidth: "100%", overflow: "auto" }}>
+    <div>
       <Table striped bordered hover responsive>
         <thead>
           <tr>
