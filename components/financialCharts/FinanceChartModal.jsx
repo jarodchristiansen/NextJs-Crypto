@@ -21,7 +21,12 @@ function FinanceChartModal(props) {
       {/*</button>*/}
 
       <span>
-        <FaInfoCircle size={18} color={"black"} onClick={() => handleShow()} />
+        <FaInfoCircle
+          size={18}
+          color={"black"}
+          onClick={() => handleShow()}
+          className={"pointer-link"}
+        />
       </span>
 
       <Modal show={show} onHide={handleClose}>

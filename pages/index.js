@@ -96,12 +96,12 @@ function HomePage({ isConnected, initialReduxState }) {
           autosize: true,
           symbols: [
             {
-              proName: "BITSTAMP:ETHUSD",
-              title: "ETH/USD",
-            },
-            {
               proName: "BITSTAMP:BTCUSD",
               title: "BTC/USD",
+            },
+            {
+              proName: "BITSTAMP:ETHUSD",
+              title: "ETH/USD",
             },
             {
               proName: "BINANCE:BNBUSDT",
@@ -112,12 +112,16 @@ function HomePage({ isConnected, initialReduxState }) {
               title: "ADA/USD",
             },
             {
-              proName: "BINANCE:DOTUSDT",
-              title: "DOT/USDT",
+              proName: "COINBASE:SOLUSD",
+              title: "SOL/USDT",
             },
             {
-              proName: "BINANCE:UNIUSDT",
-              title: "UNI/USDT",
+              proName: "BINANCE:DOGEUSDT",
+              title: "DOGE/USDT",
+            },
+            {
+              proName: "COINBASE:DOTUSD",
+              title: "DOT/USD",
             },
           ],
         }}
