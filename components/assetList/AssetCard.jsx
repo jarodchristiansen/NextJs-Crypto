@@ -30,42 +30,80 @@ const AssetCard = (props) => {
   } = props;
 
   const { dispatch, getState } = useStore();
-  const [favorites, setFavorites] = useState();
   const [session, loading, status] = useSession();
   const [favorite, setFavorite] = useState();
+  const [favoritesUpdated, setFavoritesUpdated] = useState(false);
+  const [sessionUser, setSessionUser] = useState();
 
   const state = getState();
 
   useEffect(() => {
     checkFavorites();
-  }, [state]);
+  }, [favoritesUpdated]);
+
+  // async function checkFavorites() {
+  //   if (state?.user?.favorites) {
+  //     for (let i of state?.user?.favorites) {
+  //       if (i?.symbol === symbol) {
+  //         setFavorite(true);
+  //       }
+  //     }
+  //   }
+  // }
 
   async function checkFavorites() {
-    if (state?.user?.favorites) {
-      for (let i of state?.user?.favorites) {
+    console.log("this is checkFavorites");
+    let user = JSON.parse(sessionStorage.getItem("user"));
+    setSessionUser(user);
+    console.log({ user });
+
+    if (user?.favorites) {
+      for (let i of user?.favorites) {
         if (i?.symbol === symbol) {
           setFavorite(true);
         }
       }
     }
   }
+  // async function addFavorite(title, symbol, image) {
+  //   console.log("this is addFavorite firing ---", title, symbol, image);
+  //
+  //   let favoriteObject = {
+  //     title,
+  //     symbol,
+  //     image,
+  //   };
+  //
+  //   dispatch({
+  //     type: "ADD_FAVORITE",
+  //     favorite: favoriteObject,
+  //   });
+  //   await addFavoriteUtil(favoriteObject);
+  //   setUpdateFavorites(!updateFavorites);
+  // }
 
-  async function addFavorite(title, symbol, image) {
-    console.log("this is addFavorite firing ---", title, symbol, image);
+  const addToFavorites = (title, symbol, image) => {
+    console.log({ title, symbol, image, sessionUser });
+    let token = { title, symbol, image };
+    let updateSessionFavorites = sessionUser.favorites;
 
-    let favoriteObject = {
-      title,
-      symbol,
-      image,
+    updateSessionFavorites.push(token);
+
+    // let result = favorites.filter((obj) => {
+    //   return obj.symbol !== itemId;
+    // });
+    //
+    // setItems(result);
+    //
+    let replaceDemoUser = {
+      ...sessionUser,
+      favorites: updateSessionFavorites,
     };
 
-    dispatch({
-      type: "ADD_FAVORITE",
-      favorite: favoriteObject,
-    });
-    await addFavoriteUtil(favoriteObject);
-    setUpdateFavorites(!updateFavorites);
-  }
+    console.log({ replaceDemoUser });
+    sessionStorage.setItem("user", JSON.stringify(replaceDemoUser));
+    setFavoritesUpdated(true);
+  };
 
   const exploreLink = `/assets/${symbol}`;
   return (
@@ -73,15 +111,16 @@ const AssetCard = (props) => {
       className={`card text-center mb-3 border border-dark border-1 rounded shadow`}
     >
       <div className={"flex flex-row flex-end"}>
-        {/*{!favorite ? (*/}
-        {/*  <StarFill*/}
-        {/*    color={"gray"}*/}
-        {/*    size={32}*/}
-        {/*    onClick={() => addFavorite(title, symbol, image)}*/}
-        {/*  />*/}
-        {/*) : (*/}
-        {/*  <StarFill color={"gold"} size={32} />*/}
-        {/*)}*/}
+        {!favorite ? (
+          <StarFill
+            color={"gray"}
+            size={32}
+            // onClick={() => addFavorite(title, symbol, image)}
+            onClick={() => addToFavorites(title, symbol, image)}
+          />
+        ) : (
+          <StarFill color={"gold"} size={32} />
+        )}
       </div>
       <div className="card-body py-4">
         <h5 className="card-title">{title || "Card Title"}</h5>

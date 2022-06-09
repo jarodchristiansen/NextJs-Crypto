@@ -63,14 +63,7 @@ function LeftArrow() {
       disabled={isFirstItemVisible}
       onClick={() => scrollPrev()}
     >
-      <FaArrowLeft
-        size={24}
-        color={"black"}
-        // disabled={isFirstItemVisible}
-        // onClick={() => scrollPrev()}
-        // onClick={() => handleShow()}
-        // className={"px-2 mt-5 pointer-link"}
-      />
+      <FaArrowLeft size={24} color={"black"} />
     </p>
   );
 }
@@ -84,14 +77,7 @@ function RightArrow() {
       disabled={isLastItemVisible}
       onClick={() => scrollNext()}
     >
-      <FaArrowRight
-        size={24}
-        color={"black"}
-        // disabled={isFirstItemVisible}
-        // onClick={() => scrollPrev()}
-        // onClick={() => handleShow()}
-        // className={"px-2 mt-5 pointer-link"}
-      />
+      <FaArrowRight size={24} color={"black"} />
     </p>
   );
 }
