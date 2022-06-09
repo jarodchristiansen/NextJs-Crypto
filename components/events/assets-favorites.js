@@ -95,54 +95,36 @@ function AssetFavorites(props) {
   // const [loadedUser, setLoadedUser] = useState();
   const [favorites, setFavorites] = useState();
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const [userHasUpdated, setUserHasUpdated] = useState(false);
 
   useEffect(() => {
-    console.log("this is the username in favorites", username);
+    let user = JSON.parse(sessionStorage.getItem("user"));
+
     getSession().then((session) => {
-      setIsLoading(false);
       if (!session) {
         router.replace("/");
-      } else if (session !== undefined && session.user.username) {
-        if (session?.user?.username === username) {
-          setIsAuthorized(true);
-        }
-        if (path.includes("assets")) {
-          console.log("favorites on assets page", session.user.username);
-          // console.log("this is the getState in favorites", getState());
-          getUser(session.user.username);
-
-          // if (state?.user?.favorites) {
-          //   console.log("this is from the redux state yo", state);
-          //   loadFavoritesFromRedux(session.user.username, state);
-          // } else {
-          //   getUser(session.user.username);
-          // }
-          // setLoadedSession(session);
-        }
+      } else if (session.user.username && !user) {
+        getUser(session.user.username);
+      } else if (session.user.username && user) {
+        setLoadedUser(user);
+        setFavorites(user.favorites);
       }
     });
-  }, []);
+
+    console.log(
+      "user/loadedUser in useffect",
+      loadedUser,
+      user,
+      userHasUpdated
+    );
+  }, [userHasUpdated]);
 
   const getUser = async (session) => {
-    let user = undefined;
-    if (!user) {
-      fetchedUser = await fetch(`/api/user/get-user?user=${session}`).then(
-        (r) => r.json()
-      );
-      sessionStorage.setItem("user", JSON.stringify(fetchedUser));
-      setLoadedUser(fetchedUser);
-    } else {
-      console.log("this is the user setLoadedUser", user);
-      setLoadedUser(user);
-    }
-
-    if (user || fetchedUser) {
-      setFavorites(user?.favorites || fetchedUser?.favorites);
-    }
-    console.log(
-      "this is favorites in Favorites Component after get user -----",
-      favorites
+    fetchedUser = await fetch(`/api/user/get-user?user=${session}`).then((r) =>
+      r.json()
     );
+    setLoadedUser(fetchedUser);
+    sessionStorage.setItem("user", JSON.stringify(fetchedUser));
   };
 
   return (
@@ -160,9 +142,11 @@ function AssetFavorites(props) {
             {/*)}*/}
             {loadedUser?.favorites?.length >= 1 && (
               <FavoriteAssetRow
-                favorites={loadedUser?.favorites}
+                loadedUser={loadedUser}
                 isEditing={isEditing}
                 setIsEditing={setIsEditing}
+                setFavorites={(value) => setFavorites(value)}
+                setUserHasUpdated={() => setUserHasUpdated(true)}
               />
             )}
           </Accordion.Body>
