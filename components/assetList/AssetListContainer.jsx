@@ -6,7 +6,13 @@ import ExchangeCard from "./ExchangeCard";
 import FadeIn from "react-fade-in";
 
 const AssetListContainer = (props) => {
-  const { items, searchSelection, updateFavorites, setUpdateFavorites } = props;
+  const {
+    items,
+    searchSelection,
+    loadedUser,
+    updateFavorites,
+    setUpdateFavorites,
+  } = props;
 
   const isMobile = useMediaQuery({
     query: `(max-width: 920px)`,
@@ -53,6 +59,9 @@ const AssetListContainer = (props) => {
                   marketCap={items.market_data?.market_cap.usd}
                   circulatingSupply={items.market_data?.circulating_supply}
                   totalSupply={items.market_data?.total_supply}
+                  loadedUser={loadedUser}
+                  updateFavorites={updateFavorites}
+                  setUpdateFavorites={setUpdateFavorites}
                 />
               )}
 
@@ -103,6 +112,9 @@ const AssetListContainer = (props) => {
                     marketCap={event?.market_data?.market_cap.usd}
                     circulatingSupply={event?.market_data?.circulating_supply}
                     totalSupply={event?.market_data?.total_supply}
+                    loadedUser={loadedUser}
+                    updateFavorites={updateFavorites}
+                    setUpdateFavorites={setUpdateFavorites}
                   />
                 )}
 

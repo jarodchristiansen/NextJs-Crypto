@@ -2,7 +2,7 @@ import { Button, Modal } from "react-bootstrap";
 import { useStore } from "../../store";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/client";
-import addFavoriteUtil from "../../lib/favorites";
+import { addFavoriteUtil, removeFavoriteUtil } from "../../lib/favorites";
 import { StarFill } from "react-bootstrap-icons";
 import Link from "next/link";
 import {
@@ -11,6 +11,7 @@ import {
   standardThousandsFormatter,
 } from "../../helpers/formatters";
 import styles from "./AssetCard.module.css";
+import { useRouter } from "next/router";
 
 const AssetCard = (props) => {
   const {
@@ -27,35 +28,32 @@ const AssetCard = (props) => {
     updateFavorites,
     urls,
     setUpdateFavorites,
+    loadedUser,
   } = props;
 
   const { dispatch, getState } = useStore();
   const [session, loading, status] = useSession();
   const [favorite, setFavorite] = useState();
-  const [favoritesUpdated, setFavoritesUpdated] = useState(false);
+  // const [favoritesUpdated, setFavoritesUpdated] = useState(false);
   const [sessionUser, setSessionUser] = useState();
 
+  const router = useRouter();
   const state = getState();
 
   useEffect(() => {
+    console.log({ loadedUser });
     checkFavorites();
-  }, [favoritesUpdated]);
-
-  // async function checkFavorites() {
-  //   if (state?.user?.favorites) {
-  //     for (let i of state?.user?.favorites) {
-  //       if (i?.symbol === symbol) {
-  //         setFavorite(true);
-  //       }
-  //     }
-  //   }
-  // }
+  }, [updateFavorites]);
 
   async function checkFavorites() {
     console.log("this is checkFavorites");
-    let user = JSON.parse(sessionStorage.getItem("user"));
-    setSessionUser(user);
-    console.log({ user });
+    // let user = JSON.parse(sessionStorage.getItem("user"));
+    let user = loadedUser
+      ? loadedUser
+      : JSON.parse(sessionStorage.getItem("user"));
+    loadedUser
+      ? setSessionUser(loadedUser)
+      : setSessionUser(JSON.parse(sessionStorage.getItem("user")));
 
     if (user?.favorites) {
       for (let i of user?.favorites) {
@@ -65,24 +63,7 @@ const AssetCard = (props) => {
       }
     }
   }
-  // async function addFavorite(title, symbol, image) {
-  //   console.log("this is addFavorite firing ---", title, symbol, image);
-  //
-  //   let favoriteObject = {
-  //     title,
-  //     symbol,
-  //     image,
-  //   };
-  //
-  //   dispatch({
-  //     type: "ADD_FAVORITE",
-  //     favorite: favoriteObject,
-  //   });
-  //   await addFavoriteUtil(favoriteObject);
-  //   setUpdateFavorites(!updateFavorites);
-  // }
-
-  const addToFavorites = (title, symbol, image) => {
+  const addToFavorites = async (title, symbol, image) => {
     console.log({ title, symbol, image, sessionUser });
     let token = { title, symbol, image };
     let updateSessionFavorites = sessionUser.favorites;
@@ -101,8 +82,10 @@ const AssetCard = (props) => {
     };
 
     console.log({ replaceDemoUser });
+    await addFavoriteUtil(token);
     sessionStorage.setItem("user", JSON.stringify(replaceDemoUser));
-    setFavoritesUpdated(true);
+    setUpdateFavorites(true);
+    // router.reload(window.location.pathname);
   };
 
   const exploreLink = `/assets/${symbol}`;
@@ -148,19 +131,6 @@ const AssetCard = (props) => {
         </div>
 
         <hr className={"bg-dark"} />
-        {/*<p className="card-text">*/}
-        {/*  {"            Some quick example text to build on the card title and make up the\n" +*/}
-        {/*    "            bulk of the card's content."}*/}
-        {/*</p>*/}
-        {/*<p className={"card-text"}>{urls?.website}</p>*/}
-        {/*<p className={"card-text"}>{urls?.source_code}</p>*/}
-        {/*<p className={"card-text"}>{urls?.technical_doc}</p>*/}
-        {/*<div className={"card-text"}>*/}
-        {/*  {tags &&*/}
-        {/*    tags.map((tag) => {*/}
-        {/*      return <p key={tag}>{tag}</p>;*/}
-        {/*    })}*/}
-        {/*</div>*/}
         <Link href={exploreLink}>
           <button className={"standardized-button"}>Explore</button>
         </Link>
