@@ -23,7 +23,6 @@ const AuthFormFull = ({ setIsLoading, loadedProviders }) => {
   const [formDisabled, setFormDisabled] = useState(false);
 
   async function handleValidateEmail(e) {
-    console.log("this is the handleValidateEmail call", e);
     if (e.length > 5) {
       if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(e)) {
         setHasError();
@@ -44,7 +43,6 @@ const AuthFormFull = ({ setIsLoading, loadedProviders }) => {
     switch (fieldId) {
       case "emailAddress":
         // code block
-        console.log("this is the emailAddress value", fieldValue);
         handleValidateEmail(fieldValue);
         break;
       case "password":
@@ -52,16 +50,13 @@ const AuthFormFull = ({ setIsLoading, loadedProviders }) => {
         break;
       case "checkbox":
         // code block
-        console.log("this is the checkbox value", fieldValue);
         if (hasError && termsAndConditionsSigned) {
           setSubmitButtonDisabled(false);
         }
         break;
       case "username":
-        console.log("this is the username value", fieldValue);
         break;
       default:
-      // code block
     }
   };
 

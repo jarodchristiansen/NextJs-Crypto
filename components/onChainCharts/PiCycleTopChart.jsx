@@ -30,9 +30,6 @@ const PiCycleTopChart = ({ data, lunarPriceData }) => {
     setChartData(chartArray);
   };
 
-  {
-    console.log({ chartData });
-  }
   useEffect(() => {
     formatChartData();
   }, [data]);

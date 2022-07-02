@@ -41,12 +41,10 @@ const AssetCard = (props) => {
   const state = getState();
 
   useEffect(() => {
-    console.log({ loadedUser });
     checkFavorites();
   }, [updateFavorites]);
 
   async function checkFavorites() {
-    console.log("this is checkFavorites");
     // let user = JSON.parse(sessionStorage.getItem("user"));
     let user = loadedUser
       ? loadedUser
@@ -64,7 +62,6 @@ const AssetCard = (props) => {
     }
   }
   const addToFavorites = async (title, symbol, image) => {
-    console.log({ title, symbol, image, sessionUser });
     let token = { title, symbol, image };
     let updateSessionFavorites = sessionUser.favorites;
 
@@ -81,7 +78,6 @@ const AssetCard = (props) => {
       favorites: updateSessionFavorites,
     };
 
-    console.log({ replaceDemoUser });
     await addFavoriteUtil(token);
     sessionStorage.setItem("user", JSON.stringify(replaceDemoUser));
     setUpdateFavorites(true);

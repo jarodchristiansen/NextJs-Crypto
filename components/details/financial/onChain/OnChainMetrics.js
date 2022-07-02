@@ -56,7 +56,6 @@ export default function OnChainMetrics(props) {
   let s2fData;
 
   const fetchActiveAddresses = async () => {
-    console.log("fetchActiveAddresses running");
     let data = await fetch(
       `/api/asset-details/glassnode?symbol=${id}&requestType="active_addresses"`
     ).then((r) => r.json());
@@ -71,7 +70,6 @@ export default function OnChainMetrics(props) {
 
     // data?.data && setActiveAddressData(data.data);
     if (data && data?.data.length > 1) {
-      console.log("this is fetchindicatorData", data.data);
       let difficultyData = [];
       for (let i of data.data[0]) {
         difficultyData.push({
@@ -118,7 +116,6 @@ export default function OnChainMetrics(props) {
 
     // data?.data && setActiveAddressData(data.data);
     if (data && data?.data.length > 3) {
-      console.log("this is fetchTransactions data", data);
       let transactionsObject = {
         count: data.data[0].splice(-365),
         rate: data.data[1].splice(-365),
@@ -130,7 +127,6 @@ export default function OnChainMetrics(props) {
   };
 
   const fetchStockToFlow = async () => {
-    console.log("fetchStockToFlow running");
     s2fData = await fetch(`/api/on-chain/stock-to-flow`).then((r) => r.json());
 
     // for (let i of uniValues) {
@@ -142,7 +138,6 @@ export default function OnChainMetrics(props) {
     // }
 
     if (s2fData) {
-      console.log("this is s2fData", s2fData);
       let tempDataHolder = [];
       s2fData.map((y) => {
         tempDataHolder.push({

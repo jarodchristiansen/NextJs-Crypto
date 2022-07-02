@@ -104,7 +104,6 @@ function AuthForm(props) {
     }
     //optional: Add validation on input form.
     if (!hasError) {
-      console.log("hasError within !hasError", hasError);
       if (isLogin) {
         //log user in
         const result = await signIn("credentials", {
@@ -127,7 +126,6 @@ function AuthForm(props) {
                 //   type: "SET_USER",
                 //   user: session.user,
                 // });
-                console.log("this si the session.user", session);
                 setTimeout(() => {
                   router.replace("/");
                 }, 3000);

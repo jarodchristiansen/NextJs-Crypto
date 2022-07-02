@@ -63,7 +63,7 @@ function AssetsPage(props) {
       if (!session) {
         router.replace("/");
       } else if (session.user.username && !user) {
-        getUser(session.usfer.username);
+        getUser(session.user.username);
       } else if (session.user.username && user) {
         console.log({ user });
         setLoadedUser(user);
@@ -172,10 +172,6 @@ function AssetsPage(props) {
       .then((res) => {
         // loadFavorited(res?.data);
         // console.log("this is results on the assets page", results);
-        console.log(
-          "this is the res.data from assets in getOGAssets",
-          res.data.data
-        );
 
         setEvents(res.data.data);
         // setOgEvents(res.data.data);
