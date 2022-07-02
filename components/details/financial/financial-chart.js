@@ -76,7 +76,6 @@ function FinancialChart(props) {
       let test = priceData?.data?.data[0]?.timeSeries.slice(time * -1);
       setData(priceData?.data);
     } else {
-      console.log("unable to load data from endpoint");
       setError("unable to load data from endpoint");
     }
   };
@@ -168,9 +167,6 @@ function FinancialChart(props) {
         chartHolder.push(y);
       });
 
-      console.log("this is chartHolder", chartHolder);
-      // setChartData(chartHolder)
-      // setLabels(labelHolder)
       let priceMax = Math.max(...chartHolder);
       let priceMin = Math.min(...chartHolder);
       let diff = priceMax - priceMin;

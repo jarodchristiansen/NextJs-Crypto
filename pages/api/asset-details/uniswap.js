@@ -10,8 +10,6 @@ export default async (req, res) => {
     id = "WBTC";
   }
 
-  console.log("this is time in uniswap endpoint----", time, typeof time);
-
   const db = client.db("Crypto_Watch");
   let assetCollection = await db.collection(`Uniswap_Volume_Sum.${id}Volume`);
 

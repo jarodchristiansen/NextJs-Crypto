@@ -9,7 +9,6 @@ function FavoriteAssetRow({ loadedUser, setFavorites, setUserHasUpdated }) {
   const [isEditing, setIsEditing] = useState(false);
 
   const removeAssetFromFavorites = (itemId) => {
-    console.log("this is the event", itemId);
     let result = favorites.filter((obj) => {
       return obj.symbol !== itemId;
     });

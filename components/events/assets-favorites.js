@@ -78,7 +78,6 @@ function AssetFavorites(props) {
 
   const { path, loadedUser, setLoadedUser, updateFavorites } = props;
   const [isEditing, setIsEditing] = useState(false);
-  console.log("this is the path in Favorites ------", path);
 
   let fetchedUser;
 
@@ -97,35 +96,35 @@ function AssetFavorites(props) {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [userHasUpdated, setUserHasUpdated] = useState(false);
 
-  useEffect(() => {
-    let user = JSON.parse(sessionStorage.getItem("user"));
+  // useEffect(() => {
+  //   let user = JSON.parse(sessionStorage.getItem("user"));
+  //
+  //   getSession().then((session) => {
+  //     if (!session) {
+  //       router.replace("/");
+  //     } else if (session.user.username && !user) {
+  //       getUser(session.user.username);
+  //     } else if (session.user.username && user) {
+  //       setLoadedUser(user);
+  //       setFavorites(user.favorites);
+  //     }
+  //   });
+  //
+  //   console.log(
+  //     "user/loadedUser in useffect",
+  //     loadedUser,
+  //     user,
+  //     userHasUpdated
+  //   );
+  // }, [userHasUpdated]);
 
-    getSession().then((session) => {
-      if (!session) {
-        router.replace("/");
-      } else if (session.user.username && !user) {
-        getUser(session.user.username);
-      } else if (session.user.username && user) {
-        setLoadedUser(user);
-        setFavorites(user.favorites);
-      }
-    });
-
-    console.log(
-      "user/loadedUser in useffect",
-      loadedUser,
-      user,
-      userHasUpdated
-    );
-  }, [userHasUpdated]);
-
-  const getUser = async (session) => {
-    fetchedUser = await fetch(`/api/user/get-user?user=${session}`).then((r) =>
-      r.json()
-    );
-    setLoadedUser(fetchedUser);
-    sessionStorage.setItem("user", JSON.stringify(fetchedUser));
-  };
+  // const getUser = async (session) => {
+  //   fetchedUser = await fetch(`/api/user/get-user?user=${session}`).then((r) =>
+  //     r.json()
+  //   );
+  //   setLoadedUser(fetchedUser);
+  //   sessionStorage.setItem("user", JSON.stringify(fetchedUser));
+  // };
 
   return (
     <div>

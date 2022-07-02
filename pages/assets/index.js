@@ -40,97 +40,50 @@ function AssetsPage(props) {
   const [listOfTitles, setListOfTitles] = useState();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [loadedSession, setLoadedSession] = useState();
+
   const [loadedUser, setLoadedUser] = useState();
   const [favorites, setFavorites] = useState();
-  const [updateFavorites, setUpdateFavorites] = useState();
-
+  const [updateFavorites, setUpdateFavorites] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
 
   const router = useRouter();
-  const { dispatch, getState } = useStore();
-  const results = getState();
-  // useEffect(() => {
-  //   getSession().then((session) => {
-  //     setIsLoading(false);
-  //     if (!session) {
-  //       window.location.href = "/auth";
-  //     }
-  //   });
-  // }, []);
-
-  // const [session, loading] = useSession();
-
-  // const fetcher = (url) => fetch(url).then((res) => res.json())
-
-  // const { data, error } = useSWR('/api/all', fetcher)
-
-  // function dynamicSort(property) {
-  //   var sortOrder = 1;
-  //   if (property[0] === "-") {
-  //     sortOrder = -1;
-  //     property = property.substr(1);
-  //   }
-  //   return function (a, b) {
-  //     /* next line works with strings and numbers,
-  //      * and you may want to customize it to your needs
-  //      */
-  //     var result =
-  //       a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
-  //     return result * sortOrder;
-  //   };
-  // }
-
-  // async function loadFavorited(data) {
-  //   if (results?.user?.favorites) {
-  //     console.log("this is the results.favorites", results?.user?.favorites);
-  //     for (let i of data) {
-  //       if (results?.user?.favorites.filter((e) => e.symbol === i.symbol)) {
-  //         /* vendors contains the element we're looking for */
-  //         i["favorited"] = true;
-  //       }
-  //     }
-  //   } else {
-  //     console.log("loadFavorited not finding results");
-  //   }
-  //   console.log("this is the data in loadFavorited", data);
-  // }
 
   const isMobile = useMediaQuery({
     query: `(max-width: 920px)`,
   });
 
   useEffect(() => {
-    // axios.get("/api/all").then((res) => {
-    //   // loadFavorited(res?.data);
-    //   // console.log("this is results on the assets page", results);
-    //   console.log("this is the res.data from assets", res.data);
-    //
-    //   setEvents(res.data);
-    //   setOgEvents(res.data);
-    // });
     getOGAssets();
   }, []);
 
-  // if (error) return <div>Failed to load</div>
-  // if (!data) return <div>No data</div>
-  // setEvents(data)
-  // let featuredEvent = data
+  useEffect(() => {
+    let user = JSON.parse(sessionStorage.getItem("user"));
 
-  // const featuredEvents = getFeaturedEvents();
-  // const featuredEvent = getEventById('BTC');
-  // const eventsById = getEventsById('BTC');
+    getSession().then((session) => {
+      if (!session) {
+        router.replace("/");
+      } else if (session.user.username && !user) {
+        getUser(session.user.username);
+      } else if (session.user.username && user) {
+        console.log({ user });
+        setLoadedUser(user);
+        setFavorites(user.favorites);
+      }
+    });
 
-  // console.log('this is featuredEvents', featuredEvents)
+    console.log("user/loadedUser in useffect", loadedUser, user);
+  }, [updateFavorites]);
+
+  const getUser = async (session) => {
+    fetchedUser = await fetch(`/api/user/get-user?user=${session}`).then((r) =>
+      r.json()
+    );
+    console.log({ fetchedUser });
+    setLoadedUser(fetchedUser);
+    sessionStorage.setItem("user", JSON.stringify(fetchedUser));
+  };
+
   let fetchedUser;
-
-  // const getUser = async () => {
-  //   fetchedUser = await fetch(`/api/user/get-user?user=${username}`).then((r) =>
-  //     r.json()
-  //   );
-  //   setLoadedUser(fetchedUser);
-  //   console.log("this is fetchedUser", fetchedUser);
-  // };
 
   async function searchTitles(query) {
     let returnedEvents = await getSearchEvents(query.toUpperCase());
@@ -219,10 +172,6 @@ function AssetsPage(props) {
       .then((res) => {
         // loadFavorited(res?.data);
         // console.log("this is results on the assets page", results);
-        console.log(
-          "this is the res.data from assets in getOGAssets",
-          res.data.data
-        );
 
         setEvents(res.data.data);
         // setOgEvents(res.data.data);
@@ -283,11 +232,6 @@ function AssetsPage(props) {
   return (
     <div className={"container"}>
       <div
-        // className={
-        //   !isMobile
-        //     ? "position-absolute top-0 end-0 mt-2 me-0"
-        //     : "my-3 mx-auto ms-5"
-        // }
         className={
           isMobile ? "my-3 mx-auto ms-5" : "d-flex justify-content-center mt-3"
         }
@@ -320,41 +264,19 @@ function AssetsPage(props) {
         />
       </div>
 
-      <AssetFavorites
-        path={router.pathname}
-        loadedUser={loadedUser}
-        setLoadedUser={setLoadedUser}
-      />
+      {!isSearching && loadedUser && (
+        <AssetFavorites
+          path={router.pathname}
+          loadedUser={loadedUser}
+          setLoadedUser={setLoadedUser}
+        />
+      )}
 
-      {/*{updateFavorites ? (*/}
-      {/*  // <Favorites*/}
-      {/*  //   path={router.pathname}*/}
-      {/*  //   loadedUser={loadedUser}*/}
-      {/*  //   setLoadedUser={setLoadedUser}*/}
-      {/*  // />*/}
-      {/*  <AssetFavorites*/}
-      {/*    path={router.pathname}*/}
-      {/*    loadedUser={loadedUser}*/}
-      {/*    setLoadedUser={setLoadedUser}*/}
-      {/*  />*/}
-      {/*) : (*/}
-      {/*  // <Favorites*/}
-      {/*  //   path={router.pathname}*/}
-      {/*  //   loadedUser={loadedUser}*/}
-      {/*  //   setLoadedUser={setLoadedUser}*/}
-      {/*  //   />*/}
-      {/*  <AssetFavorites*/}
-      {/*    path={router.pathname}*/}
-      {/*    loadedUser={loadedUser}*/}
-      {/*    setLoadedUser={setLoadedUser}*/}
-      {/*    updateFavorites={updateFavorites}*/}
-      {/*  />*/}
-      {/*)}*/}
-
-      {events && !isSearching && (
+      {events && !isSearching && loadedUser && (
         <div className={"mx-auto"}>
           <AssetListContainer
             items={events ? events : props.events}
+            loadedUser={loadedUser}
             setUpdateFavorites={setUpdateFavorites}
             updateFavorites={updateFavorites}
             searchSelection={searchSelection}
@@ -371,30 +293,4 @@ function AssetsPage(props) {
     </div>
   );
 }
-// export async function getStaticProps() {
-//   const featuredEvents = await getFeaturedEvents();
-//   return {
-//       props: {
-//           events: featuredEvents
-//       }
-//
-//   }
-// }
-
-// export async function getServerSideProps(context) {
-//   const session = await getSession({ req: context.req });
-//
-//   if (!session) {
-//     return {
-//       redirect: {
-//         destination: "/auth",
-//         permanent: false,
-//       },
-//     };
-//   }
-//   return {
-//     props: { session },
-//   };
-// }
-
 export default AssetsPage;

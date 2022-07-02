@@ -22,7 +22,6 @@ const FinancialPanel = ({ id }) => {
   const [geckoData, setGeckoData] = useState([]);
 
   const formatFinancialData = async (cryptoData) => {
-    console.log("this is cryptoData in formatFInancialData", cryptoData);
     let financeDataArray = [];
     if (cryptoData && cryptoData.length > 1) {
       for (let i of cryptoData) {
@@ -48,7 +47,6 @@ const FinancialPanel = ({ id }) => {
     ).then((r) => r.json());
     if (priceData?.data) {
       let test = priceData?.data?.data[0]?.timeSeries.slice(time * -1);
-      console.log("this is the testTime", priceData?.data);
       setLunarData(priceData?.data);
 
       formatFinancialData(priceData?.data?.data[0]?.timeSeries);
@@ -65,7 +63,6 @@ const FinancialPanel = ({ id }) => {
   };
 
   async function fetchGeckoData() {
-    console.log("this is fetchGeckoData running", time);
     axios
       .get(
         `/api/coinGeckoData/?requestType=assetHistory&requestedAsset=${id.toLowerCase()}&startDate=${time}`
@@ -73,14 +70,12 @@ const FinancialPanel = ({ id }) => {
       .then((res) => {
         // loadFavorited(res?.data);
         // console.log("this is results on the assets page", results);
-        console.log("fetchGeckoData in financialPanel", res.data.data);
 
         if (res?.data?.data?.total_volumes) {
           let objs = res.data.data.total_volumes.map((x) => ({
             time: x[0],
             volume: x[1],
           }));
-          console.log({ objs });
           setGeckoData(objs);
         }
 
@@ -123,7 +118,6 @@ const FinancialPanel = ({ id }) => {
   }
 
   const fetchTradHistory = async (date) => {
-    console.log("this is fetchTradeHistoryDate", date);
     let traditionalData = await fetch(
       `/api/trad-asset-data/?time=${date}`
     ).then((r) => r.json());
@@ -182,8 +176,6 @@ const FinancialPanel = ({ id }) => {
       "/" +
       daysAgo.getFullYear();
 
-    console.log({ start });
-
     setStartDate(start);
     return start;
   }
@@ -193,7 +185,6 @@ const FinancialPanel = ({ id }) => {
     getDateXDaysAgo(time);
     // daysAgoDate && fetchTradHistory(daysAgoDate);
     // fetchUniswap();
-    console.log({ time });
   }, [time]);
 
   return (

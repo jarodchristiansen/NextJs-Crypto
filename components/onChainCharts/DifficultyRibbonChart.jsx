@@ -26,8 +26,6 @@ const DifficultyRibbonChart = ({ data, lunarPriceData }) => {
 
   const [chartData, setChartData] = useState([]);
 
-  console.log({ data, lunarPriceData });
-
   useEffect(() => {
     formatChartData();
   }, []);
