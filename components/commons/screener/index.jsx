@@ -26,20 +26,28 @@ const PriceScreener = () => {
               title: "BNB/USDT",
             },
             {
-              proName: "BINANCE:ADAUSD",
-              title: "ADA/USD",
+              proName: "BITSTAMP:XRPUSD",
+              title: "XRP/USD",
             },
             {
-              proName: "COINBASE:SOLUSD",
-              title: "SOL/USDT",
+              proName: "BITSTAMP:ADAUSD",
+              title: "ADA/USD",
             },
             {
               proName: "BINANCE:DOGEUSDT",
               title: "DOGE/USDT",
             },
             {
+              proName: "COINBASE:MATICUSD",
+              title: "MATIC/USDT",
+            },
+            {
               proName: "COINBASE:DOTUSD",
               title: "DOT/USD",
+            },
+            {
+              proName: "COINBASE:SOLUSD",
+              title: "SOL/USDT",
             },
           ],
         }}
@@ -51,6 +59,7 @@ const PriceScreener = () => {
 const ScreenerContainer = styled.div`
   position: sticky;
   top: 0;
+  z-index: 100;
 `;
 
 export default PriceScreener;

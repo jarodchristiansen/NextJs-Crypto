@@ -26,6 +26,9 @@ import AssetListContainer from "../../components/assetList/AssetListContainer";
 import { useMediaQuery } from "react-responsive";
 import CustomSearchComponent from "../../components/searchComponents/CustomSearchComponent";
 import LoadingSpinner from "../../components/ui/loading-spinner";
+import PriceScreener from "../../components/commons/screener";
+import styled from "styled-components";
+import { Colors } from "../../styles/colors";
 
 function AssetsPage(props) {
   const [startingAssets, setStartingAssets] = useState([]);
@@ -36,10 +39,7 @@ function AssetsPage(props) {
   const [filterSelection, setFilterSelection] = useState("");
 
   const [query, setQuery] = useState();
-  const [selected, setSelected] = useState([]);
   const [listOfTitles, setListOfTitles] = useState();
-
-  const [isLoading, setIsLoading] = useState(true);
 
   const [loadedUser, setLoadedUser] = useState();
   const [favorites, setFavorites] = useState();
@@ -230,7 +230,8 @@ function AssetsPage(props) {
   }
 
   return (
-    <div className={"container"}>
+    <PageWrapper>
+      <PriceScreener />
       <div
         className={
           isMobile ? "my-3 mx-auto ms-5" : "d-flex justify-content-center mt-3"
@@ -273,7 +274,7 @@ function AssetsPage(props) {
       )} */}
 
       {events && !isSearching && loadedUser && (
-        <div className={"mx-auto"}>
+        <div className={"mx-auto px-5 pt-5"}>
           <AssetListContainer
             items={events ? events : props.events}
             loadedUser={loadedUser}
@@ -290,7 +291,12 @@ function AssetsPage(props) {
           <LoadingSpinner />
         </div>
       )}
-    </div>
+    </PageWrapper>
   );
 }
+
+const PageWrapper = styled.div`
+  background-color: ${Colors.pageBackground};
+`;
+
 export default AssetsPage;

@@ -53,8 +53,9 @@ const InfoCardContainer = styled.div`
   border: 2px solid gray;
   padding: 2rem 2rem;
   margin: 2rem;
-  box-shadow: 2px 4px 8px lightgray;
+  box-shadow: 2px 4px 8px gray;
   min-width: 18rem;
+  background-color: white;
 
   .info-card-header {
     border-bottom: 2px solid lightgray;

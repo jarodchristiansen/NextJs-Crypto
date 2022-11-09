@@ -1,17 +1,11 @@
-import Link from "next/link";
-import { TradingViewEmbed, widgetType } from "react-tradingview-embed";
 import { useSession, getSession } from "next-auth/client";
 import { useMediaQuery } from "react-responsive";
 import clientPromise from "../lib/mongodb";
 import { initializeStore, useStore } from "../store";
-import dynamic from "next/dynamic";
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import axios from "axios";
-import FadeIn from "react-fade-in";
 import styled from "styled-components";
 import InfoCard from "../components/commons/info-cards/info-card";
 import PriceScreener from "../components/commons/screener";
+import { Colors } from "../styles/colors";
 
 function HomePage({ isConnected, initialReduxState }) {
   const [session, loading, status] = useSession();
@@ -22,63 +16,21 @@ function HomePage({ isConnected, initialReduxState }) {
   //   query: `(max-width: 620px)`,
   // });
 
-  // const textBlocks = {
-  //   mainExplainer: {
-  //     headerText: "Affordable Metrics For Decentralized Assets",
-  //     subHeaderText: "Affordable Prices for helpful insights",
-  //     description:
-  //       "Metrics that benefit everyone, not just those that can afford thousands of dollars in subscriptions to make better investment choices",
-  //     modalHeader: "Useful Metrics for Crypto Assets",
-  //     modalBodyText:
-  //       "Insightful metrics at affordable prices to make crypto available to everyone, not just those who already have an advantage.",
-  //     modalBodyImage: "/../ModalImages/Assets.jpg",
-  //   },
-  //   userProfiles: {
-  //     headerText: "User Profile Customization",
-  //     subHeaderText: "Portfolio Building",
-  //     description:
-  //       "Track your favorite assets and build your portfolio using our portfolio tracker, engage based on favorited assets",
-  //     modalHeader: "User Profile Dashboard",
-  //     modalBodyText: "",
-  //     modalBodyImage: "",
-  //   },
-  //   socialMetrics: {
-  //     headerText: "Realtime Social Metrics",
-  //     subHeaderText: "Social Media Metrics To Track Engagement",
-  //     description:
-  //       "Social media and search engine metrics to help identify the hottest assets as they start ot trend",
-  //     modalHeader: "Social Metrics",
-  //     modalBodyText: "",
-  //     modalBodyImage: "",
-  //   },
-  //   financialMetrics: {
-  //     headerText: "Financial Metrics",
-  //     subHeaderText: "Stastical Models Made For You",
-  //     description:
-  //       "Ready made statistical models to quickly view some of the most important components of an asset before investing.",
-  //     modalHeader: "Useful Metrics for Crypto Assets",
-  //     modalBodyText: "",
-  //     modalBodyImage: "",
-  //   },
-  //   onChainMetrics: {
-  //     headerText: "On-chain Metrics",
-  //     subHeaderText: "Fundamental Analysis",
-  //     description:
-  //       "Fundamental metrics of asset usage and flows to give you insight into market movements",
-  //     modalHeader: "On-chain analytics",
-  //     modalBodyText:
-  //       "Analytics utilizing the benefits of blockchain. Analytics and data tracking transaction volume, address averages, network difficulty, hashrate etc",
-  //     modalBodyImage: "/../ModalImages/Charts.jpg",
-  //   },
-  // };
-
   return (
-    <div>
+    <PageWrapper>
       <PriceScreener />
 
       <HomePageWrapper className="text-center">
         {/* <LoadingSpinner /> */}
-        {/* <HeroImage>Text</HeroImage> */}
+        <HeroImage>
+          <h2>Doing The Same Thing, Differently</h2>
+          <p>
+            At HodlWatch, we feel that access to information information is a
+            key paramter of equality. That is especially true of financial
+            information. We're working to solve that a-symmetry of information
+            by democratratizing blockchain data
+          </p>
+        </HeroImage>
 
         <div className="grid-template">
           <InfoCard
@@ -100,15 +52,27 @@ function HomePage({ isConnected, initialReduxState }) {
           />
         </div>
       </HomePageWrapper>
-    </div>
+    </PageWrapper>
   );
 }
 
 const HeroImage = styled.div`
   width: 95%;
   min-height: 12rem;
-  background-color: green;
+  /* background-color: rgba(0, 25, 25, 0.2); */
   border-radius: 17px;
+  padding: 2rem;
+  box-shadow: 2px 4px 8px gray;
+  background-color: white;
+  border: 2px solid gray;
+
+  h2 {
+    padding: 1rem 0;
+  }
+`;
+
+const PageWrapper = styled.div`
+  background-color: ${Colors.pageBackground};
 `;
 
 const HomePageWrapper = styled.div`
