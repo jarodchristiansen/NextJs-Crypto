@@ -42,37 +42,6 @@ function MainHeader() {
   let username = session?.user?.username;
 
   return (
-    // <Navbar bg="light" variant="light">
-    //     <Container>
-    //         <Nav>
-    //         <Navbar.Brand>
-    //             <div>
-    //                 <Link href='/'><p style={{margin: "5%", cursor: "pointer", fontSize: "1.2rem"}}>TokenWatch</p></Link>
-    //         </div>
-    //         </Navbar.Brand>
-    //
-    //             <div style={{marginLeft: "20%"}}>
-    //
-    //             </div>
-    //             <Link href="/asset-details"><Navbar.Text style={{margin: "5%", cursor: "pointer", fontSize: "1.2rem"}}>Assets</Navbar.Text></Link>
-    //             <Link href="/asset-details"><Navbar.Text style={{margin: "5%", cursor: "pointer", fontSize: "1.2rem"}}>Favorites</Navbar.Text></Link>
-    //             <div style={{whiteSpace: "nowrap", marginTop: '7%'}}>
-    //                 {session && <Navbar.Text style={{margin: "5%", cursor: "pointer", fontSize: "1.2rem"}} onClick={handleSignout} className="btn-signin">Sign out</Navbar.Text>  }
-    //                 {!session && <Navbar.Text style={{margin: "5%", cursor: "pointer", fontSize: "1.2rem"}} onClick={handleSignin}  className="btn-signin">Sign in</Navbar.Text>  }
-    //             </div>
-    //
-    //         </Nav>
-    //
-    //         <div style={{display: "flex", flexDirection: "row"}}>
-    //             {loading && <div>Loading...</div>}
-    //             {session && <> <p> Welcome, {session.user.name ?? session.user.email}</p> <br />
-    //                 <img src={session.user.image} style={{maxHeight: "50px"}} alt="" />
-    //             </>}
-    //         </div>
-    //
-    //     </Container>
-    // </Navbar>
-
     <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
       <Container>
         <Navbar.Brand>
@@ -92,10 +61,7 @@ function MainHeader() {
                 </Link>
               </Nav.Link>
             )}
-            {/*<Nav.Link eventKey={"2"} href="#pricing">*/}
-            {/*  Pricing*/}
-            {/*</Nav.Link>*/}
-            {/*<Nav.Link eventKey={"3"} onClick={session ? handleSignout : handleSignin}>{session ? "Sign out" : "Sign in"}</Nav.Link>*/}
+
             {session && (
               <Nav.Link eventKey={"3"} role={"link"}>
                 <Link href={`/user/${username}`}>
@@ -105,16 +71,17 @@ function MainHeader() {
                 </Link>
               </Nav.Link>
             )}
+
             <Nav.Link eventKey={"3"} role={"link"}>
               <Link href="/education">
-                <Navbar.Text className={"pointer-link mx-1"}>
+                <Navbar.Text className={"pointer-link"}>
                   Education
                 </Navbar.Text>
               </Link>
             </Nav.Link>
 
             {!session ? (
-              <Nav.Link eventKey={"4"} role={"link"} className={"ms-5"}>
+              <Nav.Link eventKey={"4"} role={"link"}>
                 <Link href="/auth">
                   <Navbar.Text className={"pointer-link mx-1"}>
                     {"Sign in"}

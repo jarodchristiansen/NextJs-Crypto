@@ -264,13 +264,13 @@ function AssetsPage(props) {
         />
       </div>
 
-      {!isSearching && loadedUser && (
+      {/* {!isSearching && loadedUser && (
         <AssetFavorites
           path={router.pathname}
           loadedUser={loadedUser}
           setLoadedUser={setLoadedUser}
         />
-      )}
+      )} */}
 
       {events && !isSearching && loadedUser && (
         <div className={"mx-auto"}>

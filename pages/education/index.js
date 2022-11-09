@@ -1,10 +1,12 @@
 import EducationLinkList from "../../components/education/EducationLinkList";
 import EducationEssentialsContainer from "../../components/education/EducationEssentialsContainer";
 import RecentArticlesList from "../../components/education/RecentArticlesList";
+import PriceScreener from "../../components/commons/screener";
 
 const EducationPage = () => {
   return (
     <div>
+      <PriceScreener />
       <div className="container px-4">
         <div className="row mt-5">
           <div className="col col-lg-9">

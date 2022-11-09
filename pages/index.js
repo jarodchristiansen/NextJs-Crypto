@@ -1,7 +1,5 @@
 import Link from "next/link";
 import { TradingViewEmbed, widgetType } from "react-tradingview-embed";
-import LandingExplainer from "../components/landing/landing-explainer";
-import SignUpOrIn from "../components/landing/sign-up-or-in";
 import { useSession, getSession } from "next-auth/client";
 import { useMediaQuery } from "react-responsive";
 import clientPromise from "../lib/mongodb";
@@ -11,162 +9,139 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import FadeIn from "react-fade-in";
+import styled from "styled-components";
+import InfoCard from "../components/commons/info-cards/info-card";
+import PriceScreener from "../components/commons/screener";
 
 function HomePage({ isConnected, initialReduxState }) {
   const [session, loading, status] = useSession();
-  const [containerVisible, setContainerVisible] = useState(false);
 
-  const { dispatch } = useStore();
+  // const { dispatch } = useStore();
 
-  const isDesktopOrLaptop = useMediaQuery({
-    query: `(max-width: 620px)`,
-  });
+  // const isDesktopOrLaptop = useMediaQuery({
+  //   query: `(max-width: 620px)`,
+  // });
 
-  const textBlocks = {
-    mainExplainer: {
-      headerText: "Affordable Metrics For Decentralized Assets",
-      subHeaderText: "Affordable Prices for helpful insights",
-      description:
-        "Metrics that benefit everyone, not just those that can afford thousands of dollars in subscriptions to make better investment choices",
-      modalHeader: "Useful Metrics for Crypto Assets",
-      modalBodyText:
-        "Insightful metrics at affordable prices to make crypto available to everyone, not just those who already have an advantage.",
-      modalBodyImage: "/../ModalImages/Assets.jpg",
-    },
-    userProfiles: {
-      headerText: "User Profile Customization",
-      subHeaderText: "Portfolio Building",
-      description:
-        "Track your favorite assets and build your portfolio using our portfolio tracker, engage based on favorited assets",
-      modalHeader: "User Profile Dashboard",
-      modalBodyText: "",
-      modalBodyImage: "",
-    },
-    socialMetrics: {
-      headerText: "Realtime Social Metrics",
-      subHeaderText: "Social Media Metrics To Track Engagement",
-      description:
-        "Social media and search engine metrics to help identify the hottest assets as they start ot trend",
-      modalHeader: "Social Metrics",
-      modalBodyText: "",
-      modalBodyImage: "",
-    },
-    financialMetrics: {
-      headerText: "Financial Metrics",
-      subHeaderText: "Stastical Models Made For You",
-      description:
-        "Ready made statistical models to quickly view some of the most important components of an asset before investing.",
-      modalHeader: "Useful Metrics for Crypto Assets",
-      modalBodyText: "",
-      modalBodyImage: "",
-    },
-    onChainMetrics: {
-      headerText: "On-chain Metrics",
-      subHeaderText: "Fundamental Analysis",
-      description:
-        "Fundamental metrics of asset usage and flows to give you insight into market movements",
-      modalHeader: "On-chain analytics",
-      modalBodyText:
-        "Analytics utilizing the benefits of blockchain. Analytics and data tracking transaction volume, address averages, network difficulty, hashrate etc",
-      modalBodyImage: "/../ModalImages/Charts.jpg",
-    },
-  };
-
-  useEffect(() => {
-    !containerVisible && setContainerVisible(true);
-  }, []);
+  // const textBlocks = {
+  //   mainExplainer: {
+  //     headerText: "Affordable Metrics For Decentralized Assets",
+  //     subHeaderText: "Affordable Prices for helpful insights",
+  //     description:
+  //       "Metrics that benefit everyone, not just those that can afford thousands of dollars in subscriptions to make better investment choices",
+  //     modalHeader: "Useful Metrics for Crypto Assets",
+  //     modalBodyText:
+  //       "Insightful metrics at affordable prices to make crypto available to everyone, not just those who already have an advantage.",
+  //     modalBodyImage: "/../ModalImages/Assets.jpg",
+  //   },
+  //   userProfiles: {
+  //     headerText: "User Profile Customization",
+  //     subHeaderText: "Portfolio Building",
+  //     description:
+  //       "Track your favorite assets and build your portfolio using our portfolio tracker, engage based on favorited assets",
+  //     modalHeader: "User Profile Dashboard",
+  //     modalBodyText: "",
+  //     modalBodyImage: "",
+  //   },
+  //   socialMetrics: {
+  //     headerText: "Realtime Social Metrics",
+  //     subHeaderText: "Social Media Metrics To Track Engagement",
+  //     description:
+  //       "Social media and search engine metrics to help identify the hottest assets as they start ot trend",
+  //     modalHeader: "Social Metrics",
+  //     modalBodyText: "",
+  //     modalBodyImage: "",
+  //   },
+  //   financialMetrics: {
+  //     headerText: "Financial Metrics",
+  //     subHeaderText: "Stastical Models Made For You",
+  //     description:
+  //       "Ready made statistical models to quickly view some of the most important components of an asset before investing.",
+  //     modalHeader: "Useful Metrics for Crypto Assets",
+  //     modalBodyText: "",
+  //     modalBodyImage: "",
+  //   },
+  //   onChainMetrics: {
+  //     headerText: "On-chain Metrics",
+  //     subHeaderText: "Fundamental Analysis",
+  //     description:
+  //       "Fundamental metrics of asset usage and flows to give you insight into market movements",
+  //     modalHeader: "On-chain analytics",
+  //     modalBodyText:
+  //       "Analytics utilizing the benefits of blockchain. Analytics and data tracking transaction volume, address averages, network difficulty, hashrate etc",
+  //     modalBodyImage: "/../ModalImages/Charts.jpg",
+  //   },
+  // };
 
   return (
     <div>
-      {/*{isConnected ? (*/}
-      {/*    <h2 className="subtitle">You are connected to MongoDB</h2>*/}
-      {/*) : (*/}
-      {/*    <h2 className="subtitle">*/}
-      {/*      You are NOT connected to MongoDB. Check the <code>README.md</code>{' '}*/}
-      {/*      for instructions.*/}
-      {/*    </h2>*/}
-      {/*)}*/}
-      <TradingViewEmbed
-        widgetType={widgetType.TICKER_TAPE}
-        widgetConfig={{
-          showSymbolLogo: true,
-          isTransparent: false,
-          displayMode: "adaptive",
-          colorTheme: "dark",
-          autosize: true,
-          symbols: [
-            {
-              proName: "BITSTAMP:BTCUSD",
-              title: "BTC/USD",
-            },
-            {
-              proName: "BITSTAMP:ETHUSD",
-              title: "ETH/USD",
-            },
-            {
-              proName: "BINANCE:BNBUSDT",
-              title: "BNB/USDT",
-            },
-            {
-              proName: "BINANCE:ADAUSD",
-              title: "ADA/USD",
-            },
-            {
-              proName: "COINBASE:SOLUSD",
-              title: "SOL/USDT",
-            },
-            {
-              proName: "BINANCE:DOGEUSDT",
-              title: "DOGE/USDT",
-            },
-            {
-              proName: "COINBASE:DOTUSD",
-              title: "DOT/USD",
-            },
-          ],
-        }}
-      />
+      <PriceScreener />
 
-      <div className="screener">
-        <div>
-          <div className="container">
-            <FadeIn transitionDuration={1000}>
-              <div className={"row row-cols-1 mt-5"}>
-                <div className="col">
-                  <div className="explainer">
-                    {<LandingExplainer text={textBlocks.mainExplainer} />}
-                  </div>
-                </div>
-              </div>
-              <div className="row row-cols-2 mt-5">
-                <div className="col">
-                  <div className="explainer">
-                    {<LandingExplainer text={textBlocks.userProfiles} />}
-                  </div>
-                </div>
-                <div className="col">
-                  <div className="explainer">
-                    {<LandingExplainer text={textBlocks.socialMetrics} />}
-                  </div>
-                </div>
-                <div className="col">
-                  <div className="explainer">
-                    {<LandingExplainer text={textBlocks.financialMetrics} />}
-                  </div>
-                </div>
-                <div className="col">
-                  <div className="explainer">
-                    {<LandingExplainer text={textBlocks.onChainMetrics} />}
-                  </div>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
+      <HomePageWrapper className="text-center">
+        {/* <LoadingSpinner /> */}
+        {/* <HeroImage>Text</HeroImage> */}
+
+        <div className="grid-template">
+          <InfoCard
+            headerText={"Historical Insights"}
+            bodyText="History doesn't always repeat, but it often rhymes. Using historical data to find insights into existing markets"
+          />
+          <InfoCard
+            headerText={"Community Analytics"}
+            bodyText="A view of the market from the community's own eyes. Insights into some of the most popular current assets"
+          />
+
+          <InfoCard
+            headerText={"OnChain Data"}
+            bodyText="With a resource as beautiful as a decentralized immulatable ledger, why not use it for real time insights? "
+          />
+          <InfoCard
+            headerText={"User Profiles"}
+            bodyText="Web3 isn't as `Webby` without you. Allowing you to show off what makes you an individual in the space."
+          />
         </div>
-      </div>
+      </HomePageWrapper>
     </div>
   );
 }
+
+const HeroImage = styled.div`
+  width: 95%;
+  min-height: 12rem;
+  background-color: green;
+  border-radius: 17px;
+`;
+
+const HomePageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+
+  .hero-image {
+    width: 100%;
+    background-color: green;
+    margin-top: 4rem;
+  }
+
+  .grid-template {
+    animation: fadeIn 2s;
+    margin: 0 auto;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+  }
+`;
+
 export async function getServerSideProps(context, req) {
   const client = await clientPromise;
   const session = await getSession({ req });
