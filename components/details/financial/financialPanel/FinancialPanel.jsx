@@ -58,7 +58,6 @@ const FinancialPanel = ({ id }) => {
     } else {
       console.log("unable to load data from endpoint");
       // setError("unable to load data from endpoint");
-      fetchGeckoData();
     }
   };
 
@@ -181,7 +180,8 @@ const FinancialPanel = ({ id }) => {
   }
 
   useEffect(() => {
-    fetchLunarData();
+    // fetchLunarData();
+    fetchGeckoData();
     getDateXDaysAgo(time);
     // daysAgoDate && fetchTradHistory(daysAgoDate);
     // fetchUniswap();

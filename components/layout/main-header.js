@@ -62,7 +62,7 @@ function MainHeader() {
               </Nav.Link>
             )}
 
-            {session && (
+            {/* {session && (
               <Nav.Link eventKey={"3"} role={"link"}>
                 <Link href={`/user/${username}`}>
                   <Navbar.Text className={"pointer-link mx-1"}>
@@ -70,13 +70,11 @@ function MainHeader() {
                   </Navbar.Text>
                 </Link>
               </Nav.Link>
-            )}
+            )} */}
 
             <Nav.Link eventKey={"3"} role={"link"}>
               <Link href="/education">
-                <Navbar.Text className={"pointer-link"}>
-                  Education
-                </Navbar.Text>
+                <Navbar.Text className={"pointer-link"}>Education</Navbar.Text>
               </Link>
             </Nav.Link>
 
