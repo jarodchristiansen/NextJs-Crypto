@@ -89,7 +89,7 @@ const AssetCard = (props) => {
     <div
       className={`card text-center mb-3 border border-dark border-1 rounded shadow`}
     >
-      <div className={"flex flex-row flex-end"}>
+      {/* <div className={"flex flex-row flex-end"}>
         {!favorite ? (
           <StarFill
             color={"gray"}
@@ -100,7 +100,7 @@ const AssetCard = (props) => {
         ) : (
           <StarFill color={"gold"} size={32} />
         )}
-      </div>
+      </div> */}
       <div className="card-body py-4">
         <h5 className="card-title">{title || "Card Title"}</h5>
         <h6 className="card-subtitle mb-2 text-muted">
